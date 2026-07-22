@@ -3,14 +3,30 @@
 @theme {
   --font-sans: 'Plus Jakarta Sans', sans-serif;
   --font-inter: 'Inter', sans-serif;
-  --color-navy: #0A122A;
-  --color-navy-light: #0D1A31;
-  --color-astral: #24476C;
-  --color-astral-light: #2E5A8A;
-  --color-gray-moon: #A8A9AD;
-  --color-white-star: #E6E8E6;
+  
+  /* User Requested Palette */
   --color-eclipse: #1B1B1B;
-  --color-deep: #06091A;
+  --color-moonlight: #A8A9AD;
+  --color-astral: #24476C;
+  --color-midnight: #0A122A;
+  --color-stardust: #E6E8E6;
+
+  /* Semantic Colors for states (can be derived or standard) */
+  --color-success: #10B981;
+  --color-warning: #F59E0B;
+  --color-error: #EF4444;
+  --color-info: #3B82F6;
+  
+  /* Additional neutral shades derived from background */
+  --color-background: #1B1B1B;
+  --color-foreground: #E6E8E6;
+  --color-card: #0A122A;
+  --color-card-foreground: #E6E8E6;
+  --color-border: #A8A9AD;
+  --color-primary: #24476C;
+  --color-primary-foreground: #E6E8E6;
+  --color-muted: #A8A9AD;
+  --color-muted-foreground: #1B1B1B;
 }
 
 * {
@@ -23,9 +39,9 @@
 ::-webkit-scrollbar-thumb { background: #24476C; border-radius: 4px; }
 
 html, body {
-  background: #06091A;
-  color: #E6E8E6;
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-inter);
 }
 
 @keyframes fadeIn {
