@@ -14,10 +14,10 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       <button
         ref={ref}
         className={cn(
-          "inline-flex items-center justify-center rounded-lg text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-astral disabled:pointer-events-none disabled:opacity-50",
+          "inline-flex items-center justify-center rounded-xl text-sm font-semibold transition-all hover:scale-105 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-astral disabled:pointer-events-none disabled:opacity-50",
           {
-            "bg-[var(--color-midnight)] text-white hover:bg-[var(--color-eclipse)]": variant === "primary",
-            "bg-[var(--color-stardust)] text-black hover:bg-[var(--color-moonlight)]": variant === "secondary",
+            "bg-brand-gradient text-white shadow-md hover:shadow-lg": variant === "primary",
+            "bg-white/50 backdrop-blur-md border border-[var(--color-border)] text-[var(--color-foreground)] hover:bg-white": variant === "secondary",
             "hover:bg-[var(--color-stardust)] hover:text-black text-[var(--color-moonlight)]": variant === "ghost",
             "border border-[var(--color-midnight)] text-[var(--color-midnight)] hover:bg-[var(--color-stardust)]": variant === "outline",
             "bg-[var(--color-error)] text-white hover:bg-red-600": variant === "danger",

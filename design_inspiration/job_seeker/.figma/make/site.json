@@ -1,0 +1,10 @@
+{
+  "description": "Empowers young job seekers with customizable profiles, skill-building courses, interactive posts, and tools to submit and track job applications seamlessly.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}

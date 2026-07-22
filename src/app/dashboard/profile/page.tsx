@@ -7,30 +7,30 @@ import { MapPin, Users, Eye, Briefcase, Edit2 } from "lucide-react";
 
 export default function ProfilePage() {
   return (
-    <div className="flex flex-col gap-6 max-w-4xl mx-auto animate-fade-in-up">
-      <Card className="overflow-hidden bg-[var(--color-card)] border-[var(--color-border)] shadow-sm">
+    <div className="flex flex-col gap-6 max-w-4xl mx-auto animate-fade-in">
+      <Card className="overflow-hidden bg-white/70 backdrop-blur-md border-[var(--color-border)] shadow-[0_8px_30px_rgb(0,0,0,0.04)] animate-slide-up" style={{ animationDelay: '100ms' }}>
         {/* Banner */}
-        <div className="h-48 w-full bg-[var(--color-muted)] relative">
+        <div className="h-48 w-full bg-brand-gradient relative group">
           <img 
             src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=1200" 
             alt="Profile Banner" 
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover mix-blend-overlay opacity-80 group-hover:opacity-100 transition-opacity duration-500"
           />
         </div>
         
         <div className="px-8 pb-8 relative">
           {/* Avatar over banner */}
-          <div className="absolute -top-12 left-8 p-1 bg-[var(--color-card)] rounded-2xl">
+          <div className="absolute -top-14 left-8 p-1.5 bg-white rounded-3xl shadow-lg">
             <Avatar 
               src="https://i.pravatar.cc/150?u=luis" 
               fallback="L" 
-              className="h-24 w-24 rounded-xl border-2 border-transparent"
+              className="h-28 w-28 rounded-2xl border-4 border-transparent"
             />
           </div>
 
-          <div className="flex justify-between items-start pt-16">
+          <div className="flex justify-between items-start pt-20">
             <div className="flex flex-col">
-              <h1 className="text-3xl font-bold text-[var(--color-foreground)] tracking-tight">luis</h1>
+              <h1 className="text-3xl font-extrabold text-[var(--color-foreground)] tracking-tight">luis</h1>
               <p className="text-sm text-[var(--color-muted-foreground)] mt-1">Junior UX Designer</p>
               <p className="flex items-center gap-1.5 text-sm text-[var(--color-muted-foreground)] mt-1">
                 <MapPin className="h-4 w-4" /> Barcelona, Spain

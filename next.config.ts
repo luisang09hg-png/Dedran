@@ -21,34 +21,9 @@ const securityHeaders = [
 ]
 
 const nextConfig: NextConfig = {
+  output: 'export',
   images: {
-    remotePatterns: [
-      { protocol: 'https', hostname: 'images.unsplash.com' },
-      { protocol: 'https', hostname: 'avatars.githubusercontent.com' },
-    ],
-  },
-  async headers() {
-    return [
-      {
-        source: '/(.*)',
-        headers: securityHeaders,
-      },
-      {
-        source: '/api/(.*)',
-        headers: [
-          ...securityHeaders,
-          { key: 'Cache-Control', value: 'no-store, no-cache, must-revalidate' },
-        ],
-      },
-    ]
-  },
-  async redirects() {
-    return [
-      { source: '/signin', destination: '/auth', permanent: true },
-      { source: '/signup', destination: '/auth', permanent: true },
-      { source: '/login', destination: '/auth', permanent: true },
-      { source: '/register', destination: '/auth', permanent: true },
-    ]
+    unoptimized: true,
   },
 }
 

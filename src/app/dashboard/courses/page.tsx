@@ -18,21 +18,21 @@ export default function CoursesPage() {
     : mockCourses.filter(c => c.category === activeFilter.toUpperCase());
 
   return (
-    <div className="flex flex-col gap-6 animate-fade-in-up">
-      <div>
-        <h1 className="text-3xl font-semibold tracking-tight text-[var(--color-foreground)]">Guided courses</h1>
-        <p className="mt-1 text-sm text-[var(--color-muted-foreground)]">Short, project-based tracks taught by practitioners.</p>
+    <div className="flex flex-col gap-6 animate-fade-in">
+      <div className="animate-slide-up" style={{ animationDelay: '100ms' }}>
+        <h1 className="text-3xl font-bold tracking-tight bg-brand-gradient bg-clip-text text-transparent">Guided courses</h1>
+        <p className="mt-1 text-sm text-[var(--color-muted-foreground)] font-medium">Short, project-based tracks taught by practitioners.</p>
       </div>
 
-      <div className="flex flex-wrap gap-2 mb-2">
+      <div className="flex flex-wrap gap-2 mb-2 animate-slide-up" style={{ animationDelay: '150ms' }}>
         {filters.map(filter => (
           <button
             key={filter}
             onClick={() => setActiveFilter(filter)}
-            className={`px-4 py-1.5 rounded-full text-sm font-medium transition-colors ${
+            className={`px-5 py-2 rounded-xl text-sm font-semibold transition-all duration-300 ${
               activeFilter === filter
-                ? "bg-[var(--color-primary)] text-white"
-                : "bg-[var(--color-card)] text-[var(--color-foreground)] border border-[var(--color-border)] hover:bg-[var(--color-background)]"
+                ? "bg-brand-gradient text-white shadow-md shadow-astral/20 scale-105"
+                : "bg-white/50 backdrop-blur-sm text-[var(--color-foreground)] border border-[var(--color-border)] hover:bg-white hover:scale-105"
             }`}
           >
             {filter}
@@ -41,12 +41,13 @@ export default function CoursesPage() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        {filteredCourses.map((course) => (
-          <Card key={course.id} className="overflow-hidden flex flex-col hover:shadow-md transition-shadow">
-            <div className="relative h-48 w-full overflow-hidden bg-[var(--color-muted)]">
-              <img src={course.image} alt={course.title} className="object-cover w-full h-full" />
+        {filteredCourses.map((course, index) => (
+          <Card key={course.id} className="overflow-hidden flex flex-col hover:-translate-y-1 hover:shadow-[0_20px_40px_rgb(0,0,0,0.08)] transition-all duration-300 animate-slide-up" style={{ animationDelay: `${(index + 2) * 100}ms` }}>
+            <div className="relative h-48 w-full overflow-hidden bg-[var(--color-muted)] group">
+              <img src={course.image} alt={course.title} className="object-cover w-full h-full transition-transform duration-700 group-hover:scale-110" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               <div className="absolute top-3 right-3">
-                <Badge className="bg-white/90 text-black border-none font-bold">
+                <Badge className="bg-white/90 text-black border-none font-bold shadow-sm backdrop-blur-md">
                   {course.price}
                 </Badge>
               </div>

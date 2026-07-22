@@ -34,18 +34,18 @@ export default function FeedPage() {
   ];
 
   return (
-    <div className="flex flex-col gap-6 max-w-3xl mx-auto animate-fade-in-up">
-      <div>
-        <h1 className="text-3xl font-semibold tracking-tight text-[var(--color-foreground)]">Your feed</h1>
-        <p className="mt-1 text-sm text-[var(--color-muted-foreground)]">Opportunities, insights and temporary posts from the Dedran network.</p>
+    <div className="flex flex-col gap-6 max-w-3xl mx-auto animate-fade-in">
+      <div className="animate-slide-up" style={{ animationDelay: '100ms' }}>
+        <h1 className="text-3xl font-bold tracking-tight bg-brand-gradient bg-clip-text text-transparent">Your feed</h1>
+        <p className="mt-1 text-sm text-[var(--color-muted-foreground)] font-medium">Opportunities, insights and temporary posts from the Dedran network.</p>
       </div>
 
       {/* Create Post */}
-      <Card className="p-4 bg-[var(--color-card)] border-[var(--color-border)] shadow-sm">
+      <Card className="p-4 animate-slide-up" style={{ animationDelay: '200ms' }}>
         <div className="flex gap-4">
-          <Avatar src="https://i.pravatar.cc/150?u=luis" fallback="L" />
+          <Avatar src="https://i.pravatar.cc/150?u=luis" fallback="L" className="ring-2 ring-offset-2 ring-astral/20" />
           <textarea
-            className="flex-1 resize-none bg-[var(--color-background)] border border-[var(--color-border)] rounded-xl p-3 text-sm focus:outline-none focus:ring-1 focus:ring-[var(--color-primary)] transition-all"
+            className="flex-1 resize-none bg-white/50 border border-[var(--color-border)] rounded-2xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] transition-all placeholder:text-[var(--color-muted-foreground)]"
             placeholder="What's on your mind, luis?"
             rows={2}
             value={postText}
@@ -54,23 +54,24 @@ export default function FeedPage() {
         </div>
         <div className="flex justify-between items-center mt-3 pl-14">
           <div className="flex gap-2 text-[var(--color-muted-foreground)]">
-            <button className="flex items-center gap-1.5 text-xs font-medium hover:text-[var(--color-foreground)] transition-colors p-1.5 rounded-md hover:bg-[var(--color-background)]">
+            <button className="flex items-center gap-1.5 text-xs font-semibold hover:text-[var(--color-primary)] transition-colors p-1.5 rounded-lg hover:bg-white">
               <ImageIcon className="h-4 w-4" /> Image
             </button>
-            <button className="flex items-center gap-1.5 text-xs font-medium hover:text-[var(--color-foreground)] transition-colors p-1.5 rounded-md hover:bg-[var(--color-background)]">
+            <button className="flex items-center gap-1.5 text-xs font-semibold hover:text-[var(--color-primary)] transition-colors p-1.5 rounded-lg hover:bg-white">
               <Clock className="h-4 w-4" /> Temporary
             </button>
           </div>
-          <Button size="sm" className="rounded-full px-5 h-9 gap-2 shadow-sm">
+          <Button size="sm" className="rounded-xl px-6 h-9 gap-2">
             <Send className="h-3.5 w-3.5" /> Post
           </Button>
         </div>
       </Card>
 
       {/* Feed List */}
-      <div className="flex flex-col gap-4">
-        {posts.map(post => (
-          <Card key={post.id} className="bg-[var(--color-card)] border-[var(--color-border)] shadow-sm overflow-hidden">
+      <div className="flex flex-col gap-5 mt-2">
+        {posts.map((post, index) => (
+          <Card key={post.id} className="overflow-hidden animate-slide-up hover:-translate-y-1 transition-transform duration-300" style={{ animationDelay: `${(index + 3) * 100}ms` }}>
+
             {post.temporary && (
               <div className="bg-[var(--color-background)] px-4 py-2 border-b border-[var(--color-border)] border-dashed flex justify-between items-center text-xs text-[var(--color-muted-foreground)] font-medium">
                 <span className="flex items-center gap-1.5"><Clock className="h-3.5 w-3.5" /> Temporary · expires in {post.expiresIn}</span>
