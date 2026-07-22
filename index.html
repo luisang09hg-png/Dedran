@@ -3,165 +3,619 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aldebaram — Career Platform for Young Professionals</title>
-    <meta name="description" content="Aldebaram connects young professionals with mentors, courses, and career opportunities. Build your future.">
+    <title>Dedran — Career Platform for Young Professionals</title>
+    <meta name="description" content="A curated set of tools designed to accelerate your professional development. Track jobs, learn new skills, and connect with peers.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Dedran — Career Platform for Young Professionals">
+    <meta property="og:description" content="A curated set of tools designed to accelerate your professional development.">
+    <link rel="canonical" href="https://dedran.com">
+
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="styles.css">
-    <script src="https://unpkg.com/feather-icons"></script>
+
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+
+    <script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        base: '#0a0a0f',
+        surface: '#12121a',
+        elevated: '#1a1a24',
+        'accent-indigo': '#6366f1',
+        'accent-indigo-light': '#818cf8',
+        'accent-purple': '#a855f7',
+        'accent-pink': '#ec4899',
+        'accent-blue': '#3b82f6',
+        'accent-green': '#22c55e',
+        'accent-amber': '#f59e0b',
+        'accent-red': '#ef4444',
+      },
+      fontFamily: {
+        sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+        mono: ['JetBrains Mono', 'monospace'],
+      },
+      animation: {
+        'float': 'float 6s ease-in-out infinite',
+        'pulse-glow': 'pulse-glow 3s ease-in-out infinite',
+        'bounce-subtle': 'bounce-subtle 2s ease-in-out infinite',
+        'spin-slow': 'spin-slow 20s linear infinite',
+        'shimmer-once': 'shimmer-once 2s ease-in-out 0.5s 1 forwards',
+        'rotate-gradient': 'rotate-gradient 4s linear infinite',
+        'orb-drift': 'orb-drift 20s ease-in-out infinite alternate',
+      },
+    },
+  },
+}
+</script>
+
+    <style>
+        :root {
+            --bg-base: #0a0a0f;
+            --bg-surface: #12121a;
+            --bg-elevated: #1a1a24;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --text-tertiary: #64748b;
+            --accent-indigo: #6366f1;
+            --accent-indigo-light: #818cf8;
+            --accent-purple: #a855f7;
+            --accent-pink: #ec4899;
+            --accent-green: #22c55e;
+            --border-subtle: rgba(255,255,255,0.06);
+            --border-hover: rgba(255,255,255,0.12);
+            --shadow-glow: 0 0 40px rgba(99,102,241,0.15);
+            --shadow-glow-strong: 0 0 60px rgba(99,102,241,0.25);
+            --shadow-button: 0 4px 14px rgba(99,102,241,0.4);
+            --gradient-hero: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%);
+            --gradient-subtle: linear-gradient(135deg, rgba(99,102,241,0.15), rgba(168,85,247,0.15));
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-secondary);
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.025;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            background-repeat: repeat;
+            background-size: 256px 256px;
+        }
+
+        .gradient-text {
+            background: var(--gradient-hero);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .text-shimmer {
+            background: linear-gradient(135deg, #6366f1 0%, #a855f7 25%, #ec4899 50%, #a855f7 75%, #6366f1 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: transparent;
+            animation: shimmer-once 2s ease-in-out 0.5s 1 forwards;
+        }
+
+        @property --gradient-angle {
+            syntax: '<angle>';
+            initial-value: 0deg;
+            inherits: false;
+        }
+
+        .gradient-border-animated {
+            position: relative;
+            border-radius: 1.5rem;
+            background: var(--bg-surface);
+        }
+
+        .gradient-border-animated::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            border-radius: inherit;
+            background: conic-gradient(from var(--gradient-angle), #6366f1, #a855f7, #ec4899, #6366f1);
+            animation: rotate-gradient 4s linear infinite;
+            z-index: -1;
+        }
+
+        .gradient-border-animated::after {
+            content: '';
+            position: absolute;
+            inset: 2px;
+            border-radius: inherit;
+            background: var(--bg-surface);
+            z-index: -1;
+        }
+
+        .btn-primary-shine {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary-shine::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -100%;
+            width: 50%;
+            height: 200%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+            transform: skewX(-20deg);
+            transition: left 0.6s ease;
+        }
+
+        .btn-primary-shine:hover::after {
+            left: 150%;
+        }
+
+        .card-inner-glow {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-inner-glow::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: radial-gradient(circle 200px at var(--card-mx,50%) var(--card-my,50%), rgba(99,102,241,0.08), transparent 60%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .card-inner-glow:hover::before {
+            opacity: 1;
+        }
+
+        .feature-grid-spotlight {
+            position: relative;
+            background: radial-gradient(circle 600px at var(--spotlight-x,50%) var(--spotlight-y,50%), rgba(99,102,241,0.06), transparent 40%);
+        }
+
+        .section-divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent 0%, rgba(99,102,241,0.3) 50%, transparent 100%);
+            margin: 0 auto;
+            max-width: 600px;
+        }
+
+        .floating-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.4;
+            pointer-events: none;
+            animation: orb-drift 20s ease-in-out infinite alternate;
+        }
+
+        .floating-orb-1 {
+            width: 400px; height: 400px;
+            background: rgba(99,102,241,0.3);
+            top: -10%; left: -5%;
+        }
+
+        .floating-orb-2 {
+            width: 300px; height: 300px;
+            background: rgba(168,85,247,0.3);
+            bottom: -10%; right: -5%;
+            animation-delay: -7s;
+        }
+
+        .floating-orb-3 {
+            width: 250px; height: 250px;
+            background: rgba(236,72,153,0.2);
+            top: 40%; right: 20%;
+            animation-delay: -14s;
+        }
+
+        @keyframes orb-drift {
+            0% { transform: translate(0,0) scale(1); }
+            33% { transform: translate(30px,-50px) scale(1.05); }
+            66% { transform: translate(-20px,20px) scale(0.95); }
+            100% { transform: translate(10px,-30px) scale(1.02); }
+        }
+
+        [data-reveal] {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1);
+        }
+
+        [data-reveal="left"] { transform: translateX(-40px); }
+        [data-reveal="right"] { transform: translateX(40px); }
+        [data-reveal="scale"] { transform: scale(0.95); }
+        [data-reveal="fade"] { transform: none; }
+
+        [data-reveal].revealed {
+            opacity: 1;
+            transform: translate(0) scale(1);
+        }
+
+        [data-stagger] > *:nth-child(1) { transition-delay: 0ms; }
+        [data-stagger] > *:nth-child(2) { transition-delay: 80ms; }
+        [data-stagger] > *:nth-child(3) { transition-delay: 160ms; }
+        [data-stagger] > *:nth-child(4) { transition-delay: 240ms; }
+        [data-stagger] > *:nth-child(5) { transition-delay: 320ms; }
+        [data-stagger] > *:nth-child(6) { transition-delay: 400ms; }
+
+        [data-stagger]:not(.revealed) > * {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s cubic-bezier(0.16,1,0.3,1), transform 0.5s cubic-bezier(0.16,1,0.3,1);
+        }
+
+        .navbar-scrolled {
+            border-bottom-color: rgba(255,255,255,0.08);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.3), 0 4px 20px rgba(0,0,0,0.15);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s cubic-bezier(0.4,0,0.2,1);
+        }
+
+        .faq-icon {
+            transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-base); }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
+        * { scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.1) var(--bg-base); }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(99,102,241,0.3); }
+            50% { box-shadow: 0 0 40px rgba(99,102,241,0.6); }
+        }
+
+        @keyframes bounce-subtle {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(8px); }
+        }
+
+        @keyframes spin-slow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes shimmer-once {
+            0% { background-position: 0% center; }
+            100% { background-position: 200% center; }
+        }
+
+        @keyframes rotate-gradient {
+            to { --gradient-angle: 360deg; }
+        }
+
+        .skip-link {
+            position: absolute;
+            top: -100%;
+            left: 0;
+            background: var(--accent-indigo);
+            color: white;
+            padding: 8px 16px;
+            z-index: 100;
+            font-weight: 600;
+            border-radius: 0 0 8px 0;
+            transition: top 0.2s;
+        }
+
+        .skip-link:focus { top: 0; }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+            [data-reveal], [data-stagger]:not(.revealed) > *, .floating-orb, .animate-float, .animate-pulse-glow {
+                opacity: 1; transform: none;
+            }
+            .btn-primary-shine::after { display: none; }
+            .gradient-border-animated::before { animation: none; }
+            .text-shimmer { animation: none; background-position: 0% center; }
+            html { scroll-behavior: auto; }
+        }
+
+        ::selection {
+            background: rgba(99,102,241,0.3);
+            color: var(--text-primary);
+        }
+    </style>
+
 </head>
-<body class="animate-fade-in">
+<body>
+    <a href="#hero" class="skip-link">Skip to content</a>
 
-    <!-- ===== Sticky Header ===== -->
-    <header class="header">
-        <div class="header-inner">
-            <a href="index.html" class="logo-mark" aria-label="Aldebaram Home">
-                <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M16 4L4 28H8.5L16 10L23.5 28H28L16 4Z" stroke="#E6E8E6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    <circle cx="16" cy="6" r="2.5" fill="#24476C"/>
-                    <line x1="10" y1="20" x2="22" y2="20" stroke="#E6E8E6" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
-                </svg>
-                <span class="logo-text">Aldebaram</span>
-            </a>
+    <header id="navbar" class="fixed top-0 w-full z-50 border-b transition-all duration-300" style="background:rgba(10,10,15,0.75);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-color:rgba(255,255,255,0.06)">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <a href="#hero" class="gradient-text text-xl font-extrabold tracking-tight">Dedran</a>
 
-            <button class="mobile-nav-toggle" id="mobileNavToggle" aria-label="Toggle navigation">
-                <i data-feather="menu" class="w-5 h-5"></i>
+            <button class="md:hidden icon-button p-2 rounded-lg hover:bg-elevated/50 text-tertiary hover:text-primary transition-all" id="mobile-menu-btn" aria-label="Toggle navigation">
+                <i data-lucide="menu" class="w-5 h-5"></i>
             </button>
 
-            <nav>
-                <ul class="nav-links" id="navLinks">
-                    <li><a href="#features">Features</a></li>
-                    <li><a href="#about">About</a></li>
-                    <li><a href="dashboard.html">Dashboard</a></li>
-                    <li><a href="index.html" class="btn-secondary" style="padding: 0.5rem 1.25rem; font-size: 0.8125rem;">Sign In</a></li>
+            <div class="nav-links-container">
+                <ul class="nav-links hidden md:flex items-center gap-8">
+                    <li><a href="#features" class="text-sm font-medium text-secondary hover:text-primary transition-colors duration-200 relative">Features</a></li>
+                    <li><a href="#how-it-works" class="text-sm font-medium text-secondary hover:text-primary transition-colors duration-200 relative">How It Works</a></li>
+                    <li><a href="#pricing" class="text-sm font-medium text-secondary hover:text-primary transition-colors duration-200 relative">Pricing</a></li>
+                    <li><a href="#faq" class="text-sm font-medium text-secondary hover:text-primary transition-colors duration-200 relative">FAQ</a></li>
                 </ul>
-            </nav>
-        </div>
+
+                <div class="nav-actions hidden md:flex items-center gap-3">
+                    <a href="#pricing" class="text-sm font-medium text-secondary hover:text-primary hover:bg-elevated/50 px-4 py-2 rounded-lg transition-all duration-200">Sign In</a>
+                    <a href="#pricing" class="btn-primary-shine bg-gradient-to-r from-accent-indigo via-accent-purple to-accent-pink text-white text-sm font-semibold px-5 py-2.5 rounded-full shadow-[0_4px_14px_rgba(99,102,241,0.4)] hover:brightness-110 hover:-translate-y-0.5 hover:shadow-[0_0_40px_rgba(99,102,241,0.15)] active:brightness-95 active:translate-y-0 transition-all duration-250 focus-visible:ring-2 focus-visible:ring-accent-indigo focus-visible:ring-offset-2 focus-visible:ring-offset-base">Get Started</a>
+                </div>
+            </div>
+        </nav>
     </header>
 
-    <!-- ===== Hero Section ===== -->
-    <section id="hero" class="hero">
-        <div class="hero-content animate-slide-up" style="animation-delay: 100ms;">
-            <h1>Build your career<br> among the <span style="color: #24476C;">stars</span></h1>
-            <p>Aldebaram connects young professionals with mentors, courses, and real career opportunities. Navigate your path from ambition to achievement.</p>
-            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-                <a href="dashboard.html" class="btn-primary">
-                    Get Started <i data-feather="arrow-right" class="w-4 h-4"></i>
-                </a>
-                <a href="#features" class="btn-secondary">Learn More</a>
+    <div class="fixed top-0 right-0 h-full w-80 max-w-[85vw] bg-base border-l z-50 transform translate-x-full transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] overflow-y-auto md:hidden" style="border-color:rgba(255,255,255,0.06)" id="mobile-menu" aria-hidden="true" role="dialog">
+        <button class="mobile-nav-toggle absolute top-4 right-4 p-2 rounded-lg hover:bg-elevated/50 text-tertiary hover:text-primary transition-all" id="mobile-menu-close" aria-label="Close navigation">
+            <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+        <ul class="mobile-menu-links flex flex-col gap-1 mt-16">
+            <li><a href="#features" class="text-lg font-medium text-secondary hover:text-primary">Features</a></li>
+            <li><a href="#how-it-works" class="text-lg font-medium text-secondary hover:text-primary">How It Works</a></li>
+            <li><a href="#pricing" class="text-lg font-medium text-secondary hover:text-primary">Pricing</a></li>
+            <li><a href="#faq" class="text-lg font-medium text-secondary hover:text-primary">FAQ</a></li>
+            <li><a href="#pricing" class="btn-primary-shine bg-gradient-to-r from-accent-indigo via-accent-purple to-accent-pink text-white font-semibold px-6 py-3.5 rounded-full mt-4 mx-4 text-center">Get Started</a></li>
+        </ul>
+    </div>
+
+    <div class="fixed inset-0 bg-black/60 z-50 opacity-0 pointer-events-none transition-opacity duration-300 md:hidden" id="mobile-menu-backdrop" aria-hidden="true" role="dialog"></div>
+
+    <section id="hero" class="relative min-h-screen flex flex-col items-center justify-center overflow-hidden py-16 sm:py-20 px-4 sm:px-6" style="background:var(--bg-base)">
+        <div class="floating-orb floating-orb-1"></div>
+        <div class="floating-orb floating-orb-2"></div>
+        <div class="floating-orb floating-orb-3"></div>
+
+        <div class="max-w-4xl mx-auto text-center relative z-10">
+            <div class="mb-6 inline-flex items-center gap-2 bg-elevated/50 border border-white/[0.08] rounded-full px-4 py-1.5 text-accent-indigo-light font-semibold text-xs uppercase tracking-widest" data-reveal="fade">
+                <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+                <span>For Young Professionals</span>
             </div>
+
+            <h1 class="text-shimmer font-extrabold leading-tight tracking-tight mb-6" data-reveal="fade" style="font-size:clamp(2.75rem,6vw,5rem);line-height:1.05;letter-spacing:-0.03em">Everything you need to grow</h1>
+
+            <p class="text-secondary text-lg sm:text-xl max-w-2xl mx-auto mb-10 leading-relaxed" data-reveal="fade">A curated set of tools designed to accelerate your professional development — from learning paths to job tracking, all in one place.</p>
+
+            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16" data-reveal="fade">
+                <a href="#pricing" class="btn-primary-shine bg-gradient-to-r from-accent-indigo via-accent-purple to-accent-pink text-white font-semibold px-8 py-3.5 rounded-full shadow-button hover:brightness-110 hover:-translate-y-1 hover:shadow-glow active:brightness-95 active:translate-y-0 transition-all duration-250 focus-visible:ring-2 focus-visible:ring-accent-indigo focus-visible:ring-offset-2 focus-visible:ring-offset-base inline-flex items-center gap-2">Get Started Free <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+                <a href="#how-it-works" class="border border-white/10 text-primary font-semibold px-8 py-3.5 rounded-full hover:bg-elevated hover:border-white/20 hover:shadow-sm active:bg-surface transition-all duration-250 focus-visible:ring-2 focus-visible:ring-accent-indigo focus-visible:ring-offset-2 focus-visible:ring-offset-base inline-flex items-center gap-2"><i data-lucide="play" class="w-4 h-4"></i> View Demo</a>
+            </div>
+
+            <div class="grid grid-cols-3 gap-8 max-w-2xl mx-auto" data-reveal="fade">
+                <div class="text-center">
+                    <div class="text-2xl sm:text-3xl font-bold gradient-text tabular-nums">10K</div>
+                    <div class="text-sm text-tertiary mt-1">Active Users</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-2xl sm:text-3xl font-bold gradient-text tabular-nums">500</div>
+                    <div class="text-sm text-tertiary mt-1">Career Tracks</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-2xl sm:text-3xl font-bold gradient-text tabular-nums">98%</div>
+                    <div class="text-sm text-tertiary mt-1">Success Rate</div>
+                </div>
+            </div>
+
+            <a href="#features" class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce-subtle opacity-40 cursor-pointer"><i data-lucide="chevron-down" class="w-5 h-5 text-tertiary"></i></a>
         </div>
     </section>
 
-    <!-- ===== Features Grid ===== -->
-    <section id="features" class="section-padding" style="background: var(--bg-surface);">
-        <div class="container">
-            <div class="text-center animate-slide-up" style="margin-bottom: 3rem;">
-                <h2 style="font-size: clamp(1.75rem, 3vw, 2.5rem); font-weight: 700; color: var(--text-main); margin: 0 0 0.75rem;">Everything you need to grow</h2>
-                <p style="color: var(--text-muted); max-width: 32rem; margin: 0 auto;">A curated set of tools designed to accelerate your professional development.</p>
-            </div>
-
-            <div class="card-grid">
-                <!-- Card 1 -->
-                <div class="card animate-slide-up" style="animation-delay: 100ms;">
-                    <div style="width: 2.5rem; height: 2.5rem; border-radius: 0.75rem; background: rgba(36, 71, 108, 0.15); display: flex; align-items: center; justify-content: center; margin-bottom: 1rem;">
-                        <i data-feather="users" style="color: #5B9BD5; width: 1.25rem; height: 1.25rem;"></i>
-                    </div>
-                    <h3 style="font-size: 1.125rem; font-weight: 700; color: var(--text-main); margin: 0 0 0.5rem;">Workspace Feed</h3>
-                    <p style="font-size: 0.875rem; color: var(--text-muted); margin: 0; line-height: 1.6;">Share insights, ask questions, and connect with peers navigating the same career trajectory.</p>
-                </div>
-
-                <!-- Card 2 -->
-                <div class="card animate-slide-up" style="animation-delay: 200ms;">
-                    <div style="width: 2.5rem; height: 2.5rem; border-radius: 0.75rem; background: rgba(36, 71, 108, 0.15); display: flex; align-items: center; justify-content: center; margin-bottom: 1rem;">
-                        <i data-feather="book-open" style="color: #5B9BD5; width: 1.25rem; height: 1.25rem;"></i>
-                    </div>
-                    <h3 style="font-size: 1.125rem; font-weight: 700; color: var(--text-main); margin: 0 0 0.5rem;">Career Tracks</h3>
-                    <p style="font-size: 0.875rem; color: var(--text-muted); margin: 0; line-height: 1.6;">Enroll in short, practical courses taught by industry leaders to master in-demand skills.</p>
-                </div>
-
-                <!-- Card 3 -->
-                <div class="card animate-slide-up" style="animation-delay: 300ms;">
-                    <div style="width: 2.5rem; height: 2.5rem; border-radius: 0.75rem; background: rgba(36, 71, 108, 0.15); display: flex; align-items: center; justify-content: center; margin-bottom: 1rem;">
-                        <i data-feather="briefcase" style="color: #5B9BD5; width: 1.25rem; height: 1.25rem;"></i>
-                    </div>
-                    <h3 style="font-size: 1.125rem; font-weight: 700; color: var(--text-main); margin: 0 0 0.5rem;">Job Applications</h3>
-                    <p style="font-size: 0.875rem; color: var(--text-muted); margin: 0; line-height: 1.6;">Track every opportunity from application to offer with a visual Kanban-style board.</p>
-                </div>
-
-                <!-- Card 4 -->
-                <div class="card animate-slide-up" style="animation-delay: 400ms;">
-                    <div style="width: 2.5rem; height: 2.5rem; border-radius: 0.75rem; background: rgba(36, 71, 108, 0.15); display: flex; align-items: center; justify-content: center; margin-bottom: 1rem;">
-                        <i data-feather="shield" style="color: #5B9BD5; width: 1.25rem; height: 1.25rem;"></i>
-                    </div>
-                    <h3 style="font-size: 1.125rem; font-weight: 700; color: var(--text-main); margin: 0 0 0.5rem;">Secure Auth</h3>
-                    <p style="font-size: 0.875rem; color: var(--text-muted); margin: 0; line-height: 1.6;">Enterprise-grade authentication with email/password and magic link sign-in support.</p>
-                </div>
-
-                <!-- Card 5 -->
-                <div class="card animate-slide-up" style="animation-delay: 500ms;">
-                    <div style="width: 2.5rem; height: 2.5rem; border-radius: 0.75rem; background: rgba(36, 71, 108, 0.15); display: flex; align-items: center; justify-content: center; margin-bottom: 1rem;">
-                        <i data-feather="credit-card" style="color: #5B9BD5; width: 1.25rem; height: 1.25rem;"></i>
-                    </div>
-                    <h3 style="font-size: 1.125rem; font-weight: 700; color: var(--text-main); margin: 0 0 0.5rem;">Integrated Payments</h3>
-                    <p style="font-size: 0.875rem; color: var(--text-muted); margin: 0; line-height: 1.6;">Seamless checkout with Stripe and PayPal so you can focus on learning, not logistics.</p>
-                </div>
-
-                <!-- Card 6 -->
-                <div class="card animate-slide-up" style="animation-delay: 600ms;">
-                    <div style="width: 2.5rem; height: 2.5rem; border-radius: 0.75rem; background: rgba(36, 71, 108, 0.15); display: flex; align-items: center; justify-content: center; margin-bottom: 1rem;">
-                        <i data-feather="zap" style="color: #5B9BD5; width: 1.25rem; height: 1.25rem;"></i>
-                    </div>
-                    <h3 style="font-size: 1.125rem; font-weight: 700; color: var(--text-main); margin: 0 0 0.5rem;">Lightweight UI</h3>
-                    <p style="font-size: 0.875rem; color: var(--text-muted); margin: 0; line-height: 1.6;">Zero-framework overhead. Pure HTML5, ES6+ JavaScript, and Tailwind CSS for instant load.</p>
+    <section class="bg-surface py-12 sm:py-16 px-4 sm:px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-12" data-reveal>
+                <p class="text-center text-xs text-tertiary uppercase tracking-widest mb-8 font-medium">Trusted by professionals at</p>
+                <div class="flex items-center justify-center gap-8 sm:gap-12 lg:gap-16 flex-wrap">
+                    <span class="text-tertiary font-semibold text-base sm:text-lg opacity-30 hover:opacity-80 hover:text-secondary transition-all duration-300 cursor-default select-none">Stripe</span>
+                    <span class="text-tertiary font-semibold text-base sm:text-lg opacity-30 hover:opacity-80 hover:text-secondary transition-all duration-300 cursor-default select-none">Notion</span>
+                    <span class="text-tertiary font-semibold text-base sm:text-lg opacity-30 hover:opacity-80 hover:text-secondary transition-all duration-300 cursor-default select-none">Figma</span>
+                    <span class="text-tertiary font-semibold text-base sm:text-lg opacity-30 hover:opacity-80 hover:text-secondary transition-all duration-300 cursor-default select-none">Linear</span>
+                    <span class="text-tertiary font-semibold text-base sm:text-lg opacity-30 hover:opacity-80 hover:text-secondary transition-all duration-300 cursor-default select-none">Vercel</span>
+                    <span class="text-tertiary font-semibold text-base sm:text-lg opacity-30 hover:opacity-80 hover:text-secondary transition-all duration-300 cursor-default select-none">Discord</span>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- ===== About Section ===== -->
-    <section id="about" class="section-padding">
-        <div class="container text-center animate-slide-up">
-            <h2 style="font-size: clamp(1.75rem, 3vw, 2.5rem); font-weight: 700; color: var(--text-main); margin: 0 0 1rem;">Ready to launch your career?</h2>
-            <p style="color: var(--text-muted); max-width: 30rem; margin: 0 auto 2rem;">Join a community of driven professionals building the future, one skill at a time.</p>
-            <a href="dashboard.html" class="btn-primary">
-                Enter Dashboard <i data-feather="arrow-right" class="w-4 h-4"></i>
-            </a>
+    <section id="features" class="relative py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8" style="background:var(--bg-base)">
+        <div class="feature-grid-spotlight max-w-7xl mx-auto">
+            <div class="text-center mb-12 sm:mb-16" data-reveal>
+                <div class="card-badge mb-4">Features</div>
+                <h2 class="h2">Built for your career journey</h2>
+                <p class="body-large mt-4">Everything you need, nothing you don't.</p>
+            </div>
+
+            <div data-reveal data-stagger class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="card-inner-glow group bg-surface border border-white/[0.06] rounded-2xl p-6 sm:p-8 transition-all duration-300 hover:-translate-y-1 hover:border-white/[0.12] hover:shadow-glow cursor-default" data-reveal>
+                    <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-6" style="background:var(--gradient-subtle)"><i data-lucide="message-square" class="w-6 h-6 text-accent-indigo"></i></div>
+                    <h4 class="text-primary font-semibold">Workspace Feed</h4>
+                    <p class="text-secondary text-sm mt-3 leading-relaxed">Share insights, ask questions, and connect with peers navigating the same career trajectory.</p>
+                </div>
+                <div class="card-inner-glow group bg-surface border border-white/[0.06] rounded-2xl p-6 sm:p-8 transition-all duration-300 hover:-translate-y-1 hover:border-white/[0.12] hover:shadow-glow cursor-default" data-reveal>
+                    <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-6" style="background:var(--gradient-subtle)"><i data-lucide="graduation-cap" class="w-6 h-6 text-accent-indigo"></i></div>
+                    <h4 class="text-primary font-semibold">Career Tracks</h4>
+                    <p class="text-secondary text-sm mt-3 leading-relaxed">Enroll in short, practical courses taught by industry leaders to master in-demand skills.</p>
+                </div>
+                <div class="card-inner-glow group bg-surface border border-white/[0.06] rounded-2xl p-6 sm:p-8 transition-all duration-300 hover:-translate-y-1 hover:border-white/[0.12] hover:shadow-glow cursor-default" data-reveal>
+                    <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-6" style="background:var(--gradient-subtle)"><i data-lucide="briefcase" class="w-6 h-6 text-accent-indigo"></i></div>
+                    <h4 class="text-primary font-semibold">Job Applications</h4>
+                    <p class="text-secondary text-sm mt-3 leading-relaxed">Track every opportunity from application to offer with a visual Kanban-style board.</p>
+                </div>
+                <div class="card-inner-glow group bg-surface border border-white/[0.06] rounded-2xl p-6 sm:p-8 transition-all duration-300 hover:-translate-y-1 hover:border-white/[0.12] hover:shadow-glow cursor-default" data-reveal>
+                    <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-6" style="background:var(--gradient-subtle)"><i data-lucide="shield" class="w-6 h-6 text-accent-indigo"></i></div>
+                    <h4 class="text-primary font-semibold">Secure Auth</h4>
+                    <p class="text-secondary text-sm mt-3 leading-relaxed">Enterprise-grade authentication with email/password and magic link sign-in support.</p>
+                </div>
+                <div class="card-inner-glow group bg-surface border border-white/[0.06] rounded-2xl p-6 sm:p-8 transition-all duration-300 hover:-translate-y-1 hover:border-white/[0.12] hover:shadow-glow cursor-default" data-reveal>
+                    <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-6" style="background:var(--gradient-subtle)"><i data-lucide="credit-card" class="w-6 h-6 text-accent-indigo"></i></div>
+                    <h4 class="text-primary font-semibold">Integrated Payments</h4>
+                    <p class="text-secondary text-sm mt-3 leading-relaxed">Seamless checkout with Stripe and PayPal so you can focus on learning, not logistics.</p>
+                </div>
+                <div class="card-inner-glow group bg-surface border border-white/[0.06] rounded-2xl p-6 sm:p-8 transition-all duration-300 hover:-translate-y-1 hover:border-white/[0.12] hover:shadow-glow cursor-default" data-reveal>
+                    <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-6" style="background:var(--gradient-subtle)"><i data-lucide="zap" class="w-6 h-6 text-accent-indigo"></i></div>
+                    <h4 class="text-primary font-semibold">Lightweight UI</h4>
+                    <p class="text-secondary text-sm mt-3 leading-relaxed">Zero-framework overhead. Pure HTML5, ES6+ JavaScript, and Tailwind CSS for instant load.</p>
+                </div>
+            </div>
         </div>
     </section>
 
-    <!-- ===== Footer ===== -->
-    <footer style="border-top: 1px solid var(--border-subtle); padding: 2rem 1.5rem; text-align: center;">
-        <div class="container" style="display: flex; flex-direction: column; align-items: center; gap: 1rem;">
-            <a href="index.html" class="logo-mark" aria-label="Aldebaram">
-                <svg width="24" height="24" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M16 4L4 28H8.5L16 10L23.5 28H28L16 4Z" stroke="#E6E8E6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    <circle cx="16" cy="6" r="2.5" fill="#24476C"/>
-                    <line x1="10" y1="20" x2="22" y2="20" stroke="#E6E8E6" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
-                </svg>
-                <span class="logo-text" style="font-size: 1rem;">Aldebaram</span>
-            </a>
-            <p style="font-size: 0.75rem; color: var(--text-muted); margin: 0;">&copy; 2026 Aldebaram. All rights reserved.</p>
+    <section id="how-it-works" class="bg-surface py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-4xl mx-auto">
+            <div class="text-center mb-12 sm:mb-16" data-reveal>
+                <h2 class="h2">How Dedran works</h2>
+                <p class="body-large mt-4">Get started in minutes, not hours.</p>
+            </div>
+
+            <div class="relative" data-reveal>
+                <div class="absolute left-6 md:left-1/2 md:-translate-x-1/2 top-0 bottom-0 w-0.5" style="background:var(--gradient-hero);opacity:0.3"></div>
+
+                <div class="space-y-12 relative">
+                    <div class="flex items-start gap-6 md:gap-12 relative">
+                        <div class="w-14 h-14 rounded-full flex items-center justify-center text-white font-bold text-xl relative z-10 shrink-0" style="background:var(--gradient-hero)">01</div>
+                        <div class="md:max-w-sm">
+                            <h3 class="text-primary font-semibold">Create your profile</h3>
+                            <p class="text-secondary mt-2 leading-relaxed">Sign up in seconds and build your professional profile. Add your skills, experience, and career goals.</p>
+                        </div>
+                        <div class="absolute left-6 md:hidden w-0.5 h-12 bg-gradient-to-b from-accent-indigo to-accent-purple opacity-30"></div>
+                    </div>
+
+                    <div class="flex items-start gap-6 md:gap-12 md:flex-row-reverse relative">
+                        <div class="w-14 h-14 rounded-full flex items-center justify-center text-white font-bold text-xl relative z-10 shrink-0" style="background:var(--gradient-hero)">02</div>
+                        <div class="md:max-w-sm md:text-right">
+                            <h3 class="text-primary font-semibold">Explore career tracks</h3>
+                            <p class="text-secondary mt-2 leading-relaxed">Browse curated learning paths designed by industry experts. Enroll in tracks that match your ambitions.</p>
+                        </div>
+                        <div class="absolute left-6 md:hidden w-0.5 h-12 bg-gradient-to-b from-accent-indigo to-accent-purple opacity-30"></div>
+                    </div>
+
+                    <div class="flex items-start gap-6 md:gap-12 relative">
+                        <div class="w-14 h-14 rounded-full flex items-center justify-center text-white font-bold text-xl relative z-10 shrink-0" style="background:var(--gradient-hero)">03</div>
+                        <div class="md:max-w-sm">
+                            <h3 class="text-primary font-semibold">Land your dream role</h3>
+                            <p class="text-secondary mt-2 leading-relaxed">Apply to opportunities, track your progress, and connect with mentors who help you succeed.</p>
+                        </div>
+                        <div class="absolute left-6 md:hidden w-0.5 h-12 bg-gradient-to-b from-accent-indigo to-accent-purple opacity-30"></div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </footer>
+    </section>
 
-    <script src="script.js"></script>
-    <script>
-        feather.replace();
+    <section id="demo" class="py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8" style="background:var(--bg-base)">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+            <div data-reveal="left">
+                <div class="card-badge mb-4">Interactive Demo</div>
+                <h2 class="h2">See the platform in action</h2>
+                <p class="body-large mt-4">Experience how Dedran streamlines your career growth with an intuitive interface designed for focus.</p>
 
-        // Sticky header scroll effect
-        const header = document.querySelector('.header');
-        window.addEventListener('scroll', () => {
-            header.classList.toggle('scrolled', window.scrollY > 20);
-        });
+                <div class="demo-feature-list mt-8 space-y-4">
+                    <div class="demo-feature flex items-start gap-3">
+                        <i data-lucide="check" class="feature-icon w-5 h-5"></i>
+                        <span class="body">Visual Kanban board for job tracking</span>
+                    </div>
+                    <div class="demo-feature flex items-start gap-3">
+                        <i data-lucide="check" class="feature-icon w-5 h-5"></i>
+                        <span class="body">Real-time collaboration with peers</span>
+                    </div>
+                    <div class="demo-feature flex items-start gap-3">
+                        <i data-lucide="check" class="feature-icon w-5 h-5"></i>
+                        <span class="body">Progress analytics and insights</span>
+                    </div>
+                    <div class="demo-feature flex items-start gap-3">
+                        <i data-lucide="check" class="feature-icon w-5 h-5"></i>
+                        <span class="body">Mobile-responsive dashboard</span>
+                    </div>
+                </div>
 
-        // Mobile nav toggle
-        const mobileToggle = document.getElementById('mobileNavToggle');
-        const navLinks = document.getElementById('navLinks');
-        if (mobileToggle) {
-            mobileToggle.addEventListener('click', () => {
-                navLinks.classList.toggle('open');
-            });
-        }
-    </script>
-</body>
-</html>
+                <a href="#pricing" class="btn-primary-shine bg-gradient-to-r from-accent-indigo via-accent-purple to-accent-pink text-white font-semibold px-8 py-3.5 rounded-full mt-8 inline-block">Try it yourself</a>
+            </div>
+
+            <div data-reveal="right">
+                <div class="browser-frame">
+                    <div class="browser-chrome">
+                        <div class="browser-dot red rounded-full w-3 h-3"></div>
+                        <div class="browser-dot amber rounded-full w-3 h-3"></div>
+                        <div class="browser-dot green rounded-full w-3 h-3"></div>
+                    </div>
+                    <div class="browser-content p-6">
+                        <div class="kanban-column bg-elevated rounded-lg p-4 min-h-[200px]">
+                            <div class="kanban-header text-sm font-semibold text-primary mb-4">Applied</div>
+                            <div class="kanban-card bg-surface rounded-md p-3 mb-3 border border-white/[0.06]">
+                                <div class="kanban-card-dot red rounded-full w-2 h-2 inline-block mr-2"></div>
+                                <span class="text-xs text-tertiary">Marketing Coordinator - TechCorp</span>
+                            </div>
+                            <div class="kanban-card bg-surface rounded-md p-3 mb-3 border border-white/[0.06]">
+                                <div class="kanban-card-dot amber rounded-full w-2 h-2 inline-block mr-2"></div>
+                                <span class="text-xs text-tertiary">UX Designer - DesignHub</span>
+                            </div>
+                            <div class="kanban-card bg-surface rounded-md p-3 mb-3 border border-white/[0.06]">
+                                <div class="kanban-card-dot green rounded-full w-2 h-2 inline-block mr-2"></div>
+                                <span class="text-xs text-tertiary">Frontend Developer - WebSolutions</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="bg-surface py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16" data-reveal>
+                <h2 class="h2">Loved by young professionals</h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="card bg-surface border border-white/[0.06] rounded-2xl p-8 relative" data-reveal>
+                    <div class="quote-icon absolute top-6 left-6 w-10 h-10 text-accent-indigo opacity-15"><i data-lucide="quote" class="w-8 h-8"></i></div>
+                    <p class="body italic leading-relaxed pt-8">"Dedran completely changed how I approach my career. The career tracks helped me transition from graphic design to product design in just 3 months.\"</p>
+                    <div class="flex items-center gap-4 mt-6 pt-6 border-t border-white/[0.06]">
+                        <div class="w-11 h-11 rounded-full flex items-center justify-center text-white font-bold" style="background:var(--gradient-hero)">SC</div>
+                        <div>
+                            <div class="text-sm font-semibold text-primary">Sarah Chen</div>
+                            <div class=\"text-xs text-tertiary\">Product Designer at Figma</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class=\"card bg-surface border border-white/[0.06] rounded-2xl p-8 relative\" data-reveal>
+                    <div class=\"quote-icon absolute top-6 left-6 w-10 h-10 text-accent-indigo opacity-15\"><i data-lucide=\"quote\" class=\"w-8 h-8\"></i></div>
+                    <p class=\"body italic leading-relaxed pt-8\">\"The job application tracker is a game-changer. I went from scattered spreadsheets to a clear visual pipeline. Landed my dream job because of it.\"</p>
+                    <div class=\"flex items-center gap-4 mt-6 pt-6 border-t border-white/[0.06]\">\n                        <div class=\"w-11 h-11 rounded-full flex items-center justify-center text-white font-bold\" style=\"background:var(--gradient-hero)\">MJ</div>\n                        <div>\n                            <div class=\"text-sm font-semibold text-primary\">Marcus Johnson</div>\n                            <div class=\"text-xs text-tertiary\">Software Engineer at Stripe</div>\n                        </div>\n                    </div>\n                </div>\n\n                <div class=\"card bg-surface border border-white/[0.06] rounded-2xl p-8 relative\" data-reveal>\n                    <div class=\"quote-icon absolute top-6 left-6 w-10 h-10 text-accent-indigo opacity-15\"><i data-lucide=\"quote\" class=\"w-8 h-8\"></i></div>\n                    <p class=\"body italic leading-relaxed pt-8\">\"I love the community aspect. Being able to connect with peers at similar career stages has been invaluable for my growth.\"</p>\n                    <div class=\"flex items-center gap-4 mt-6 pt-6 border-t border-white/[0.06]\">\n                        <div class=\"w-11 h-11 rounded-full flex items-center justify-center text-white font-bold\" style=\"background:var(--gradient-hero)\">AP</div>\n                        <div>\n                            <div class=\"text-sm font-semibold text-primary\">Aisha Patel</div>\n                            <div class=\"text-xs text-tertiary\">Marketing Manager at Notion</div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </section>\n
+    <section id=\"pricing\" class=\"py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8\" style=\"background:var(--bg-base)\">\n        <div class=\"max-w-7xl mx-auto\">\n            <div class=\"text-center mb-12\" data-reveal>\n                <div class=\"card-badge\">Pricing</div>\n                <h2 class=\"h2\">Simple, transparent pricing</h2>\n                <p class=\"body-large mt-4\">Start free, upgrade when you need to.</p>\n            </div>\n\n            <div class=\"pricing-toggle flex items-center justify-center gap-4 mb-12\" data-reveal>\n                <span id=\"monthlyLabel\" class=\"toggle-label text-sm font-medium text-secondary active\">Monthly</span>\n                <button class=\"toggle-switch relative w-11 h-6 rounded-full bg-elevated p-0.5 cursor-pointer transition-all duration-300\" id=\"pricingToggle\">\n                    <input type=\"checkbox\" class=\"hidden\">\n                    <div class=\"toggle-thumb w-5 h-5 rounded-full bg-text-primary shadow-sm transition-transform duration-300\"></div>\n                </button>\n                <span id=\"yearlyLabel\" class=\"toggle-label text-sm font-medium text-secondary\">Yearly</span>\n                <span class=\"save-badge bg-accent-green/10 text-accent-green text-xs px-2 py-0.5 rounded-md font-medium ml-2\">Save 20%</span>\n            </div>\n\n            <div class=\"grid grid-cols-1 md:grid-cols-3 gap-8 mt-12\">\n                <div class=\"card-pricing bg-surface border border-white/[0.06] rounded-3xl p-8\" data-reveal>\n                    <h3 class=\"h3\">Free</h3>\n                    <div class=\"mt-4\">\n                        <span class=\"price-monthly text-4xl font-bold gradient-text\">$0</span>\n                        <span class=\"price-monthly text-tertiary ml-2\">/month</span>\n                        <span class=\"price-yearly text-4xl font-bold hidden\">$0</span>\n                        <span class=\"price-yearly text-tertiary ml-2 hidden\">/month</span>\n                    </div>\n                    <p class=\"body-small text-tertiary mt-4\">Perfect for getting started</p>\n                    <ul class=\"mt-6 space-y-3\">\n                        <li class=\"flex items-center gap-3\"><i data-lucide=\"check\" class=\"w-4 h-4 text-accent-green\"></i><span class=\"text-sm\">Basic profile</span></li>\n                        <li class=\"flex items-center gap-3\"><i data-lucide=\"check\" class=\"w-4 h-4 text-accent-green\"></i><span class=\"text-sm\">3 career tracks</span></li>\n                        <li class=\"flex items-center gap-3\"><i data-lucide=\"check\" class=\"w-4 h-4 text-accent-green\"></i><span class=\"text-sm\">Job application tracker (5 jobs)</span></li>\n                        <li class=\"flex items-center gap-3\"><i data-lucide=\"check\" class=\"w-4 h-4 text-accent-green\"></i><span class=\"text-sm\">Community access</span></li>\n                        <li class=\"flex items-center gap-3\"><i data-lucide=\"check\" class=\"w-4 h-4 text-accent-green\"></i><span class=\"text-sm\">Email support</span></li>\n                    </ul>\n                    <a href=\"#\" class=\"btn btn-secondary mt-8 w-full\">Get Started</a>\n                </div>\n\n                <div class=\"card-pricing bg-surface border border-white/[0.06] rounded-3xl p-8 relative gradient-border-animated\" data-reveal>\n                    <div class=\"absolute -top-3 left-1/2 -translate-x-1/2 bg-gradient-to-r from-accent-indigo via-accent-purple to-accent-pink text-white text-xs font-semibold px-4 py-1 rounded-full shadow-button\">Most Popular</div>\n                    <h3 class=\"h3\">Pro</h3>\n                    <div class=\"mt-4\">\n                        <span class=\"price-monthly text-4xl font-bold gradient-text\">$12</span>\n                        <span class=\"price-monthly text-tertiary ml-2\">/month</span>\n                        <span class=\"price-yearly text-4xl font-bold hidden\">$115</span>\n                        <span class=\"price-yearly text-tertiary ml-2 hidden\">/month</span>\n                    </div>\n                    <p class=\"body-small text-tertiary mt-4\">For serious career growth</p>\n                    <ul class=\"mt-6 space-y-3\">\n                        <li class=\"flex items-center gap-3\"><i data-lucide=\"check\" class=\"w-4 h-4 text-accent-green\"></i><span class=\"text-sm\">Everything in Free</span></li>\n                        <li class=\"flex items-center gap-3\"><i data-lucide=\"check\" class=\"w-4 h-4 text-accent-green\"></i><span class=\"text-sm\">Unlimited career tracks</span></li>\n                        <li class=\"flex items-center gap-3\"><i data-lucide=\"check\" class=\"w-4 h-4 text-accent-green\"></i><span class=\"text-sm\">Unlimited job tracking</span></li>\n                        <li class=\"flex items-center gap-3\"><i data-lucide=\"check\" class=\"w-4 h-4 text-accent-green\"></i><span class=\"text-sm\">Priority mentorship matching</span></li>\n                        <li class=\"flex items-center gap-3\"><i data-lucide=\"check\" class=\"w-4 h-4 text-accent-green\"></i><span class=\"text-sm\">Analytics dashboard</span></li>\n                        <li class=\"flex items-center gap-3\"><i data-lucide=\"check\" class=\"w-4 h-4 text-accent-green\"></i><span class=\"text-sm\">Resume builder</span></li>\n                        <li class=\"flex items-center gap-3\"><i data-lucide=\"check\" class=\"w-4 h-4 text-accent-green\"></i><span class=\"text-sm\">Priority support</span></li>\n                    </ul>\n                    <a href=\"#\" class=\"btn btn-primary mt-8 w-full\">Start Pro Trial</a>\n                </div>\n\n                <div class=\"card-pricing bg-surface border border-white/[0.06] rounded-3xl p-8\" data-reveal>\n                    <h3 class=\"h3\">Team</h3>\n                    <div class=\"mt-4\">\n                        <span class=\"price-monthly text-4xl font-bold gradient-text\">$29</span>\n                        <span class=\"price-monthly text-tertiary ml-2\">/month</span>\n                        <span class=\"price-yearly text-4xl font-bold hidden\">$278</span>\n                        <span class=\"price-yearly text-tertiary ml-2 hidden\">/month</span>\n                    </div>\n                    <p class=\"body-small text-tertiary mt-4\">For teams and organizations</p>\n                    <ul class=\"mt-6 space-y-3\">\n                        <li class=\"flex items-center gap-3\"><i data-lucide=\"check\" class=\"w-4 h-4 text-accent-green\"></i><span class=\"text-sm\">Everything in Pro</span></li>\n                        <li class=\"flex items-center gap-3\"><i data-lucide=\"check\" class=\"w-4 h-4 text-accent-green\"></i><span class=\"text-sm\">Team collaboration</span></li>\n                        <li class=\"flex items-center gap-3\"><i data-lucide=\"check\" class=\"w-4 h-4 text-accent-green\"></i><span class=\"text-sm\">Admin dashboard</span></li>\n                        <li class=\"flex items-center gap-3\"><i data-lucide=\"check\" class=\"w-4 h-4 text-accent-green\"></i><span class=\"text-sm\">Custom integrations</span></li>\n                        <li class=\"flex items-center gap-3\"><i data-lucide=\"check\" class=\"w-4 h-4 text-accent-green\"></i><span class=\"text-sm\">Dedicated account manager</span></li>\n                        <li class=\"flex items-center gap-3\"><i data-lucide=\"check\" class=\"w-4 h-4 text-accent-green\"></i><span class=\"text-sm\">SLA guarantee</span></li>\n                    </ul>\n                    <a href=\"#\" class=\"btn btn-secondary mt-8 w-full\">Contact Sales</a>\n                </div>\n            </div>\n        </div>\n    </section>\n\n    <section id=\"faq\" class=\"bg-surface py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8\">\n        <div class=\"max-w-3xl mx-auto\">\n            <div class=\"text-center mb-16\" data-reveal>\n                <h2 class=\"h2\">Frequently asked questions</h2>\n            </div>\n\n            <div class=\"space-y-4\">\n                <div class=\"accordion-item bg-base rounded-xl border border-white/[0.06] overflow-hidden\" data-reveal>\n                    <button class=\"accordion-header w-full flex justify-between items-center p-6 text-left hover:bg-elevated/50 transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-accent-indigo/20 rounded-xl\" aria-expanded=\"false\">\n                        <span class=\"text-primary font-semibold text-base pr-4\">Is Dedran really free to start</span>\n                        <i data-lucide=\"chevron-down\" class=\"accordion-icon w-5 h-5 text-tertiary shrink-0\"></i>\n                    </button>\n                    <div class=\"accordion-content px-6 pb-6 text-secondary leading-relaxed\">\n                        <p>Yes! Our Free plan gives you access to basic features including profile creation, 3 career tracks, and limited job tracking. No credit card required.</p>\n                    </div>\n                </div>\n\n                <div class=\"accordion-item bg-base rounded-xl border border-white/[0.06] overflow-hidden\" data-reveal>\n                    <button class=\"accordion-header w-full flex justify-between items-center p-6 text-left hover:bg-elevated/50 transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-accent-indigo/20 rounded-xl\" aria-expanded=\"false\">\n                        <span class=\"text-primary font-semibold text-base pr-4\">Can I switch plans at any time</span>\n                        <i data-lucide=\"chevron-down\" class=\"accordion-icon w-5 h-5 text-tertiary shrink-0\"></i>\n                    </button>\n                    <div class=\"accordion-content px-6 pb-6 text-secondary leading-relaxed\">\n                        <p>Absolutely. You can upgrade or downgrade your plan at any time. If you upgrade, you will be charged the prorated difference. If you downgrade, you will receive credit toward future billing.</p>\n                    </div>\n                </div>\n\n                <div class=\"accordion-item bg-base rounded-xl border border-white/[0.06] overflow-hidden\" data-reveal>\n                    <button class=\"accordion-header w-full flex justify-between items-center p-6 text-left hover:bg-elevated/50 transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-accent-indigo/20 rounded-xl\" aria-expanded=\"false\">\n                        <span class=\"text-primary font-semibold text-base pr-4\">How do career tracks work</span>\n                        <i data-lucide=\"chevron-down\" class=\"accordion-icon w-5 h-5 text-tertiary shrink-0\"></i>\n                    </button>\n                    <div class=\"accordion-content px-6 pb-6 text-secondary leading-relaxed\">\n                        <p>Career tracks are curated learning paths designed by industry experts. Each track contains a series of lessons, exercises, and projects that build real-world skills. You progress at your own pace.</p>\n                    </div>\n                </div>\n\n                <div class=\"accordion-item bg-base rounded-xl border border-white/[0.06] overflow-hidden\" data-reveal>\n                    <button class=\"accordion-header w-full flex justify-between items-center p-6 text-left hover:bg-elevated/50 transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-accent-indigo/20 rounded-xl\" aria-expanded=\"false\">\n                        <span class=\"text-primary font-semibold text-base pr-4\">Is my data secure</span>\n                        <i data-lucide=\"chevron-down\" class=\"accordion-icon w-5 h-5 text-tertiary shrink-0\"></i>\n                    </button>\n                    <div class=\"accordion-content px-6 pb-6 text-secondary leading-relaxed\">\n                        <p>Security is our top priority. We use enterprise-grade encryption, SOC 2 Type II compliance, and never sell your data. You can export or delete your data at any time.</p>\n                    </div>\n                </div>\n\n                <div class=\"accordion-item bg-base rounded-xl border border-white/[0.06] overflow-hidden\" data-reveal>\n                    <button class=\"accordion-header w-full flex justify-between items-center p-6 text-left hover:bg-elevated/50 transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-accent-indigo/20 rounded-xl\" aria-expanded=\"false\">\n                        <span class=\"text-primary font-semibold text-base pr-4\">Do you offer refunds</span>\n                        <i data-lucide=\"chevron-down\" class=\"accordion-icon w-5 h-5 text-tertiary shrink-0\"></i>\n                    </button>\n                    <div class=\"accordion-content px-6 pb-6 text-secondary leading-relaxed\">\n                        <p>We offer a 14-day money-back guarantee on all paid plans. If you are not satisfied, contact our support team for a full refund — no questions asked.</p>\n                    </div>\n                </div>\n\n                <div class=\"accordion-item bg-base rounded-xl border border-white/[0.06] overflow-hidden\" data-reveal>\n                    <button class=\"accordion-header w-full flex justify-between items-center p-6 text-left hover:bg-elevated/50 transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-accent-indigo/20 rounded-xl\" aria-expanded=\"false\">\n                        <span class=\"text-primary font-semibold text-base pr-4\">Can I use Dedran for my team</span>\n                        <i data-lucide=\"chevron-down\" class=\"accordion-icon w-5 h-5 text-tertiary shrink-0\"></i>\n                    </button>\n                    <div class=\"accordion-content px-6 pb-6 text-secondary leading-relaxed\">\n                        <p>Yes! Our Team plan includes collaboration features, admin controls, and custom integrations. Contact our sales team for enterprise pricing if you need more than 50 seats.</p>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </section>\n\n    <section class=\"py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8\">\n        <div class=\"max-w-5xl mx-auto\">\n            <div class=\"cta-banner rounded-3xl relative overflow-hidden text-center py-16 px-8\" style=\"background:var(--gradient-cta)\">\n                <div class=\"absolute inset-0 bg-white/5 blur-3xl\"></div>\n                <div class=\"decorative-element\" style=\"top: 0; left: 0; width: 300px; height: 300px; transform: translate(-50%, -50%);\"></div>\n                <div class=\"decorative-element\" style=\"bottom: 0; right: 0; width: 400px; height: 400px; transform: translate(50%, 50%); animation-delay: 2s;\"></div>\n                <div class=\"cta-content relative z-10\" data-reveal=\"scale\">\n                    <h2 class=\"h2 text-white\">Ready to accelerate your career</h2>\n                    <p class=\"body-large text-white/80 mt-4\">Join thousands of young professionals already growing with Dedran.</p>\n                    <a href=\"#pricing\" class=\"inline-flex items-center gap-2 bg-white text-accent-indigo font-semibold px-8 py-3.5 rounded-full mt-8 hover:shadow-xl hover:scale-105 active:scale-100 transition-all duration-200 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-accent-indigo\">Get Started Free <i data-lucide=\"arrow-right\" class=\"w-4 h-4\"></i></a>\n                </div>\n            </div>\n        </div>\n    </section>\n\n    <footer class=\"bg-base border-t py-16 px-4 sm:px-6 lg:px-8\" style=\"border-color:rgba(255,255,255,0.06)\">\n        <div class=\"max-w-7xl mx-auto\">\n            <div class=\"footer-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12\">\n                <div class=\"footer-section\">\n                    <a href=\"#hero\" class=\"logo font-bold text-xl\">Dedran<span class=\"logo-gradient\">.</span></a>\n                    <p class=\"text-sm text-tertiary mt-3\">Career growth, simplified.</p>\n                    <div class=\"social-links flex gap-4 mt-6\">\n                        <a href=\"#\" class=\"social-link w-10 h-10 bg-elevated rounded-lg flex items-center justify-center text-tertiary hover:text-primary hover:bg-surface transition-all\"><i data-lucide=\"twitter\" class=\"w-5 h-5\"></i></a>\n                        <a href=\"#\" class=\"social-link w-10 h-10 bg-elevated rounded-lg flex items-center justify-center text-tertiary hover:text-primary hover:bg-surface transition-all\"><i data-lucide=\"github\" class=\"w-5 h-5\"></i></a>\n                        <a href=\"#\" class=\"social-link w-10 h-10 bg-elevated rounded-lg flex items-center justify-center text-tertiary hover:text-primary hover:bg-surface transition-all\"><i data-lucide=\"linkedin\" class=\"w-5 h-5\"></i></a>\n                        <a href=\"#\" class=\"social-link w-10 h-10 bg-elevated rounded-lg flex items-center justify-center text-tertiary hover:text-primary hover:bg-surface transition-all\"><i data-lucide=\"message-square\" class=\"w-5 h-5\"></i></a>\n                    </div>\n                </div>\n\n                <div class=\"footer-section\">\n                    <div class=\"footer-title text-sm font-semibold text-primary uppercase tracking-wider mb-4\">Product</div>\n                    <a href=\"#features\" class=\"footer-link block py-1\">Features</a>\n                    <a href=\"#pricing\" class=\"footer-link block py-1\">Pricing</a>\n                    <a href=\"#\" class=\"footer-link block py-1\">Changelog</a>\n                    <a href=\"#\" class=\"footer-link block py-1\">Roadmap</a>\n                </div>\n\n                <div class=\"footer-section\">\n                    <div class=\"footer-title text-sm font-semibold text-primary uppercase tracking-wider mb-4\">Resources</div>\n                    <a href=\"#\" class=\"footer-link block py-1\">Blog</a>\n                    <a href=\"#\" class=\"footer-link block py-1\">Documentation</a>\n                    <a href=\"#\" class=\"footer-link block py-1\">Community</a>\n                    <a href=\"#\" class=\"footer-link block py-1\">Support</a>\n                </div>\n\n                <div class=\"footer-section\">\n                    <div class=\"footer-title text-sm font-semibold text-primary uppercase tracking-wider mb-4\">Company</div>\n                    <a href=\"#\" class=\"footer-link block py-1\">About</a>\n                    <a href=\"#\" class=\"footer-link block py-1\">Careers</a>\n                    <a href=\"#\" class=\"footer-link block py-1\">Contact</a>\n                    <a href=\"#\" class=\"footer-link block py-1\">Press</a>\n                </div>\n            </div>\n\n            <div class=\"mt-12 pt-8 border-t flex flex-col md:flex-row justify-between items-center\" style=\"border-color:rgba(255,255,255,0.06)\">\n                <p class=\"text-xs text-tertiary\">&copy; 2026 Dedran. All rights reserved.</p>\n                <div class=\"flex gap-6 mt-4 md:mt-0\">\n                    <a href=\"#\" class=\"text-xs text-tertiary hover:text-secondary\">Privacy Policy</a>\n                    <a href=\"#\" class=\"text-xs text-tertiary hover:text-secondary\">Terms of Service</a>\n                    <a href=\"#\" class=\"text-xs text-tertiary hover:text-secondary\">Cookie Policy</a>\n                </div>\n            </div>\n        </div>\n    </footer>\n
+    <script>\n        lucide.createIcons();\n\n        const revealObserver = new IntersectionObserver((entries) => {\n            entries.forEach(entry => {\n                if (entry.isIntersecting) {\n                    entry.target.classList.add('revealed');\n                    const staggerContainer = entry.target.closest('[data-reveal].stagger-children');\n                    if (staggerContainer) {\n                        const children = Array.from(staggerContainer.children);\n                        const index = children.indexOf(entry.target);\n                        if (index !== -1) {\n                            entry.target.style.transitionDelay = `${index * 100}ms`;\n                        }\n                    }\n                }\n            });\n        }, {\n            threshold: 0.1,\n            rootMargin: '0px 0px -60px 0px'\n        });\n\n        document.querySelectorAll('[data-reveal], [data-stagger]').forEach(el => {\n            revealObserver.observe(el);\n        });\n\n        const navbar = document.getElementById('navbar');\n        let ticking = false;\n\n        function updateNavbar() {\n            if (window.scrollY > 50) {\n                navbar.classList.add('navbar-scrolled');\n                navbar.style.background = 'rgba(10, 10, 15, 0.85)';\n            } else {\n                navbar.classList.remove('navbar-scrolled');\n                navbar.style.background = 'rgba(10, 10, 15, 0.75)';\n            }\n            ticking = false;\n        }\n\n        window.addEventListener('scroll', () => {\n            if (!ticking) {\n                window.requestAnimationFrame(updateNavbar);\n                ticking = true;\n            }\n        }, { passive: true });\n\n        const mobileMenuBtn = document.getElementById('mobile-menu-btn');\n        const mobileMenu = document.getElementById('mobile-menu');\n        const mobileMenuClose = document.getElementById('mobile-menu-close');\n        const mobileMenuBackdrop = document.getElementById('mobile-menu-backdrop');\n        let isMenuOpen = false;\n\n        function toggleMenu() {\n            isMenuOpen = !isMenuOpen;\n            mobileMenu.style.transform = isMenuOpen ? 'translateX(0)' : 'translateX(100%)';\n            mobileMenuBackdrop.style.opacity = isMenuOpen ? '1' : '0';\n            mobileMenuBackdrop.style.pointerEvents = isMenuOpen ? 'auto' : 'none';\n            document.body.style.overflow = isMenuOpen ? 'hidden' : '';\n            mobileMenu.setAttribute('aria-hidden', !isMenuOpen);\n        }\n\n        mobileMenuBtn.addEventListener('click', toggleMenu);\n        mobileMenuClose.addEventListener('click', toggleMenu);\n        mobileMenuBackdrop.addEventListener('click', toggleMenu);\n\n        document.addEventListener('keydown', (e) => {\n            if (e.key === 'Escape' && isMenuOpen) {\n                toggleMenu();\n                mobileMenuBtn.focus();\n            }\n        });\n\n        const featureGrid = document.getElementById('feature-grid');\n        if (featureGrid) {\n            featureGrid.addEventListener('mousemove', (e) => {\n                const rect = featureGrid.getBoundingClientRect();\n                featureGrid.style.setProperty('--spotlight-x', `${e.clientX - rect.left}px`);\n                featureGrid.style.setProperty('--spotlight-y', `${e.clientY - rect.top}px`);\n            });\n            featureGrid.addEventListener('mouseleave', () => {\n                featureGrid.style.setProperty('--spotlight-x', '50%');\n                featureGrid.style.setProperty('--spotlight-y', '50%');\n            });\n        }\n\n        document.querySelectorAll('.card-inner-glow').forEach(card => {\n            card.addEventListener('mousemove', (e) => {\n                const rect = card.getBoundingClientRect();\n                card.style.setProperty('--card-mx', `${e.clientX - rect.left}px`);\n                card.style.setProperty('--card-my', `${e.clientY - rect.top}px`);\n            });\n        });\n\n        document.querySelectorAll('.accordion-item').forEach(item => {\n            const header = item.querySelector('.accordion-header');\n            const answer = item.querySelector('.accordion-content');\n            const icon = item.querySelector('.accordion-icon');\n\n            header.addEventListener('click', () => {\n                const isOpen = item.classList.contains('open');\n\n                document.querySelectorAll('.accordion-item.open').forEach(openItem => {\n                    if (openItem !== item) {\n                        openItem.classList.remove('open');\n                        openItem.querySelector('.accordion-content').style.maxHeight = null;\n                        openItem.querySelector('.accordion-icon').style.transform = 'rotate(0deg)';\n                        openItem.querySelector('.accordion-header').setAttribute('aria-expanded', 'false');\n                    }\n                });\n\n                if (isOpen) {\n                    item.classList.remove('open');\n                    answer.style.maxHeight = null;\n                    icon.style.transform = 'rotate(0deg)';\n                    header.setAttribute('aria-expanded', 'false');\n                } else {\n                    item.classList.add('open');\n                    answer.style.maxHeight = answer.scrollHeight + 'px';\n                    icon.style.transform = 'rotate(180deg)';\n                    header.setAttribute('aria-expanded', 'true');\n                }\n            });\n        });\n\n        const pricingToggle = document.getElementById('pricingToggle');\n        if (pricingToggle) {\n            const monthlyPrices = document.querySelectorAll('.price-monthly');\n            const yearlyPrices = document.querySelectorAll('.price-yearly');\n\n            pricingToggle.addEventListener('change', () => {\n                const isYearly = pricingToggle.checked;\n                monthlyPrices.forEach(el => el.style.display = isYearly ? 'none' : 'inline');\n                yearlyPrices.forEach(el => el.style.display = isYearly ? 'inline' : 'none');\n            });\n        }\n\n        document.querySelectorAll('a[href^="#"]').forEach(anchor => {\n            anchor.addEventListener('click', function(e) {\n                e.preventDefault();\n                const targetId = this.getAttribute('href');\n                const target = document.querySelector(targetId);\n                if (target) {\n                    const navHeight = navbar.offsetHeight;\n                    const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - navHeight;\n                    window.scrollTo({ top: targetPosition, behavior: 'smooth' });\n                    if (isMenuOpen) toggleMenu();\n                }\n            });\n        });\n\n        const sections = document.querySelectorAll('section[id]');\n        const navLinks = document.querySelectorAll('nav a[href^="#\"]');\n\n        function updateActiveLink() {\n            let current = '';\n            sections.forEach(section => {\n                const sectionTop = section.offsetTop - navbar.offsetHeight - 100;\n                if (window.scrollY >= sectionTop) {\n                    current = section.getAttribute('id');\n                }\n            });\n\n            navLinks.forEach(link => {\n                link.classList.remove('text-primary');\n                link.classList.add('text-secondary');\n                if (link.getAttribute('href') === '#' + current) {\n                    link.classList.add('text-primary');\n                    link.classList.remove('text-secondary');\n                }\n            });\n        }\n\n        window.addEventListener('scroll', updateActiveLink, { passive: true });\n\n        const sectionObserver = new IntersectionObserver((entries) => {\n            entries.forEach(entry => {\n                if (entry.isIntersecting) {\n                    entry.target.classList.add('revealed');\n                }\n            });\n        }, {\n            threshold: 0.1,\n            rootMargin: '0px'\n        });\n\n        sections.forEach(section => {\n            sectionObserver.observe(section);\n        });\n    </script>\n</body>\n</html>
