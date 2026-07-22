@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import {
   Home, User, BookOpen, Briefcase, Bell, Search, Settings,
   Heart, MessageCircle, Share2, Bookmark, Clock, Star,
@@ -170,20 +171,51 @@ function Avatar({ src, name, size = 40 }: { src: string; name: string; size?: nu
 
 function PostCard({ post, onLike, onSave, onDelete }: { post: Post; onLike: (id: string) => void; onSave: (id: string) => void; onDelete?: (id: string) => void }) {
   const [expiry, setExpiry] = useState(post.expiresMinutes ?? 0)
+  const [likeAnim, setLikeAnim] = useState(false)
+  const [saveAnim, setSaveAnim] = useState(false)
+
   useEffect(() => {
     if (post.type !== 'temporary') return
     const t = setInterval(() => setExpiry(e => Math.max(0, e - 1)), 60000)
     return () => clearInterval(t)
   }, [post.type])
 
+  const handleLike = () => {
+    setLikeAnim(true)
+    setTimeout(() => setLikeAnim(false), 600)
+    onLike(post.id)
+  }
+
+  const handleSave = () => {
+    setSaveAnim(true)
+    setTimeout(() => setSaveAnim(false), 600)
+    onSave(post.id)
+  }
+
   return (
-    <div className={`rounded-2xl border transition-all duration-200 hover:border-[#2E5A8A]/60 ${post.type === 'temporary' ? 'bg-[#0D1A31] border-dashed border-[#24476C]/60' : 'bg-[#0D1A31] border-[#1E3354]'}`}>
+    <motion.div
+      layout
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
+      transition={{ duration: 0.35, ease: 'easeOut' }}
+      className={`rounded-2xl border transition-all duration-200 hover:border-[#2E5A8A]/60 hover:shadow-lg hover:shadow-[#24476C]/5 ${post.type === 'temporary' ? 'bg-[#0D1A31] border-dashed border-[#24476C]/60' : 'bg-[#0D1A31] border-[#1E3354]'}`}
+    >
       {post.type === 'temporary' && (
-        <div className="flex items-center gap-2 px-5 py-2.5 border-b border-dashed border-[#24476C]/30 bg-[#24476C]/10 rounded-t-2xl">
-          <Timer size={13} className="text-amber-400" />
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="flex items-center gap-2 px-5 py-2.5 border-b border-dashed border-[#24476C]/30 bg-[#24476C]/10 rounded-t-2xl"
+        >
+          <motion.div
+            animate={{ scale: [1, 1.2, 1] }}
+            transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+          >
+            <Timer size={13} className="text-amber-400" />
+          </motion.div>
           <span className="text-xs font-semibold text-amber-400">Temporary post · expires in {formatExpiry(expiry)}</span>
-          <Flame size={13} className="text-amber-400 ml-auto" />
-        </div>
+          <Flame size={13} className="text-amber-400 ml-auto animate-pulse-glow" />
+        </motion.div>
       )}
       <div className="p-5">
         <div className="flex items-start justify-between mb-3">
@@ -195,33 +227,84 @@ function PostCard({ post, onLike, onSave, onDelete }: { post: Post; onLike: (id:
             </div>
           </div>
           <div className="flex items-center gap-2">
-            {post.isOwn && <button onClick={() => onDelete?.(post.id)} className="p-1.5 rounded-lg text-[#A8A9AD] hover:text-red-400 hover:bg-red-900/20 transition-colors"><Trash2 size={14} /></button>}
+            {post.isOwn && (
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                onClick={() => onDelete?.(post.id)}
+                className="p-1.5 rounded-lg text-[#A8A9AD] hover:text-red-400 hover:bg-red-900/20 transition-colors"
+              >
+                <Trash2 size={14} />
+              </motion.button>
+            )}
             <button className="p-1.5 rounded-lg text-[#A8A9AD] hover:text-[#E6E8E6] hover:bg-[#24476C]/30 transition-colors"><MoreHorizontal size={16} /></button>
           </div>
         </div>
         <p className="text-[#D0D3DC] text-sm leading-relaxed mb-3 font-inter">{post.content}</p>
         {post.image && (
-          <div className="rounded-xl overflow-hidden mb-3 bg-[#0A122A]">
-            <img src={post.image} alt="Post visual" className="w-full object-cover max-h-64" />
-          </div>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.4 }}
+            className="rounded-xl overflow-hidden mb-3 bg-[#0A122A]"
+          >
+            <img src={post.image} alt="Post visual" className="w-full object-cover max-h-64 hover:scale-105 transition-transform duration-500" />
+          </motion.div>
         )}
         <div className="flex items-center gap-1 pt-2 border-t border-[#1E3354]">
-          <button onClick={() => onLike(post.id)} className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${post.liked ? 'text-red-400 bg-red-900/20' : 'text-[#A8A9AD] hover:text-red-400 hover:bg-red-900/20'}`}>
-            <Heart size={14} className={post.liked ? 'fill-red-400' : ''} />{post.likes}
-          </button>
-          <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-[#A8A9AD] hover:text-[#60A5FA] hover:bg-blue-900/20 transition-all">
+          <motion.button
+            whileTap={{ scale: 1.3 }}
+            onClick={handleLike}
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${post.liked ? 'text-red-400 bg-red-900/20' : 'text-[#A8A9AD] hover:text-red-400 hover:bg-red-900/20'}`}
+          >
+            <motion.div
+              animate={likeAnim ? { scale: [1, 1.4, 1], rotate: [0, -10, 10, 0] } : {}}
+              transition={{ duration: 0.5 }}
+            >
+              <Heart size={14} className={post.liked ? 'fill-red-400' : ''} />
+            </motion.div>
+            {post.likes}
+          </motion.button>
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-[#A8A9AD] hover:text-[#60A5FA] hover:bg-blue-900/20 transition-all"
+          >
             <MessageCircle size={14} />{post.comments}
-          </button>
-          <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-[#A8A9AD] hover:text-[#34D399] hover:bg-emerald-900/20 transition-all">
+          </motion.button>
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-[#A8A9AD] hover:text-[#34D399] hover:bg-emerald-900/20 transition-all"
+          >
             <Share2 size={14} />{post.shares}
-          </button>
-          <button onClick={() => onSave(post.id)} className={`ml-auto flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${post.saved ? 'text-[#60A5FA] bg-blue-900/20' : 'text-[#A8A9AD] hover:text-[#60A5FA] hover:bg-blue-900/20'}`}>
-            <Bookmark size={14} className={post.saved ? 'fill-[#60A5FA]' : ''} />
-          </button>
+          </motion.button>
+          <motion.button
+            whileTap={{ scale: 1.2 }}
+            onClick={handleSave}
+            className={`ml-auto flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${post.saved ? 'text-[#60A5FA] bg-blue-900/20' : 'text-[#A8A9AD] hover:text-[#60A5FA] hover:bg-blue-900/20'}`}
+          >
+            <motion.div
+              animate={saveAnim ? { scale: [1, 1.3, 1] } : {}}
+              transition={{ duration: 0.4 }}
+            >
+              <Bookmark size={14} className={post.saved ? 'fill-[#60A5FA]' : ''} />
+            </motion.div>
+          </motion.button>
         </div>
       </div>
-    </div>
+    </motion.div>
   )
+}
+
+const feedContainerVariants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { staggerChildren: 0.08, delayChildren: 0.05 } },
+}
+
+const feedItemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.35, ease: 'easeOut' } },
 }
 
 function FeedSection() {
@@ -249,88 +332,200 @@ function FeedSection() {
   const tempPosts = posts.filter(p => p.type === 'temporary')
 
   return (
-    <div className="max-w-2xl mx-auto px-4 py-6 space-y-5">
-      <div className="bg-[#0D1A31] rounded-2xl border border-[#1E3354] p-4">
+    <motion.div
+      variants={feedContainerVariants}
+      initial="hidden"
+      animate="visible"
+      className="max-w-2xl mx-auto px-4 py-6 space-y-5"
+    >
+      <motion.div variants={feedItemVariants} className="bg-[#0D1A31] rounded-2xl border border-[#1E3354] p-4">
         <div className="flex items-center gap-3 mb-3">
           <Avatar src={ME.avatar} name={ME.name} size={40} />
-          <button onClick={() => setShowCompose(true)} className="flex-1 text-left px-4 py-2.5 rounded-xl bg-[#0A122A] border border-[#1E3354] text-[#A8A9AD] text-sm hover:border-[#24476C] hover:text-[#E6E8E6] transition-all">
+          <motion.button
+            whileHover={{ scale: 1.01 }}
+            whileTap={{ scale: 0.99 }}
+            onClick={() => setShowCompose(true)}
+            className="flex-1 text-left px-4 py-2.5 rounded-xl bg-[#0A122A] border border-[#1E3354] text-[#A8A9AD] text-sm hover:border-[#24476C] hover:text-[#E6E8E6] transition-all"
+          >
             Share an achievement, tip, or update…
-          </button>
+          </motion.button>
         </div>
         <div className="flex gap-2">
-          <button onClick={() => { setNewType('regular'); setShowCompose(true) }} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-[#A8A9AD] hover:text-[#E6E8E6] hover:bg-[#24476C]/20 transition-all border border-transparent hover:border-[#24476C]/30">
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={() => { setNewType('regular'); setShowCompose(true) }}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-[#A8A9AD] hover:text-[#E6E8E6] hover:bg-[#24476C]/20 transition-all border border-transparent hover:border-[#24476C]/30"
+          >
             <AlignLeft size={13} />Regular post
-          </button>
-          <button onClick={() => { setNewType('temporary'); setShowCompose(true) }} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-[#A8A9AD] hover:text-[#E6E8E6] hover:bg-[#24476C]/20 transition-all border border-transparent hover:border-[#24476C]/30">
+          </motion.button>
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={() => { setNewType('temporary'); setShowCompose(true) }}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-[#A8A9AD] hover:text-[#E6E8E6] hover:bg-[#24476C]/20 transition-all border border-transparent hover:border-[#24476C]/30"
+          >
             <Timer size={13} />Temporary
-          </button>
+          </motion.button>
         </div>
-      </div>
+      </motion.div>
 
-      {showCompose && (
-        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-fadeIn">
-          <div className="bg-[#0D1A31] rounded-2xl border border-[#24476C]/40 w-full max-w-lg shadow-2xl animate-scalePop">
-            <div className="flex items-center justify-between px-5 py-4 border-b border-[#1E3354]">
-              <h3 className="font-bold text-[#E6E8E6]">Create Post</h3>
-              <button onClick={() => setShowCompose(false)} className="p-1.5 rounded-lg hover:bg-[#24476C]/30 text-[#A8A9AD]"><X size={18} /></button>
-            </div>
-            <div className="p-5 space-y-4">
-              <div className="flex gap-2">
-                {(['regular', 'temporary'] as const).map(t => (
-                  <button key={t} onClick={() => setNewType(t)} className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium transition-all ${newType === t ? 'bg-[#24476C] text-white' : 'bg-[#0A122A] text-[#A8A9AD] hover:text-[#E6E8E6]'}`}>
-                    {t === 'temporary' ? <Timer size={14} /> : <AlignLeft size={14} />}
-                    {t === 'regular' ? 'Permanent post' : 'Temporary (6h)'}
-                  </button>
-                ))}
+      <AnimatePresence>
+        {showCompose && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              transition={{ duration: 0.25, ease: 'easeOut' }}
+              className="bg-[#0D1A31] rounded-2xl border border-[#24476C]/40 w-full max-w-lg shadow-2xl"
+            >
+              <div className="flex items-center justify-between px-5 py-4 border-b border-[#1E3354]">
+                <h3 className="font-bold text-[#E6E8E6]">Create Post</h3>
+                <motion.button
+                  whileHover={{ rotate: 90 }}
+                  transition={{ duration: 0.2 }}
+                  onClick={() => setShowCompose(false)}
+                  className="p-1.5 rounded-lg hover:bg-[#24476C]/30 text-[#A8A9AD]"
+                >
+                  <X size={18} />
+                </motion.button>
               </div>
-              {newType === 'temporary' && (
-                <div className="flex items-start gap-2 p-3 bg-amber-900/20 rounded-xl border border-amber-900/40">
-                  <Timer size={14} className="text-amber-400 mt-0.5 shrink-0" />
-                  <p className="text-xs text-amber-300 font-inter">This post will automatically disappear after 6 hours.</p>
+              <div className="p-5 space-y-4">
+                <div className="flex gap-2">
+                  {(['regular', 'temporary'] as const).map(t => (
+                    <motion.button
+                      key={t}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={() => setNewType(t)}
+                      className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium transition-all ${newType === t ? 'bg-[#24476C] text-white' : 'bg-[#0A122A] text-[#A8A9AD] hover:text-[#E6E8E6]'}`}
+                    >
+                      {t === 'temporary' ? <Timer size={14} /> : <AlignLeft size={14} />}
+                      {t === 'regular' ? 'Permanent post' : 'Temporary (6h)'}
+                    </motion.button>
+                  ))}
                 </div>
-              )}
-              <div className="flex items-start gap-3">
-                <Avatar src={ME.avatar} name={ME.name} size={38} />
-                <textarea autoFocus value={newContent} onChange={e => setNewContent(e.target.value)} placeholder="What's on your mind?" rows={4} className="flex-1 bg-[#0A122A] rounded-xl border border-[#1E3354] p-3 text-sm text-[#E6E8E6] placeholder-[#A8A9AD] resize-none focus:outline-none focus:border-[#24476C] font-inter" />
+                <AnimatePresence>
+                  {newType === 'temporary' && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      exit={{ opacity: 0, height: 0 }}
+                      transition={{ duration: 0.25 }}
+                      className="flex items-start gap-2 p-3 bg-amber-900/20 rounded-xl border border-amber-900/40 overflow-hidden"
+                    >
+                      <Timer size={14} className="text-amber-400 mt-0.5 shrink-0" />
+                      <p className="text-xs text-amber-300 font-inter">This post will automatically disappear after 6 hours.</p>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+                <div className="flex items-start gap-3">
+                  <Avatar src={ME.avatar} name={ME.name} size={38} />
+                  <textarea autoFocus value={newContent} onChange={e => setNewContent(e.target.value)} placeholder="What's on your mind?" rows={4} className="flex-1 bg-[#0A122A] rounded-xl border border-[#1E3354] p-3 text-sm text-[#E6E8E6] placeholder-[#A8A9AD] resize-none focus:outline-none focus:border-[#24476C] transition-all font-inter" />
+                </div>
+                <div className="flex justify-end gap-2">
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => setShowCompose(false)}
+                    className="px-4 py-2 rounded-xl text-sm text-[#A8A9AD] hover:text-[#E6E8E6] transition-colors"
+                  >
+                    Cancel
+                  </motion.button>
+                  <motion.button
+                    whileHover={newContent.trim() ? { scale: 1.02 } : {}}
+                    whileTap={newContent.trim() ? { scale: 0.98 } : {}}
+                    onClick={handlePost}
+                    disabled={!newContent.trim()}
+                    className="flex items-center gap-2 px-5 py-2 rounded-xl bg-[#24476C] hover:bg-[#2E5A8A] text-white text-sm font-semibold disabled:opacity-40 transition-all"
+                  >
+                    <Send size={14} />Publish
+                  </motion.button>
+                </div>
               </div>
-              <div className="flex justify-end gap-2">
-                <button onClick={() => setShowCompose(false)} className="px-4 py-2 rounded-xl text-sm text-[#A8A9AD] hover:text-[#E6E8E6] transition-colors">Cancel</button>
-                <button onClick={handlePost} disabled={!newContent.trim()} className="flex items-center gap-2 px-5 py-2 rounded-xl bg-[#24476C] hover:bg-[#2E5A8A] text-white text-sm font-semibold disabled:opacity-40 transition-all">
-                  <Send size={14} />Publish
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {tempPosts.length > 0 && (
-        <div>
-          <div className="flex items-center gap-2 mb-3">
-            <Flame size={15} className="text-amber-400" />
-            <span className="text-xs font-bold text-amber-400 uppercase tracking-wider">Expiring Soon</span>
-          </div>
-          <div className="flex gap-3 overflow-x-auto pb-2">
-            {tempPosts.map(p => (
-              <div key={p.id} className="shrink-0 w-48 bg-gradient-to-br from-[#24476C]/30 to-[#0A122A] rounded-2xl border border-dashed border-[#24476C]/50 p-3 cursor-pointer hover:border-[#24476C] transition-all">
-                <Avatar src={p.authorAvatar} name={p.authorName} size={36} />
-                <p className="text-xs font-semibold text-[#E6E8E6] mt-2 line-clamp-3 leading-relaxed font-inter">{p.content.substring(0, 80)}…</p>
-                <div className="flex items-center gap-1 mt-2"><Timer size={10} className="text-amber-400" /><span className="text-[10px] text-amber-400 font-semibold">{formatExpiry(p.expiresMinutes ?? 0)}</span></div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-
-      <div className="space-y-4">
-        {posts.map(post => (
-          <motion.div key={post.id} initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
-            <PostCard post={post} onLike={handleLike} onSave={handleSave} onDelete={handleDelete} />
+            </motion.div>
           </motion.div>
-        ))}
-      </div>
-    </div>
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {tempPosts.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.3 }}
+          >
+            <div className="flex items-center gap-2 mb-3">
+              <Flame size={15} className="text-amber-400 animate-pulse-glow" />
+              <span className="text-xs font-bold text-amber-400 uppercase tracking-wider">Expiring Soon</span>
+            </div>
+            <div className="flex gap-3 overflow-x-auto pb-2">
+              {tempPosts.map((p, idx) => (
+                <motion.div
+                  key={p.id}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: idx * 0.1, duration: 0.3 }}
+                  whileHover={{ scale: 1.02, y: -4 }}
+                  className="shrink-0 w-48 bg-gradient-to-br from-[#24476C]/30 to-[#0A122A] rounded-2xl border border-dashed border-[#24476C]/50 p-3 cursor-pointer hover:border-[#24476C] transition-all"
+                >
+                  <Avatar src={p.authorAvatar} name={p.authorName} size={36} />
+                  <p className="text-xs font-semibold text-[#E6E8E6] mt-2 line-clamp-3 leading-relaxed font-inter">{p.content.substring(0, 80)}…</p>
+                  <div className="flex items-center gap-1 mt-2">
+                    <motion.div
+                      animate={{ scale: [1, 1.1, 1] }}
+                      transition={{ duration: 2, repeat: Infinity }}
+                    >
+                      <Timer size={10} className="text-amber-400" />
+                    </motion.div>
+                    <span className="text-[10px] text-amber-400 font-semibold">{formatExpiry(p.expiresMinutes ?? 0)}</span>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <motion.div variants={feedContainerVariants} className="space-y-4">
+        <AnimatePresence>
+          {posts.map(post => (
+            <motion.div
+              key={post.id}
+              variants={feedItemVariants}
+              layout
+              exit={{ opacity: 0, y: -20, transition: { duration: 0.2 } }}
+            >
+              <PostCard post={post} onLike={handleLike} onSave={handleSave} onDelete={handleDelete} />
+            </motion.div>
+          ))}
+        </AnimatePresence>
+      </motion.div>
+    </motion.div>
   )
+}
+
+const profileContainerVariants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { staggerChildren: 0.1 } },
+}
+
+const profileItemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: 'easeOut' } },
+}
+
+const tabContentVariants = {
+  hidden: { opacity: 0, x: -10 },
+  visible: { opacity: 1, x: 0, transition: { duration: 0.25, ease: 'easeOut' } },
+  exit: { opacity: 0, x: 10, transition: { duration: 0.15 } },
 }
 
 function ProfileSection() {
@@ -345,20 +540,38 @@ function ProfileSection() {
   const myPosts = INITIAL_POSTS.filter(p => p.isOwn)
 
   return (
-    <div className="max-w-3xl mx-auto px-4 py-6">
-      <div className="relative rounded-2xl overflow-hidden bg-[#0A122A] mb-0">
+    <motion.div
+      variants={profileContainerVariants}
+      initial="hidden"
+      animate="visible"
+      className="max-w-3xl mx-auto px-4 py-6"
+    >
+      <motion.div variants={profileItemVariants} className="relative rounded-2xl overflow-hidden bg-[#0A122A] mb-0">
         <img src={ME.banner} alt="Profile banner" className="w-full h-44 object-cover" />
         <div className="absolute inset-0 bg-gradient-to-t from-[#0A122A]/80 to-transparent" />
-      </div>
+      </motion.div>
 
-      <div className="bg-[#0D1A31] border border-[#1E3354] rounded-2xl px-6 pt-0 pb-5 -mt-1 rounded-t-none border-t-0">
+      <motion.div
+        variants={profileItemVariants}
+        className="bg-[#0D1A31] border border-[#1E3354] rounded-2xl px-6 pt-0 pb-5 -mt-1 rounded-t-none border-t-0"
+      >
         <div className="flex items-end justify-between mb-4">
-          <div className="relative -mt-10">
+          <motion.div
+            initial={{ scale: 0.8 }}
+            animate={{ scale: 1 }}
+            transition={{ type: 'spring', stiffness: 200, damping: 15 }}
+            className="relative -mt-10"
+          >
             <img src={ME.avatar} alt={ME.name} className="w-24 h-24 rounded-full object-cover ring-4 ring-[#0D1A31] border-2 border-[#24476C]" />
-          </div>
-          <button onClick={() => setEditing(!editing)} className="flex items-center gap-2 px-4 py-2 rounded-xl border border-[#24476C] text-[#E6E8E6] text-sm font-semibold hover:bg-[#24476C]/20 transition-all">
+          </motion.div>
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={() => setEditing(!editing)}
+            className="flex items-center gap-2 px-4 py-2 rounded-xl border border-[#24476C] text-[#E6E8E6] text-sm font-semibold hover:bg-[#24476C]/20 transition-all"
+          >
             <Edit3 size={14} />{editing ? 'Save Profile' : 'Edit Profile'}
-          </button>
+          </motion.button>
         </div>
 
         <h1 className="text-2xl font-bold text-[#E6E8E6]">{ME.name}</h1>
@@ -376,74 +589,148 @@ function ProfileSection() {
             { icon: Users, label: 'Connections', value: ME.connections },
             { icon: Eye, label: 'Profile views', value: ME.profileViews.toLocaleString() },
             { icon: Briefcase, label: 'Applications', value: ME.applicationsCount },
-          ].map(s => (
-            <div key={s.label} className="text-center">
+          ].map((s, idx) => (
+            <motion.div
+              key={s.label}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 + idx * 0.1, duration: 0.3 }}
+              className="text-center"
+            >
               <p className="text-xl font-bold text-[#E6E8E6]">{s.value}</p>
               <p className="text-[#A8A9AD] text-xs mt-0.5">{s.label}</p>
-            </div>
+            </motion.div>
           ))}
         </div>
-      </div>
+      </motion.div>
 
-      <div className="flex gap-1 mt-4 bg-[#0D1A31] rounded-xl p-1 border border-[#1E3354]">
+      <motion.div variants={profileItemVariants} className="flex gap-1 mt-4 bg-[#0D1A31] rounded-xl p-1 border border-[#1E3354]">
         {tabs.map(t => (
-          <button key={t.key} onClick={() => setTab(t.key)} className={`flex-1 py-2 rounded-lg text-sm font-semibold transition-all ${tab === t.key ? 'bg-[#24476C] text-white shadow-sm' : 'text-[#A8A9AD] hover:text-[#E6E8E6]'}`}>{t.label}</button>
+          <motion.button
+            key={t.key}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => setTab(t.key)}
+            className={`flex-1 py-2 rounded-lg text-sm font-semibold transition-all ${tab === t.key ? 'bg-[#24476C] text-white shadow-sm' : 'text-[#A8A9AD] hover:text-[#E6E8E6]'}`}
+          >
+            {t.label}
+          </motion.button>
         ))}
-      </div>
+      </motion.div>
 
       <div className="mt-4 space-y-3">
-        {tab === 'about' && (
-          <div className="bg-[#0D1A31] rounded-2xl border border-[#1E3354] p-5 space-y-4">
-            <h3 className="font-bold text-[#E6E8E6] text-sm uppercase tracking-wider text-[#A8A9AD]">Education</h3>
-            {[
-              { school: 'Universidad de Barcelona', degree: 'BA Visual Communication', period: '2019 – 2023' },
-              { school: 'Google UX Design Certificate', degree: 'Professional Certificate', period: '2022' },
-            ].map(e => (
-              <div key={e.school} className="flex items-start gap-3">
-                <div className="w-9 h-9 rounded-lg bg-[#24476C]/30 flex items-center justify-center shrink-0"><Award size={16} className="text-[#60A5FA]" /></div>
-                <div><p className="text-sm font-semibold text-[#E6E8E6]">{e.school}</p><p className="text-xs text-[#A8A9AD]">{e.degree} · {e.period}</p></div>
-              </div>
-            ))}
-          </div>
-        )}
+        <AnimatePresence mode="wait">
+          {tab === 'about' && (
+            <motion.div
+              key="about"
+              variants={tabContentVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              className="bg-[#0D1A31] rounded-2xl border border-[#1E3354] p-5 space-y-4"
+            >
+              <h3 className="font-bold text-[#E6E8E6] text-sm uppercase tracking-wider text-[#A8A9AD]">Education</h3>
+              {[
+                { school: 'Universidad de Barcelona', degree: 'BA Visual Communication', period: '2019 – 2023' },
+                { school: 'Google UX Design Certificate', degree: 'Professional Certificate', period: '2022' },
+              ].map((e, idx) => (
+                <motion.div
+                  key={e.school}
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: idx * 0.1 }}
+                  className="flex items-start gap-3"
+                >
+                  <div className="w-9 h-9 rounded-lg bg-[#24476C]/30 flex items-center justify-center shrink-0"><Award size={16} className="text-[#60A5FA]" /></div>
+                  <div><p className="text-sm font-semibold text-[#E6E8E6]">{e.school}</p><p className="text-xs text-[#A8A9AD]">{e.degree} · {e.period}</p></div>
+                </motion.div>
+              ))}
+            </motion.div>
+          )}
 
-        {tab === 'experience' && (
-          <div className="space-y-3">
-            {[
-              { company: 'Freelance', role: 'UX Design Consultant', period: 'Jun 2023 – Present', description: 'Designed interfaces for 8+ clients across e-commerce, fintech, and healthcare.' },
-              { company: 'CreativeHub Agency', role: 'Junior Designer (Intern)', period: 'Jan 2023 – May 2023', description: 'Produced wireframes, prototypes, and visual assets for B2B SaaS products.' },
-            ].map((exp, i) => (
-              <div key={i} className="bg-[#0D1A31] rounded-2xl border border-[#1E3354] p-5">
-                <div className="flex items-start gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#24476C] to-[#0A122A] flex items-center justify-center shrink-0"><Building2 size={16} className="text-[#60A5FA]" /></div>
-                  <div><p className="font-bold text-[#E6E8E6]">{exp.role}</p><p className="text-sm text-[#A8A9AD]">{exp.company} · {exp.period}</p><p className="text-sm text-[#C0C4CE] mt-2 leading-relaxed font-inter">{exp.description}</p></div>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
+          {tab === 'experience' && (
+            <motion.div
+              key="experience"
+              variants={tabContentVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              className="space-y-3"
+            >
+              {[
+                { company: 'Freelance', role: 'UX Design Consultant', period: 'Jun 2023 – Present', description: 'Designed interfaces for 8+ clients across e-commerce, fintech, and healthcare.' },
+                { company: 'CreativeHub Agency', role: 'Junior Designer (Intern)', period: 'Jan 2023 – May 2023', description: 'Produced wireframes, prototypes, and visual assets for B2B SaaS products.' },
+              ].map((exp, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.1 }}
+                  className="bg-[#0D1A31] rounded-2xl border border-[#1E3354] p-5"
+                >
+                  <div className="flex items-start gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#24476C] to-[#0A122A] flex items-center justify-center shrink-0"><Building2 size={16} className="text-[#60A5FA]" /></div>
+                    <div><p className="font-bold text-[#E6E8E6]">{exp.role}</p><p className="text-sm text-[#A8A9AD]">{exp.company} · {exp.period}</p><p className="text-sm text-[#C0C4CE] mt-2 leading-relaxed font-inter">{exp.description}</p></div>
+                  </div>
+                </motion.div>
+              ))}
+            </motion.div>
+          )}
 
-        {tab === 'skills' && (
-          <div className="bg-[#0D1A31] rounded-2xl border border-[#1E3354] p-5 space-y-4">
-            {[
-              { name: 'Figma', level: 92 }, { name: 'User Research', level: 85 }, { name: 'Prototyping', level: 88 },
-              { name: 'Accessibility (WCAG)', level: 80 }, { name: 'Adobe XD', level: 78 }, { name: 'Design Systems', level: 72 },
-              { name: 'React (basics)', level: 65 }, { name: 'SQL (basics)', level: 45 },
-            ].map(s => (
-              <div key={s.name}>
-                <div className="flex justify-between mb-1.5"><span className="text-sm font-medium text-[#E6E8E6]">{s.name}</span><span className="text-xs text-[#A8A9AD]">{s.level}%</span></div>
-                <div className="h-1.5 bg-[#1E3354] rounded-full overflow-hidden"><div className="h-full rounded-full bg-gradient-to-r from-[#24476C] to-[#60A5FA] transition-all duration-700" style={{ width: `${s.level}%` }} /></div>
-              </div>
-            ))}
-          </div>
-        )}
+          {tab === 'skills' && (
+            <motion.div
+              key="skills"
+              variants={tabContentVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              className="bg-[#0D1A31] rounded-2xl border border-[#1E3354] p-5 space-y-4"
+            >
+              {[
+                { name: 'Figma', level: 92 }, { name: 'User Research', level: 85 }, { name: 'Prototyping', level: 88 },
+                { name: 'Accessibility (WCAG)', level: 80 }, { name: 'Adobe XD', level: 78 }, { name: 'Design Systems', level: 72 },
+                { name: 'React (basics)', level: 65 }, { name: 'SQL (basics)', level: 45 },
+              ].map((s, idx) => (
+                <motion.div
+                  key={s.name}
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: idx * 0.05, duration: 0.25 }}
+                >
+                  <div className="flex justify-between mb-1.5"><span className="text-sm font-medium text-[#E6E8E6]">{s.name}</span><span className="text-xs text-[#A8A9AD]">{s.level}%</span></div>
+                  <div className="h-1.5 bg-[#1E3354] rounded-full overflow-hidden">
+                    <motion.div
+                      initial={{ width: 0 }}
+                      animate={{ width: `${s.level}%` }}
+                      transition={{ duration: 0.8, delay: idx * 0.05, ease: 'easeOut' }}
+                      className="h-full rounded-full bg-gradient-to-r from-[#24476C] to-[#60A5FA]"
+                    />
+                  </div>
+                </motion.div>
+              ))}
+            </motion.div>
+          )}
 
-        {tab === 'posts' && (
-          <div className="space-y-4">{myPosts.map(post => <PostCard key={post.id} post={post} onLike={() => {}} onSave={() => {}} />)}</div>
-        )}
+          {tab === 'posts' && (
+            <motion.div
+              key="posts"
+              variants={tabContentVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              className="space-y-4"
+            >
+              {myPosts.map(post => <PostCard key={post.id} post={post} onLike={() => {}} onSave={() => {}} />)}
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
-    </div>
+    </motion.div>
   )
+}
+
+const courseCardVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: (i: number) => ({ opacity: 1, y: 0, transition: { duration: 0.35, delay: i * 0.06, ease: 'easeOut' } }),
 }
 
 function CoursesSection() {
@@ -456,58 +743,145 @@ function CoursesSection() {
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-6">
-      <div className="relative rounded-2xl overflow-hidden mb-6 bg-gradient-to-r from-[#0A122A] to-[#24476C]">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="relative rounded-2xl overflow-hidden mb-6 bg-gradient-to-r from-[#0A122A] to-[#24476C]"
+      >
         <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1200&h=280&fit=crop&auto=format" alt="Learning platform" className="absolute inset-0 w-full h-full object-cover opacity-25" />
         <div className="relative px-8 py-10">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#60A5FA]/20 border border-[#60A5FA]/30 text-[#60A5FA] text-xs font-bold mb-3 uppercase tracking-wider"><Zap size={11} />Skill Up & Get Hired</div>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.2 }}
+            className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#60A5FA]/20 border border-[#60A5FA]/30 text-[#60A5FA] text-xs font-bold mb-3 uppercase tracking-wider"
+          >
+            <Zap size={11} />Skill Up & Get Hired
+          </motion.div>
           <h2 className="text-3xl font-extrabold text-white mb-2 leading-tight">Courses built for<br />your career goals</h2>
           <p className="text-[#A8A9AD] text-sm max-w-md font-inter">Curated by industry professionals. Learn skills that employers actually want.</p>
-          <div className="flex items-center gap-6 mt-5">
-            <div className="text-center"><p className="text-xl font-bold text-white">48</p><p className="text-xs text-[#A8A9AD]">Courses</p></div>
-            <div className="w-px h-8 bg-[#24476C]" />
-            <div className="text-center"><p className="text-xl font-bold text-white">12K+</p><p className="text-xs text-[#A8A9AD]">Enrolled</p></div>
-            <div className="w-px h-8 bg-[#24476C]" />
-            <div className="text-center"><p className="text-xl font-bold text-white">4.7★</p><p className="text-xs text-[#A8A9AD]">Avg rating</p></div>
-          </div>
-        </div>
-      </div>
-
-      {enrolled.length > 0 && (
-        <div className="mb-6">
-          <h3 className="text-sm font-bold text-[#A8A9AD] uppercase tracking-wider mb-3">Continue Learning</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            {enrolled.map(c => (
-              <div key={c.id} className="bg-[#0D1A31] rounded-2xl border border-[#1E3354] p-4 flex gap-4 hover:border-[#24476C]/60 transition-all">
-                <img src={c.thumbnail} alt={c.title} className="w-20 h-16 rounded-xl object-cover shrink-0 bg-[#0A122A]" />
-                <div className="flex-1 min-w-0">
-                  <p className="font-semibold text-sm text-[#E6E8E6] line-clamp-1">{c.title}</p>
-                  <p className="text-xs text-[#A8A9AD] mt-0.5">{c.instructor}</p>
-                  <div className="mt-2">
-                    <div className="flex justify-between text-xs mb-1"><span className="text-[#A8A9AD]">Progress</span><span className="text-[#60A5FA] font-semibold">{c.progress}%</span></div>
-                    <div className="h-1.5 bg-[#1E3354] rounded-full overflow-hidden"><div className="h-full bg-gradient-to-r from-[#24476C] to-[#60A5FA] rounded-full" style={{ width: `${c.progress}%` }} /></div>
-                  </div>
-                </div>
-                <button className="shrink-0 w-9 h-9 rounded-xl bg-[#24476C] flex items-center justify-center hover:bg-[#2E5A8A] transition-colors self-center"><Play size={14} className="text-white ml-0.5" /></button>
-              </div>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.4 }}
+            className="flex items-center gap-6 mt-5"
+          >
+            {[
+              { label: 'Courses', value: '48' },
+              { label: 'Enrolled', value: '12K+' },
+              { label: 'Avg rating', value: '4.7★' },
+            ].map((stat, idx) => (
+              <motion.div
+                key={stat.label}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5 + idx * 0.1 }}
+                className="text-center"
+              >
+                <p className="text-xl font-bold text-white">{stat.value}</p>
+                <p className="text-xs text-[#A8A9AD]">{stat.label}</p>
+                {idx < 2 && <div className="hidden md:block absolute right-0 top-1/2 -translate-y-1/2 w-px h-8 bg-[#24476C]" />}
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
-      )}
+      </motion.div>
 
-      <div className="flex gap-2 mb-5 overflow-x-auto pb-1">
+      <AnimatePresence>
+        {enrolled.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            className="mb-6"
+          >
+            <h3 className="text-sm font-bold text-[#A8A9AD] uppercase tracking-wider mb-3">Continue Learning</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              {enrolled.map((c, idx) => (
+                <motion.div
+                  key={c.id}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: idx * 0.1, duration: 0.3 }}
+                  whileHover={{ scale: 1.01 }}
+                  className="bg-[#0D1A31] rounded-2xl border border-[#1E3354] p-4 flex gap-4 hover:border-[#24476C]/60 transition-all"
+                >
+                  <img src={c.thumbnail} alt={c.title} className="w-20 h-16 rounded-xl object-cover shrink-0 bg-[#0A122A]" />
+                  <div className="flex-1 min-w-0">
+                    <p className="font-semibold text-sm text-[#E6E8E6] line-clamp-1">{c.title}</p>
+                    <p className="text-xs text-[#A8A9AD] mt-0.5">{c.instructor}</p>
+                    <div className="mt-2">
+                      <div className="flex justify-between text-xs mb-1"><span className="text-[#A8A9AD]">Progress</span><span className="text-[#60A5FA] font-semibold">{c.progress}%</span></div>
+                      <div className="h-1.5 bg-[#1E3354] rounded-full overflow-hidden">
+                        <motion.div
+                          initial={{ width: 0 }}
+                          animate={{ width: `${c.progress}%` }}
+                          transition={{ duration: 1, delay: 0.3 }}
+                          className="h-full bg-gradient-to-r from-[#24476C] to-[#60A5FA] rounded-full"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="shrink-0 w-9 h-9 rounded-xl bg-[#24476C] flex items-center justify-center hover:bg-[#2E5A8A] transition-colors self-center"
+                  >
+                    <Play size={14} className="text-white ml-0.5" />
+                  </motion.button>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2 }}
+        className="flex gap-2 mb-5 overflow-x-auto pb-1"
+      >
         {filters.map(f => (
-          <button key={f} onClick={() => setFilter(f)} className={`shrink-0 px-4 py-2 rounded-xl text-sm font-semibold transition-all ${filter === f ? 'bg-[#24476C] text-white' : 'bg-[#0D1A31] text-[#A8A9AD] border border-[#1E3354] hover:text-[#E6E8E6] hover:border-[#24476C]/40'}`}>{f}</button>
+          <motion.button
+            key={f}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => setFilter(f)}
+            className={`shrink-0 px-4 py-2 rounded-xl text-sm font-semibold transition-all ${filter === f ? 'bg-[#24476C] text-white shadow-sm' : 'bg-[#0D1A31] text-[#A8A9AD] border border-[#1E3354] hover:text-[#E6E8E6] hover:border-[#24476C]/40'}`}
+          >
+            {f}
+          </motion.button>
         ))}
-      </div>
+      </motion.div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {displayed.map(c => (
-          <div key={c.id} className="bg-[#0D1A31] rounded-2xl border border-[#1E3354] overflow-hidden hover:border-[#24476C]/60 hover:-translate-y-0.5 transition-all duration-200">
+      <motion.div
+        initial="hidden"
+        animate="visible"
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+      >
+        {displayed.map((c, idx) => (
+          <motion.div
+            key={c.id}
+            custom={idx}
+            variants={courseCardVariants}
+            whileHover={{ y: -6, transition: { duration: 0.2 } }}
+            className="bg-[#0D1A31] rounded-2xl border border-[#1E3354] overflow-hidden hover:border-[#24476C]/60 transition-colors duration-200"
+          >
             <div className="relative">
-              <img src={c.thumbnail} alt={c.title} className="w-full h-40 object-cover bg-[#0A122A]" />
+              <img src={c.thumbnail} alt={c.title} className="w-full h-40 object-cover bg-[#0A122A] group-hover:scale-105 transition-transform duration-500" />
               <div className="absolute inset-0 bg-gradient-to-t from-[#0D1A31]/60 to-transparent" />
               <div className="absolute top-2.5 left-2.5"><LevelBadge level={c.level} /></div>
-              {c.isEnrolled && <div className="absolute top-2.5 right-2.5 px-2 py-0.5 rounded-md bg-[#24476C] text-white text-xs font-bold">Enrolled</div>}
+              {c.isEnrolled && (
+                <motion.div
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ type: 'spring', stiffness: 300, damping: 15 }}
+                  className="absolute top-2.5 right-2.5 px-2 py-0.5 rounded-md bg-[#24476C] text-white text-xs font-bold"
+                >
+                  Enrolled
+                </motion.div>
+              )}
             </div>
             <div className="p-4">
               <p className="text-[10px] font-bold uppercase tracking-wider text-[#60A5FA] mb-1">{c.category}</p>
@@ -522,14 +896,19 @@ function CoursesSection() {
               </div>
               <div className="flex items-center justify-between pt-3 border-t border-[#1E3354]">
                 <span className={`font-bold text-sm ${c.price === 'Free' ? 'text-emerald-400' : 'text-[#E6E8E6]'}`}>{c.price}</span>
-                <button onClick={() => enroll(c.id)} className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${c.isEnrolled ? 'bg-[#1E3354] text-[#A8A9AD] hover:bg-red-900/30 hover:text-red-400' : 'bg-[#24476C] hover:bg-[#2E5A8A] text-white'}`}>
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => enroll(c.id)}
+                  className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${c.isEnrolled ? 'bg-[#1E3354] text-[#A8A9AD] hover:bg-red-900/30 hover:text-red-400' : 'bg-[#24476C] hover:bg-[#2E5A8A] text-white'}`}
+                >
                   {c.isEnrolled ? 'Unenroll' : 'Enrol Free'}
-                </button>
+                </motion.button>
               </div>
             </div>
-          </div>
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
     </div>
   )
 }
