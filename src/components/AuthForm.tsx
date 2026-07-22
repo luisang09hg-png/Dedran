@@ -288,6 +288,23 @@ export default function AuthForm({ mode, onSuccess, onSwitchMode }: AuthFormProp
                 {isSignUp ? 'Sign in' : 'Sign up'}
               </motion.button>
             </motion.p>
+
+            {!isSignUp && (
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.4 }}
+                className="text-center mt-3"
+              >
+                <motion.a
+                  href="/auth/forgot-password"
+                  whileHover={{ scale: 1.02 }}
+                  className="text-xs text-[#A8A9AD] hover:text-[#60A5FA] transition-colors font-inter"
+                >
+                  Forgot your password?
+                </motion.a>
+              </motion.p>
+            )}
           </motion.div>
         </AnimatePresence>
       </div>

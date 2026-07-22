@@ -8,5 +8,13 @@
   "/api/payments/stripe/route": "app/api/payments/stripe/route.js",
   "/api/posts/route": "app/api/posts/route.js",
   "/api/profile/route": "app/api/profile/route.js",
-  "/page": "app/page.js"
+  "/api/webhooks/stripe/route": "app/api/webhooks/stripe/route.js",
+  "/auth/confirm/page": "app/auth/confirm/page.js",
+  "/auth/forgot-password/page": "app/auth/forgot-password/page.js",
+  "/auth/page": "app/auth/page.js",
+  "/auth/update-password/page": "app/auth/update-password/page.js",
+  "/dashboard/page": "app/dashboard/page.js",
+  "/page": "app/page.js",
+  "/robots.txt/route": "app/robots.txt/route.js",
+  "/sitemap.xml/route": "app/sitemap.xml/route.js"
 }

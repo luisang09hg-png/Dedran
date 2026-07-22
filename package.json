@@ -6,7 +6,11 @@
     "dev": "next dev --host 0.0.0.0",
     "build": "next build",
     "start": "next start --host 0.0.0.0",
-    "lint": "next lint"
+    "lint": "next lint",
+    "lint:fix": "next lint --fix",
+    "format": "prettier --write \"src/**/*.{ts,tsx,css}\"",
+    "type-check": "tsc --noEmit",
+    "clean": "rm -rf .next node_modules"
   },
   "dependencies": {
     "@paypal/react-paypal-js": "^10.1.2",
