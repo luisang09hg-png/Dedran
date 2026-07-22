@@ -18,15 +18,18 @@
   --color-info: #3B82F6;
   
   /* Additional neutral shades derived from background */
-  --color-background: #1B1B1B;
-  --color-foreground: #E6E8E6;
-  --color-card: #0A122A;
-  --color-card-foreground: #E6E8E6;
-  --color-border: #A8A9AD;
-  --color-primary: #24476C;
-  --color-primary-foreground: #E6E8E6;
-  --color-muted: #A8A9AD;
-  --color-muted-foreground: #1B1B1B;
+  --color-background: #F3F4F6; /* Light gray background */
+  --color-foreground: var(--color-eclipse);
+  --color-card: #FFFFFF;
+  --color-card-foreground: var(--color-eclipse);
+  --color-border: #E5E7EB;
+  --color-primary: var(--color-midnight);
+  --color-primary-foreground: #FFFFFF;
+  --color-muted: var(--color-moonlight);
+  --color-muted-foreground: #6B7280;
+  --color-accent: var(--color-midnight);
+  --color-accent-foreground: #FFFFFF;
+  --color-destructive: #EF4444;
 }
 
 * {
