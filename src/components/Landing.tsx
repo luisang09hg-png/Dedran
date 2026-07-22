@@ -9,7 +9,7 @@ const containerVariants = {
 
 const itemVariants = {
   hidden: { opacity: 0, y: 24 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: 'easeOut' } },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: 'easeOut' as const as const } },
 }
 
 const stats = [
@@ -108,7 +108,7 @@ export default function Landing({ onNavigate }: { onNavigate: (page: string) => 
       <motion.nav
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.4, ease: 'easeOut' }}
+        transition={{ duration: 0.4, ease: 'easeOut' as const }}
         className="sticky top-0 z-50 bg-[#06091A]/80 backdrop-blur-md border-b border-[#1E3354]"
       >
         <div className="max-w-6xl mx-auto px-4 flex items-center justify-between h-16">
@@ -302,7 +302,7 @@ export default function Landing({ onNavigate }: { onNavigate: (page: string) => 
               'radial-gradient(circle at 20% 50%, rgba(96,165,250,0.08) 0%, transparent 50%)',
             ],
           }}
-          transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
+          transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' as const }}
         />
         <div className="max-w-6xl mx-auto px-4 text-center relative">
           <motion.div

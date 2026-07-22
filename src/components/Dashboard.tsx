@@ -198,7 +198,7 @@ function PostCard({ post, onLike, onSave, onDelete }: { post: Post; onLike: (id:
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
-      transition={{ duration: 0.35, ease: 'easeOut' }}
+      transition={{ duration: 0.35, ease: 'easeOut' as const }}
       className={`rounded-2xl border transition-all duration-200 hover:border-[#2E5A8A]/60 hover:shadow-lg hover:shadow-[#24476C]/5 ${post.type === 'temporary' ? 'bg-[#0D1A31] border-dashed border-[#24476C]/60' : 'bg-[#0D1A31] border-[#1E3354]'}`}
     >
       {post.type === 'temporary' && (
@@ -209,7 +209,7 @@ function PostCard({ post, onLike, onSave, onDelete }: { post: Post; onLike: (id:
         >
           <motion.div
             animate={{ scale: [1, 1.2, 1] }}
-            transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+            transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' as const }}
           >
             <Timer size={13} className="text-amber-400" />
           </motion.div>
@@ -304,7 +304,7 @@ const feedContainerVariants = {
 
 const feedItemVariants = {
   hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.35, ease: 'easeOut' } },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.35, ease: 'easeOut' as const } },
 }
 
 function FeedSection() {
@@ -383,7 +383,7 @@ function FeedSection() {
               initial={{ opacity: 0, scale: 0.9, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 20 }}
-              transition={{ duration: 0.25, ease: 'easeOut' }}
+              transition={{ duration: 0.25, ease: 'easeOut' as const }}
               className="bg-[#0D1A31] rounded-2xl border border-[#24476C]/40 w-full max-w-lg shadow-2xl"
             >
               <div className="flex items-center justify-between px-5 py-4 border-b border-[#1E3354]">
@@ -519,12 +519,12 @@ const profileContainerVariants = {
 
 const profileItemVariants = {
   hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: 'easeOut' } },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: 'easeOut' as const } },
 }
 
 const tabContentVariants = {
   hidden: { opacity: 0, x: -10 },
-  visible: { opacity: 1, x: 0, transition: { duration: 0.25, ease: 'easeOut' } },
+  visible: { opacity: 1, x: 0, transition: { duration: 0.25, ease: 'easeOut' as const } },
   exit: { opacity: 0, x: 10, transition: { duration: 0.15 } },
 }
 
@@ -701,7 +701,7 @@ function ProfileSection() {
                     <motion.div
                       initial={{ width: 0 }}
                       animate={{ width: `${s.level}%` }}
-                      transition={{ duration: 0.8, delay: idx * 0.05, ease: 'easeOut' }}
+                      transition={{ duration: 0.8, delay: idx * 0.05, ease: 'easeOut' as const }}
                       className="h-full rounded-full bg-gradient-to-r from-[#24476C] to-[#60A5FA]"
                     />
                   </div>
@@ -730,7 +730,7 @@ function ProfileSection() {
 
 const courseCardVariants = {
   hidden: { opacity: 0, y: 20 },
-  visible: (i: number) => ({ opacity: 1, y: 0, transition: { duration: 0.35, delay: i * 0.06, ease: 'easeOut' } }),
+  visible: (i: number) => ({ opacity: 1, y: 0, transition: { duration: 0.35, delay: i * 0.06, ease: 'easeOut' as const } }),
 }
 
 function CoursesSection() {
@@ -915,7 +915,7 @@ function CoursesSection() {
 
 const appCardVariants = {
   hidden: { opacity: 0, y: 16 },
-  visible: (i: number) => ({ opacity: 1, y: 0, transition: { duration: 0.35, delay: i * 0.08, ease: 'easeOut' } }),
+  visible: (i: number) => ({ opacity: 1, y: 0, transition: { duration: 0.35, delay: i * 0.08, ease: 'easeOut' as const } }),
 }
 
 function ApplicationsSection() {
@@ -1314,17 +1314,17 @@ export default function Dashboard({ onSignOut }: DashboardProps) {
 
   const sidebarVariants = {
     hidden: { opacity: 0, x: -60 },
-    visible: { opacity: 1, x: 0, transition: { duration: 0.5, ease: 'easeOut' } },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.5, ease: 'easeOut' as const } },
   }
 
   const sectionVariants = {
     initial: { opacity: 0, x: 20 },
-    animate: { opacity: 1, x: 0, transition: { duration: 0.3, ease: 'easeOut' } },
+    animate: { opacity: 1, x: 0, transition: { duration: 0.3, ease: 'easeOut' as const } },
   }
 
   const navItemVariants = {
     hidden: { opacity: 0, x: -20 },
-    visible: (i: number) => ({ opacity: 1, x: 0, transition: { delay: 0.15 + i * 0.06, duration: 0.3, ease: 'easeOut' } }),
+    visible: (i: number) => ({ opacity: 1, x: 0, transition: { delay: 0.15 + i * 0.06, duration: 0.3, ease: 'easeOut' as const } }),
   }
 
   return (

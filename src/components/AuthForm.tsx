@@ -11,7 +11,7 @@ interface AuthFormProps {
 
 const cardVariants = {
   hidden: { opacity: 0, scale: 0.92, y: 20 },
-  visible: { opacity: 1, scale: 1, y: 0, transition: { duration: 0.4, ease: 'easeOut' } },
+  visible: { opacity: 1, scale: 1, y: 0, transition: { duration: 0.4, ease: 'easeOut' as const } },
   exit: { opacity: 0, scale: 0.92, y: -20, transition: { duration: 0.25 } },
 }
 
@@ -72,7 +72,7 @@ export default function AuthForm({ mode, onSuccess, onSwitchMode }: AuthFormProp
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, ease: 'easeOut' }}
+          transition={{ duration: 0.5, ease: 'easeOut' as const }}
           className="text-center mb-8"
         >
           <motion.div
@@ -182,7 +182,7 @@ export default function AuthForm({ mode, onSuccess, onSwitchMode }: AuthFormProp
                                    passwordStrength.strength === 1 ? '33%' :
                                    passwordStrength.strength === 2 ? '66%' : '100%',
                           }}
-                          transition={{ duration: 0.4, ease: 'easeOut' }}
+                          transition={{ duration: 0.4, ease: 'easeOut' as const }}
                           className={`h-full rounded-full ${
                             passwordStrength.strength === 0 ? 'bg-red-500' :
                             passwordStrength.strength === 1 ? 'bg-yellow-500' :
