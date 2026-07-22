@@ -1,8 +1,7 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
-import { useEffect } from 'react'
 import Landing from '@/components/Landing'
 import AuthForm from '@/components/AuthForm'
 import Dashboard from '@/components/Dashboard'
@@ -12,9 +11,9 @@ type Page = 'landing' | 'sign-in' | 'sign-up' | 'dashboard'
 export default function HomePage() {
   const [page, setPage] = useState<Page>('landing')
   const [mounted, setMounted] = useState(false)
-  const supabase = createClient()
 
   useEffect(() => {
+    const supabase = createClient()
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session) setPage('dashboard')
       setMounted(true)
