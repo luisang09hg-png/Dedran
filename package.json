@@ -3,9 +3,9 @@
   "private": true,
   "version": "1.0.0",
   "scripts": {
-    "dev": "next dev --host 0.0.0.0",
+    "dev": "next dev -H 0.0.0.0",
     "build": "next build",
-    "start": "next start --host 0.0.0.0",
+    "start": "next start -H 0.0.0.0",
     "lint": "next lint",
     "lint:fix": "next lint --fix",
     "format": "prettier --write \"src/**/*.{ts,tsx,css}\"",
