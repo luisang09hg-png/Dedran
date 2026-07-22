@@ -1,32 +1,30 @@
-// Handle tab switching in Dashboard
+// Aldebaram Dashboard — Tab Switching
 function switchTab(tabId, element) {
-    // 1. Hide all tab contents
-    const tabs = document.querySelectorAll('.tab-content');
-    tabs.forEach(tab => {
+    var tabs = document.querySelectorAll('.tab-content');
+    tabs.forEach(function (tab) {
         tab.classList.add('hidden');
     });
 
-    // 2. Show the selected tab content
-    const selectedTab = document.getElementById('tab-' + tabId);
+    var selectedTab = document.getElementById('tab-' + tabId);
     if (selectedTab) {
         selectedTab.classList.remove('hidden');
     }
 
-    // 3. Update active state on navigation items
-    const navItems = document.querySelectorAll('#sidebar-nav .nav-item');
-    navItems.forEach(item => {
-        item.classList.remove('nav-item-active');
-        item.classList.add('text-gray-500');
+    var navLinks = document.querySelectorAll('#navLinks a[data-tab]');
+    navLinks.forEach(function (link) {
+        link.classList.remove('active');
     });
 
-    // 4. Set current element as active
     if (element) {
-        element.classList.add('nav-item-active');
-        element.classList.remove('text-gray-500');
+        element.classList.add('active');
     }
 
-    // Replace icons inside the newly shown content
     if (typeof feather !== 'undefined') {
         feather.replace();
+    }
+
+    var mobileNav = document.getElementById('navLinks');
+    if (mobileNav) {
+        mobileNav.classList.remove('open');
     }
 }

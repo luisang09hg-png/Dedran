@@ -3,76 +3,165 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dedran - Sign In</title>
+    <title>Aldebaram — Career Platform for Young Professionals</title>
+    <meta name="description" content="Aldebaram connects young professionals with mentors, courses, and career opportunities. Build your future.">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="styles.css">
-    <!-- Feather Icons for lightweight iconography -->
     <script src="https://unpkg.com/feather-icons"></script>
 </head>
-<body class="bg-gray-50 flex items-center justify-center min-h-screen p-4 animate-fade-in">
+<body class="animate-fade-in">
 
-    <div class="glass w-full max-w-md rounded-2xl p-8 slide-up-item animate-slide-up">
-        <div class="text-center mb-8">
-            <div class="w-12 h-12 bg-brand-gradient rounded-xl mx-auto flex items-center justify-center shadow-lg mb-4">
-                <i data-feather="star" class="text-white w-6 h-6"></i>
-            </div>
-            <h1 class="text-2xl font-bold bg-brand-gradient text-gradient">Welcome back</h1>
-            <p class="text-sm text-gray-500 mt-2 font-medium">Enter your details to access your workspace.</p>
-        </div>
+    <!-- ===== Sticky Header ===== -->
+    <header class="header">
+        <div class="header-inner">
+            <a href="index.html" class="logo-mark" aria-label="Aldebaram Home">
+                <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M16 4L4 28H8.5L16 10L23.5 28H28L16 4Z" stroke="#E6E8E6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <circle cx="16" cy="6" r="2.5" fill="#24476C"/>
+                    <line x1="10" y1="20" x2="22" y2="20" stroke="#E6E8E6" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+                </svg>
+                <span class="logo-text">Aldebaram</span>
+            </a>
 
-        <form id="signInForm" class="space-y-4">
-            <div id="error-message" class="hidden bg-red-50 text-red-600 p-3 rounded-lg text-sm flex items-center gap-2">
-                <i data-feather="alert-circle" class="w-4 h-4"></i>
-                <span>Invalid credentials. Try again.</span>
-            </div>
-
-            <div class="space-y-1.5">
-                <label class="text-sm font-semibold text-gray-700">Email</label>
-                <input type="email" id="email" class="w-full bg-white/50 border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all" placeholder="you@company.com" required>
-            </div>
-
-            <div class="space-y-1.5">
-                <div class="flex justify-between items-center">
-                    <label class="text-sm font-semibold text-gray-700">Password</label>
-                    <a href="#" class="text-xs text-blue-600 hover:underline font-medium">Forgot password?</a>
-                </div>
-                <input type="password" id="password" class="w-full bg-white/50 border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all" placeholder="••••••••" required>
-            </div>
-
-            <button type="submit" id="submitBtn" class="w-full btn-primary rounded-xl py-2.5 text-sm font-semibold mt-4 flex items-center justify-center gap-2">
-                Sign In
+            <button class="mobile-nav-toggle" id="mobileNavToggle" aria-label="Toggle navigation">
+                <i data-feather="menu" class="w-5 h-5"></i>
             </button>
-        </form>
 
-        <p class="text-center text-sm text-gray-500 mt-6">
-            Don't have an account? <a href="#" class="text-blue-600 hover:underline font-medium">Sign up</a>
-        </p>
-    </div>
+            <nav>
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="dashboard.html">Dashboard</a></li>
+                    <li><a href="index.html" class="btn-secondary" style="padding: 0.5rem 1.25rem; font-size: 0.8125rem;">Sign In</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- ===== Hero Section ===== -->
+    <section id="hero" class="hero">
+        <div class="hero-content animate-slide-up" style="animation-delay: 100ms;">
+            <h1>Build your career<br> among the <span style="color: #24476C;">stars</span></h1>
+            <p>Aldebaram connects young professionals with mentors, courses, and real career opportunities. Navigate your path from ambition to achievement.</p>
+            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <a href="dashboard.html" class="btn-primary">
+                    Get Started <i data-feather="arrow-right" class="w-4 h-4"></i>
+                </a>
+                <a href="#features" class="btn-secondary">Learn More</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== Features Grid ===== -->
+    <section id="features" class="section-padding" style="background: var(--bg-surface);">
+        <div class="container">
+            <div class="text-center animate-slide-up" style="margin-bottom: 3rem;">
+                <h2 style="font-size: clamp(1.75rem, 3vw, 2.5rem); font-weight: 700; color: var(--text-main); margin: 0 0 0.75rem;">Everything you need to grow</h2>
+                <p style="color: var(--text-muted); max-width: 32rem; margin: 0 auto;">A curated set of tools designed to accelerate your professional development.</p>
+            </div>
+
+            <div class="card-grid">
+                <!-- Card 1 -->
+                <div class="card animate-slide-up" style="animation-delay: 100ms;">
+                    <div style="width: 2.5rem; height: 2.5rem; border-radius: 0.75rem; background: rgba(36, 71, 108, 0.15); display: flex; align-items: center; justify-content: center; margin-bottom: 1rem;">
+                        <i data-feather="users" style="color: #5B9BD5; width: 1.25rem; height: 1.25rem;"></i>
+                    </div>
+                    <h3 style="font-size: 1.125rem; font-weight: 700; color: var(--text-main); margin: 0 0 0.5rem;">Workspace Feed</h3>
+                    <p style="font-size: 0.875rem; color: var(--text-muted); margin: 0; line-height: 1.6;">Share insights, ask questions, and connect with peers navigating the same career trajectory.</p>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="card animate-slide-up" style="animation-delay: 200ms;">
+                    <div style="width: 2.5rem; height: 2.5rem; border-radius: 0.75rem; background: rgba(36, 71, 108, 0.15); display: flex; align-items: center; justify-content: center; margin-bottom: 1rem;">
+                        <i data-feather="book-open" style="color: #5B9BD5; width: 1.25rem; height: 1.25rem;"></i>
+                    </div>
+                    <h3 style="font-size: 1.125rem; font-weight: 700; color: var(--text-main); margin: 0 0 0.5rem;">Career Tracks</h3>
+                    <p style="font-size: 0.875rem; color: var(--text-muted); margin: 0; line-height: 1.6;">Enroll in short, practical courses taught by industry leaders to master in-demand skills.</p>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="card animate-slide-up" style="animation-delay: 300ms;">
+                    <div style="width: 2.5rem; height: 2.5rem; border-radius: 0.75rem; background: rgba(36, 71, 108, 0.15); display: flex; align-items: center; justify-content: center; margin-bottom: 1rem;">
+                        <i data-feather="briefcase" style="color: #5B9BD5; width: 1.25rem; height: 1.25rem;"></i>
+                    </div>
+                    <h3 style="font-size: 1.125rem; font-weight: 700; color: var(--text-main); margin: 0 0 0.5rem;">Job Applications</h3>
+                    <p style="font-size: 0.875rem; color: var(--text-muted); margin: 0; line-height: 1.6;">Track every opportunity from application to offer with a visual Kanban-style board.</p>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="card animate-slide-up" style="animation-delay: 400ms;">
+                    <div style="width: 2.5rem; height: 2.5rem; border-radius: 0.75rem; background: rgba(36, 71, 108, 0.15); display: flex; align-items: center; justify-content: center; margin-bottom: 1rem;">
+                        <i data-feather="shield" style="color: #5B9BD5; width: 1.25rem; height: 1.25rem;"></i>
+                    </div>
+                    <h3 style="font-size: 1.125rem; font-weight: 700; color: var(--text-main); margin: 0 0 0.5rem;">Secure Auth</h3>
+                    <p style="font-size: 0.875rem; color: var(--text-muted); margin: 0; line-height: 1.6;">Enterprise-grade authentication with email/password and magic link sign-in support.</p>
+                </div>
+
+                <!-- Card 5 -->
+                <div class="card animate-slide-up" style="animation-delay: 500ms;">
+                    <div style="width: 2.5rem; height: 2.5rem; border-radius: 0.75rem; background: rgba(36, 71, 108, 0.15); display: flex; align-items: center; justify-content: center; margin-bottom: 1rem;">
+                        <i data-feather="credit-card" style="color: #5B9BD5; width: 1.25rem; height: 1.25rem;"></i>
+                    </div>
+                    <h3 style="font-size: 1.125rem; font-weight: 700; color: var(--text-main); margin: 0 0 0.5rem;">Integrated Payments</h3>
+                    <p style="font-size: 0.875rem; color: var(--text-muted); margin: 0; line-height: 1.6;">Seamless checkout with Stripe and PayPal so you can focus on learning, not logistics.</p>
+                </div>
+
+                <!-- Card 6 -->
+                <div class="card animate-slide-up" style="animation-delay: 600ms;">
+                    <div style="width: 2.5rem; height: 2.5rem; border-radius: 0.75rem; background: rgba(36, 71, 108, 0.15); display: flex; align-items: center; justify-content: center; margin-bottom: 1rem;">
+                        <i data-feather="zap" style="color: #5B9BD5; width: 1.25rem; height: 1.25rem;"></i>
+                    </div>
+                    <h3 style="font-size: 1.125rem; font-weight: 700; color: var(--text-main); margin: 0 0 0.5rem;">Lightweight UI</h3>
+                    <p style="font-size: 0.875rem; color: var(--text-muted); margin: 0; line-height: 1.6;">Zero-framework overhead. Pure HTML5, ES6+ JavaScript, and Tailwind CSS for instant load.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== About Section ===== -->
+    <section id="about" class="section-padding">
+        <div class="container text-center animate-slide-up">
+            <h2 style="font-size: clamp(1.75rem, 3vw, 2.5rem); font-weight: 700; color: var(--text-main); margin: 0 0 1rem;">Ready to launch your career?</h2>
+            <p style="color: var(--text-muted); max-width: 30rem; margin: 0 auto 2rem;">Join a community of driven professionals building the future, one skill at a time.</p>
+            <a href="dashboard.html" class="btn-primary">
+                Enter Dashboard <i data-feather="arrow-right" class="w-4 h-4"></i>
+            </a>
+        </div>
+    </section>
+
+    <!-- ===== Footer ===== -->
+    <footer style="border-top: 1px solid var(--border-subtle); padding: 2rem 1.5rem; text-align: center;">
+        <div class="container" style="display: flex; flex-direction: column; align-items: center; gap: 1rem;">
+            <a href="index.html" class="logo-mark" aria-label="Aldebaram">
+                <svg width="24" height="24" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M16 4L4 28H8.5L16 10L23.5 28H28L16 4Z" stroke="#E6E8E6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <circle cx="16" cy="6" r="2.5" fill="#24476C"/>
+                    <line x1="10" y1="20" x2="22" y2="20" stroke="#E6E8E6" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+                </svg>
+                <span class="logo-text" style="font-size: 1rem;">Aldebaram</span>
+            </a>
+            <p style="font-size: 0.75rem; color: var(--text-muted); margin: 0;">&copy; 2026 Aldebaram. All rights reserved.</p>
+        </div>
+    </footer>
 
     <script src="script.js"></script>
     <script>
         feather.replace();
-        
-        document.getElementById('signInForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const btn = document.getElementById('submitBtn');
-            const errorMsg = document.getElementById('error-message');
-            const email = document.getElementById('email').value;
-            
-            // Simulate loading
-            btn.innerHTML = '<i data-feather="loader" class="w-4 h-4 animate-spin"></i> Signing in...';
-            feather.replace();
-            errorMsg.classList.add('hidden');
-            
-            setTimeout(() => {
-                if(email.includes('error')) {
-                    errorMsg.classList.remove('hidden');
-                    btn.innerHTML = 'Sign In';
-                } else {
-                    window.location.href = 'dashboard.html';
-                }
-            }, 1000);
+
+        // Sticky header scroll effect
+        const header = document.querySelector('.header');
+        window.addEventListener('scroll', () => {
+            header.classList.toggle('scrolled', window.scrollY > 20);
         });
+
+        // Mobile nav toggle
+        const mobileToggle = document.getElementById('mobileNavToggle');
+        const navLinks = document.getElementById('navLinks');
+        if (mobileToggle) {
+            mobileToggle.addEventListener('click', () => {
+                navLinks.classList.toggle('open');
+            });
+        }
     </script>
 </body>
 </html>

@@ -1,54 +1,107 @@
-# Dedran — Career Platform for Young Professionals
+# Aldebaram — Career Platform for Young Professionals
 
-> Full-stack web application built with Next.js 16, Supabase, Stripe & PayPal
+> Modern web application built with HTML5, modular ES6+ JavaScript, and Tailwind CSS
 
 ## Tech Stack
 
 | Layer | Technology |
 |-------|-----------|
-| Framework | Next.js 16 (App Router, Turbopack) |
-| Language | TypeScript (strict mode) |
-| UI | React 19, Tailwind CSS v4, Framer Motion 12 |
-| Icons | Lucide React |
-| Auth | Supabase Auth (email/password, magic link, password recovery) |
-| Database | Supabase (PostgreSQL) with Row Level Security |
-| Payments | Stripe Checkout + PayPal Orders API |
-| Deployment | Vercel |
+| Markup | HTML5 (semantic) |
+| Styling | Tailwind CSS v3 (CDN) + Custom CSS3 |
+| JavaScript | Vanilla ES6+ (no framework) |
+| Icons | Feather Icons (CDN) |
+| Typography | System font stack (Inter, Segoe UI, Roboto) |
 
 ## Features
 
-- **Authentication**: Sign up, sign in, password recovery, email confirmation
-- **Dashboard**: Feed, profile, courses, job applications with animated UI
-- **Payments**: Stripe Checkout + PayPal integration
-- **SEO**: Open Graph, Twitter Cards, JSON-LD, sitemap.xml, robots.txt
-- **Security**: CSP headers, HSTS, XSS protection, RLS policies
-- **UX**: Skeleton loaders, toast notifications, error boundaries, loading states
-- **Animations**: Framer Motion page transitions, staggered reveals, micro-interactions
+- **Landing Page**: Sticky header, hero section, feature grid with micro-interactions
+- **Dashboard**: Tabbed workspace with feed, courses, and job application tracking
+- **Design System**: Custom CSS variables for consistent branding across all components
+- **Responsive**: Mobile-first layout with breakpoints at sm, md, lg, xl
+- **Animations**: CSS keyframe animations for page transitions and hover states
+- **Dark Theme**: Midnight Navy background with Astral Blue accents
 
 ## Getting Started
 
 ### Prerequisites
 
-- Node.js 18+
-- A [Supabase](https://supabase.com) project
-- A [Stripe](https://stripe.com) account (optional)
-- A [PayPal Developer](https://developer.paypal.com) account (optional)
+- A modern web browser (Chrome, Firefox, Safari, Edge)
+- No build tools or Node.js required
 
-### Setup
+### Run Locally
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/dedran.git
-cd dedran
+git clone https://github.com/your-username/aldebaram.git
+cd aldebaram
 
-# Install dependencies
-npm install
-
-# Copy environment variables
-cp .env.local.example .env.local
+# Open index.html in your browser
+open index.html
 ```
 
-### Configure `.env.local`
+Or use a local server:
+
+```bash
+# Using Python
+python -m http.server 8000
+
+# Using Node.js (npx)
+npx serve .
+```
+
+Open [http://localhost:8000](http://localhost:8000)
+
+## Project Structure
+
+```
+aldebaram/
+├── index.html          # Landing page with hero section
+├── dashboard.html      # Main dashboard (feed, courses, applications)
+├── styles.css          # Design system tokens and component styles
+├── script.js           # Tab switching and navigation logic
+├── public/             # Static assets
+├── .env.local          # Environment variables (Supabase, Stripe, PayPal)
+├── .env.local.example  # Environment variables template
+└── README.md           # This file
+```
+
+## Design System
+
+| Token | Value | Usage |
+|-------|-------|-------|
+| `--bg-main` | #0A122A | Page background (Midnight Navy) |
+| `--bg-surface` | #1B1B1B | Component canvas (Eclipse Black) |
+| `--accent-primary` | #24476C | Primary accent and focus (Astral Blue) |
+| `--text-muted` | #A8A9AD | Secondary text and elements (Moonlight Gray) |
+| `--text-main` | #E6E8E6 | Primary text and headings (Stardust White) |
+| `--border-subtle` | rgba(36,71,108,0.3) | Component borders |
+
+## Pages
+
+### Landing Page (`index.html`)
+- Sticky header with SVG logo and navigation
+- Hero section with call-to-action
+- Features grid (6 cards) with hover animations
+- About section with CTA
+- Footer with brand mark
+
+### Dashboard (`dashboard.html`)
+- Sticky header with tab navigation
+- Feed tab: Post composer and feed posts
+- Courses tab: Course cards with pricing and ratings
+- Applications tab: Kanban-style job tracker
+
+## Scripts
+
+```bash
+# No build required — edit files directly
+# For development with live reload:
+npx live-server .
+```
+
+## Environment Variables
+
+Configure `.env.local` for Supabase, Stripe, and PayPal integration:
 
 ```env
 # Supabase (required)
@@ -59,151 +112,18 @@ SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
 # Stripe (optional)
 STRIPE_SECRET_KEY=sk_test_...
 NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_...
-STRIPE_WEBHOOK_SECRET=whsec_...
 
 # PayPal (optional)
 NEXT_PUBLIC_PAYPAL_CLIENT_ID=your-client-id
 PAYPAL_CLIENT_SECRET=your-client-secret
-PAYPAL_MODE=sandbox
 ```
 
-### Database Setup
+## Browser Support
 
-1. Go to your Supabase dashboard → SQL Editor
-2. Open `supabase/schema.sql`
-3. Paste and run the SQL
-4. This creates all tables (profiles, posts, courses, applications, payments) with RLS policies
-
-### Run Development Server
-
-```bash
-npm run dev
-```
-
-Open [http://localhost:3000](http://localhost:3000)
-
-## Scripts
-
-```bash
-npm run dev          # Start dev server (Turbopack)
-npm run build        # Production build
-npm run start        # Start production server
-npm run lint         # Run ESLint
-npm run lint:fix     # Auto-fix lint issues
-npm run format       # Format with Prettier
-npm run type-check   # TypeScript type checking
-npm run clean        # Remove .next and node_modules
-```
-
-## Project Structure
-
-```
-src/
-├── app/                          # Next.js App Router
-│   ├── layout.tsx                # Root layout (SEO, fonts, providers)
-│   ├── page.tsx                  # Landing / Home page
-│   ├── loading.tsx               # Global loading UI
-│   ├── not-found.tsx             # 404 page
-│   ├── sitemap.ts                # Dynamic sitemap
-│   ├── robots.ts                 # Robots.txt
-│   ├── auth/
-│   │   ├── page.tsx              # Sign in / Sign up
-│   │   ├── confirm/page.tsx      # Email confirmation
-│   │   ├── forgot-password/      # Password reset request
-│   │   └── update-password/      # Set new password
-│   ├── dashboard/page.tsx        # Main dashboard
-│   └── api/
-│       ├── auth/callback/        # Supabase auth callback
-│       ├── profile/              # User profile CRUD
-│       ├── posts/                # Posts CRUD
-│       ├── courses/              # Course management
-│       ├── applications/         # Job applications
-│       ├── payments/
-│       │   ├── stripe/           # Stripe checkout
-│       │   └── paypal/           # PayPal orders
-│       └── webhooks/
-│           └── stripe/           # Stripe webhook handler
-├── components/
-│   ├── ui/                       # Reusable UI components
-│   │   ├── ErrorBoundary.tsx     # React error boundary
-│   │   ├── Skeleton.tsx          # Loading skeletons
-│   │   └── Toast.tsx             # Toast notification system
-│   ├── Landing.tsx               # Landing page
-│   ├── AuthForm.tsx              # Auth form
-│   └── Dashboard.tsx             # Dashboard
-├── lib/
-│   ├── auth.ts                   # Auth helpers (Supabase)
-│   ├── stripe.ts                 # Stripe client
-│   ├── utils.ts                  # cn() utility
-│   ├── supabase/
-│   │   ├── client.ts             # Browser Supabase client
-│   │   └── server.ts             # Server Supabase client
-│   └── hooks/
-│       ├── useAuth.ts            # Auth hook
-│       ├── useApi.ts             # API fetching hook
-│       └── useStripe.ts          # Payment hook
-├── types/
-│   └── database.ts               # Supabase generated types
-└── styles/                       # (globals.css in app/)
-```
-
-## API Endpoints
-
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/profile` | Get current user profile |
-| PATCH | `/api/profile` | Update profile |
-| GET | `/api/posts` | List all posts |
-| POST | `/api/posts` | Create a post |
-| DELETE | `/api/posts?id=` | Delete a post |
-| GET | `/api/courses` | List all courses |
-| POST | `/api/courses` | Create a course |
-| GET | `/api/applications` | List user applications |
-| POST | `/api/applications` | Create application |
-| PATCH | `/api/applications` | Update application |
-| POST | `/api/payments/stripe` | Create Stripe checkout |
-| POST | `/api/payments/paypal` | Create PayPal order |
-| POST | `/api/webhooks/stripe` | Stripe webhook handler |
-
-## Database Tables
-
-- **profiles** — User profiles (name, title, bio, avatar)
-- **posts** — User posts (regular + temporary/expiring)
-- **courses** — Course catalog
-- **course_enrollments** — User-course relationships
-- **applications** — Job applications tracker
-- **payments** — Payment records (Stripe + PayPal)
-- **saved_posts** — Bookmarked posts
-- **post_likes** — Post likes
-
-All tables have Row Level Security (RLS) policies enabled.
-
-## Deployment
-
-### Vercel (Recommended)
-
-```bash
-# Install Vercel CLI
-npm i -g vercel
-
-# Deploy
-vercel
-
-# Set environment variables in Vercel dashboard
-```
-
-### Environment Variables in Vercel
-
-1. Go to your Vercel project → Settings → Environment Variables
-2. Add all variables from `.env.local`
-3. Redeploy
-
-### Stripe Webhook
-
-1. Go to Stripe Dashboard → Developers → Webhooks
-2. Add endpoint: `https://your-domain.com/api/webhooks/stripe`
-3. Select events: `checkout.session.completed`, `payment_intent.payment_failed`
-4. Copy the webhook signing secret to `STRIPE_WEBHOOK_SECRET`
+- Chrome 90+
+- Firefox 88+
+- Safari 14+
+- Edge 90+
 
 ## License
 
