@@ -17,17 +17,30 @@
   --color-error: #EF4444;
   --color-info: #3B82F6;
   
+  /* User Requested Palette */
+  --color-eclipse: #1B1B1B;
+  --color-moonlight: #A8A9AD;
+  --color-astral: #24476C;
+  --color-midnight: #0A122A;
+  --color-stardust: #E6E8E6;
+
+  /* Semantic Colors for states (can be derived or standard) */
+  --color-success: #10B981;
+  --color-warning: #F59E0B;
+  --color-error: #EF4444;
+  --color-info: #3B82F6;
+  
   /* Additional neutral shades derived from background */
-  --color-background: #F3F4F6; /* Light gray background */
+  --color-background: var(--color-stardust);
   --color-foreground: var(--color-eclipse);
   --color-card: #FFFFFF;
   --color-card-foreground: var(--color-eclipse);
-  --color-border: #E5E7EB;
+  --color-border: #A8A9AD40; /* Moonlight Gray with 25% opacity for clean borders */
   --color-primary: var(--color-midnight);
   --color-primary-foreground: #FFFFFF;
-  --color-muted: var(--color-moonlight);
-  --color-muted-foreground: #6B7280;
-  --color-accent: var(--color-midnight);
+  --color-muted: var(--color-stardust);
+  --color-muted-foreground: #5A5A5A; /* Darker than moonlight for readable text */
+  --color-accent: var(--color-astral);
   --color-accent-foreground: #FFFFFF;
   --color-destructive: #EF4444;
 }

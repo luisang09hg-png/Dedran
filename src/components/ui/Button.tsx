@@ -16,10 +16,10 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         className={cn(
           "inline-flex items-center justify-center rounded-lg text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-astral disabled:pointer-events-none disabled:opacity-50",
           {
-            "bg-[var(--color-astral)] text-white hover:bg-[var(--color-midnight)]": variant === "primary",
-            "bg-[var(--color-moonlight)] text-black hover:bg-gray-300": variant === "secondary",
-            "hover:bg-[var(--color-midnight)] hover:text-white text-[var(--color-moonlight)]": variant === "ghost",
-            "border border-[var(--color-astral)] text-[var(--color-astral)] hover:bg-[var(--color-astral)] hover:text-white": variant === "outline",
+            "bg-[var(--color-midnight)] text-white hover:bg-[var(--color-eclipse)]": variant === "primary",
+            "bg-[var(--color-stardust)] text-black hover:bg-[var(--color-moonlight)]": variant === "secondary",
+            "hover:bg-[var(--color-stardust)] hover:text-black text-[var(--color-moonlight)]": variant === "ghost",
+            "border border-[var(--color-midnight)] text-[var(--color-midnight)] hover:bg-[var(--color-stardust)]": variant === "outline",
             "bg-[var(--color-error)] text-white hover:bg-red-600": variant === "danger",
             "h-8 px-3 text-xs": size === "sm",
             "h-10 px-4 py-2": size === "md",
