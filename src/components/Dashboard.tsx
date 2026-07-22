@@ -10,7 +10,7 @@ import {
   Building2, Upload, MoreHorizontal,
   Flame, LogOut as SignOut
 } from 'lucide-react'
-import { signOut, getSession } from '@/lib/auth'
+import { signOut } from '@/lib/auth'
 
 type Nav = 'feed' | 'profile' | 'courses' | 'applications'
 type ProfileTab = 'about' | 'experience' | 'skills' | 'posts'
@@ -67,7 +67,7 @@ interface Application {
 }
 
 const ME = {
-  name: getSession()?.name || 'Alex Rivera',
+  name: 'Alex Rivera',
   title: 'Junior UX Designer',
   location: 'Barcelona, Spain',
   bio: 'Passionate about crafting human-centred digital experiences. Currently seeking opportunities in product design and UX research.',
@@ -1307,8 +1307,8 @@ export default function Dashboard({ onSignOut }: DashboardProps) {
     { key: 'applications', icon: Briefcase, label: 'Applications' },
   ]
 
-  const handleSignOut = () => {
-    signOut()
+  const handleSignOut = async () => {
+    await signOut()
     onSignOut()
   }
 
