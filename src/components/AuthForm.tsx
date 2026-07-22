@@ -52,11 +52,9 @@ export default function AuthForm({ mode, onSuccess, onSwitchMode }: AuthFormProp
     setError(null)
     setLoading(true)
 
-    await new Promise(r => setTimeout(r, 600))
-
     const result = isSignUp
-      ? signUp(name, email, password)
-      : signIn(email, password)
+      ? await signUp(name, email, password)
+      : await signIn(email, password)
 
     setLoading(false)
 

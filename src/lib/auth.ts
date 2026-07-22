@@ -1,89 +1,37 @@
-const STORAGE_KEY = 'dedran_users'
-const SESSION_KEY = 'dedran_session'
+import { createClient } from './supabase/client'
 
-interface StoredUser {
-  id: string
-  name: string
-  email: string
-  password: string
-  createdAt: string
-}
-
-interface Session {
-  userId: string
-  name: string
-  email: string
-}
-
-function getUsers(): StoredUser[] {
-  try {
-    return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]')
-  } catch {
-    return []
+export async function getSession() {
+  const supabase = createClient()
+  const { data: { session } } = await supabase.auth.getSession()
+  if (!session) return null
+  return {
+    userId: session.user.id,
+    name: session.user.user_metadata?.full_name || session.user.email?.split('@')[0] || 'User',
+    email: session.user.email || '',
   }
 }
 
-function saveUsers(users: StoredUser[]) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(users))
-}
-
-export function getSession(): Session | null {
-  try {
-    const raw = localStorage.getItem(SESSION_KEY)
-    return raw ? JSON.parse(raw) : null
-  } catch {
-    return null
-  }
-}
-
-function saveSession(session: Session) {
-  localStorage.setItem(SESSION_KEY, JSON.stringify(session))
-}
-
-export function clearSession() {
-  localStorage.removeItem(SESSION_KEY)
-}
-
-export function signUp(name: string, email: string, password: string): { error?: string } {
-  const users = getUsers()
-
-  if (users.find(u => u.email.toLowerCase() === email.toLowerCase())) {
-    return { error: 'An account with this email already exists' }
-  }
-
-  const newUser: StoredUser = {
-    id: crypto.randomUUID(),
-    name,
-    email: email.toLowerCase(),
+export async function signUp(name: string, email: string, password: string): Promise<{ error?: string }> {
+  const supabase = createClient()
+  const { error } = await supabase.auth.signUp({
+    email,
     password,
-    createdAt: new Date().toISOString(),
-  }
-
-  users.push(newUser)
-  saveUsers(users)
-
-  saveSession({ userId: newUser.id, name: newUser.name, email: newUser.email })
-
+    options: {
+      data: { full_name: name },
+    },
+  })
+  if (error) return { error: error.message }
   return {}
 }
 
-export function signIn(email: string, password: string): { error?: string } {
-  const users = getUsers()
-  const user = users.find(u => u.email.toLowerCase() === email.toLowerCase())
-
-  if (!user) {
-    return { error: 'No account found with this email' }
-  }
-
-  if (user.password !== password) {
-    return { error: 'Invalid password' }
-  }
-
-  saveSession({ userId: user.id, name: user.name, email: user.email })
-
+export async function signIn(email: string, password: string): Promise<{ error?: string }> {
+  const supabase = createClient()
+  const { error } = await supabase.auth.signInWithPassword({ email, password })
+  if (error) return { error: error.message }
   return {}
 }
 
-export function signOut() {
-  clearSession()
+export async function signOut() {
+  const supabase = createClient()
+  await supabase.auth.signOut()
 }
