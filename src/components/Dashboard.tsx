@@ -913,6 +913,11 @@ function CoursesSection() {
   )
 }
 
+const appCardVariants = {
+  hidden: { opacity: 0, y: 16 },
+  visible: (i: number) => ({ opacity: 1, y: 0, transition: { duration: 0.35, delay: i * 0.08, ease: 'easeOut' } }),
+}
+
 function ApplicationsSection() {
   const [apps] = useState(INITIAL_APPS)
   const [showCallModal, setShowCallModal] = useState<string | null>(null)
@@ -929,29 +934,77 @@ function ApplicationsSection() {
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-6">
-      <div className="flex items-center justify-between mb-5">
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4 }}
+        className="flex items-center justify-between mb-5"
+      >
         <div><h2 className="text-xl font-extrabold text-[#E6E8E6]">Applications</h2><p className="text-xs text-[#A8A9AD] mt-0.5">{apps.length} active applications</p></div>
-        <button onClick={() => setShowNewApp(true)} className="flex items-center gap-2 px-4 py-2.5 bg-[#24476C] hover:bg-[#2E5A8A] rounded-xl text-sm font-bold text-white transition-all"><Upload size={14} />Submit CV</button>
-      </div>
+        <motion.button
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          onClick={() => setShowNewApp(true)}
+          className="flex items-center gap-2 px-4 py-2.5 bg-[#24476C] hover:bg-[#2E5A8A] rounded-xl text-sm font-bold text-white transition-all"
+        >
+          <Upload size={14} />Submit CV
+        </motion.button>
+      </motion.div>
 
-      <div className="grid grid-cols-5 gap-2 mb-6">
-        {statusOrder.map(s => {
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.1, duration: 0.4 }}
+        className="grid grid-cols-5 gap-2 mb-6"
+      >
+        {statusOrder.map((s, idx) => {
           const cfg: Record<string, string> = { 'Applied': 'border-blue-500/30 bg-blue-900/10', 'Under Review': 'border-amber-500/30 bg-amber-900/10', 'Interview Scheduled': 'border-violet-500/30 bg-violet-900/10', 'Offer Received': 'border-emerald-500/30 bg-emerald-900/10', 'Rejected': 'border-red-500/30 bg-red-900/10' }
           const textCfg: Record<string, string> = { 'Applied': 'text-blue-400', 'Under Review': 'text-amber-400', 'Interview Scheduled': 'text-violet-400', 'Offer Received': 'text-emerald-400', 'Rejected': 'text-red-400' }
           return (
-            <div key={s} className={`rounded-xl border p-3 text-center ${cfg[s]}`}>
-              <p className={`text-xl font-extrabold ${textCfg[s]}`}>{counts[s] || 0}</p>
+            <motion.div
+              key={s}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.15 + idx * 0.05, duration: 0.3 }}
+              whileHover={{ scale: 1.03 }}
+              className={`rounded-xl border p-3 text-center ${cfg[s]}`}
+            >
+              <motion.p
+                key={counts[s]}
+                initial={{ scale: 1.3, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ type: 'spring', stiffness: 300, damping: 15 }}
+                className={`text-xl font-extrabold ${textCfg[s]}`}
+              >
+                {counts[s] || 0}
+              </motion.p>
               <p className="text-[10px] text-[#A8A9AD] leading-tight mt-0.5 font-medium">{s}</p>
-            </div>
+            </motion.div>
           )
         })}
-      </div>
+      </motion.div>
 
-      <div className="space-y-3">
-        {apps.map(app => (
-          <div key={app.id} className="bg-[#0D1A31] rounded-2xl border border-[#1E3354] p-5 hover:border-[#24476C]/50 transition-all">
+      <motion.div
+        initial="hidden"
+        animate="visible"
+        className="space-y-3"
+      >
+        {apps.map((app, idx) => (
+          <motion.div
+            key={app.id}
+            custom={idx}
+            variants={appCardVariants}
+            whileHover={{ y: -2, transition: { duration: 0.2 } }}
+            className="bg-[#0D1A31] rounded-2xl border border-[#1E3354] p-5 hover:border-[#24476C]/50 transition-all"
+          >
             <div className="flex items-start gap-4">
-              <div className="w-12 h-12 rounded-xl flex items-center justify-center text-white font-extrabold text-lg shrink-0 shadow-lg" style={{ backgroundColor: app.color }}>{app.initials}</div>
+              <motion.div
+                whileHover={{ scale: 1.05, rotate: -3 }}
+                className="w-12 h-12 rounded-xl flex items-center justify-center text-white font-extrabold text-lg shrink-0 shadow-lg"
+                style={{ backgroundColor: app.color }}
+              >
+                {app.initials}
+              </motion.div>
               <div className="flex-1 min-w-0">
                 <div className="flex items-start justify-between gap-2 flex-wrap">
                   <div><h3 className="font-bold text-[#E6E8E6]">{app.role}</h3><p className="text-sm text-[#A8A9AD]">{app.company} · {app.location}</p></div>
@@ -972,87 +1025,273 @@ function ApplicationsSection() {
                 <div className="flex gap-2 mt-3">
                   {app.status !== 'Rejected' && (
                     <>
-                      <button onClick={() => setShowCallModal(app.id)} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#24476C]/30 border border-[#24476C]/40 text-[#60A5FA] text-xs font-semibold hover:bg-[#24476C]/50 transition-all"><Video size={12} />Schedule Call</button>
-                      <button onClick={() => setShowContactModal(app.id)} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#0A122A] border border-[#1E3354] text-[#A8A9AD] text-xs font-semibold hover:text-[#E6E8E6] hover:border-[#24476C]/40 transition-all"><Mail size={12} />Contact</button>
+                      <motion.button
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        onClick={() => setShowCallModal(app.id)}
+                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#24476C]/30 border border-[#24476C]/40 text-[#60A5FA] text-xs font-semibold hover:bg-[#24476C]/50 transition-all"
+                      >
+                        <Video size={12} />Schedule Call
+                      </motion.button>
+                      <motion.button
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        onClick={() => setShowContactModal(app.id)}
+                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#0A122A] border border-[#1E3354] text-[#A8A9AD] text-xs font-semibold hover:text-[#E6E8E6] hover:border-[#24476C]/40 transition-all"
+                      >
+                        <Mail size={12} />Contact
+                      </motion.button>
                     </>
                   )}
-                  {app.status === 'Offer Received' && <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-900/30 border border-emerald-900/50 text-emerald-400 text-xs font-semibold hover:bg-emerald-900/50 transition-all"><CheckCircle size={12} />Accept Offer</button>}
+                  {app.status === 'Offer Received' && (
+                    <motion.button
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-900/30 border border-emerald-900/50 text-emerald-400 text-xs font-semibold hover:bg-emerald-900/50 transition-all"
+                    >
+                      <CheckCircle size={12} />Accept Offer
+                    </motion.button>
+                  )}
                 </div>
               </div>
             </div>
-          </div>
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
 
-      {showCallModal && callApp && (
-        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-fadeIn">
-          <div className="bg-[#0D1A31] rounded-2xl border border-[#24476C]/40 w-full max-w-md shadow-2xl animate-scalePop">
-            <div className="flex items-center justify-between px-5 py-4 border-b border-[#1E3354]">
-              <div className="flex items-center gap-2"><Video size={16} className="text-[#60A5FA]" /><h3 className="font-bold text-[#E6E8E6]">Schedule Video Interview</h3></div>
-              <button onClick={() => setShowCallModal(null)} className="p-1.5 rounded-lg hover:bg-[#24476C]/30 text-[#A8A9AD]"><X size={18} /></button>
-            </div>
-            <div className="p-5 space-y-4">
-              <div className="flex items-center gap-3 p-3 bg-[#0A122A] rounded-xl">
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center font-extrabold text-white" style={{ backgroundColor: callApp.color }}>{callApp.initials}</div>
-                <div><p className="font-semibold text-[#E6E8E6] text-sm">{callApp.company}</p><p className="text-xs text-[#A8A9AD]">{callApp.role}</p></div>
+      <AnimatePresence>
+        {showCallModal && callApp && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              transition={{ duration: 0.25 }}
+              className="bg-[#0D1A31] rounded-2xl border border-[#24476C]/40 w-full max-w-md shadow-2xl"
+            >
+              <div className="flex items-center justify-between px-5 py-4 border-b border-[#1E3354]">
+                <div className="flex items-center gap-2"><Video size={16} className="text-[#60A5FA]" /><h3 className="font-bold text-[#E6E8E6]">Schedule Video Interview</h3></div>
+                <motion.button
+                  whileHover={{ rotate: 90 }}
+                  onClick={() => setShowCallModal(null)}
+                  className="p-1.5 rounded-lg hover:bg-[#24476C]/30 text-[#A8A9AD]"
+                >
+                  <X size={18} />
+                </motion.button>
               </div>
-              <div><label className="text-xs font-semibold text-[#A8A9AD] uppercase tracking-wider">Preferred Date</label><input type="date" value={selectedDate} onChange={e => setSelectedDate(e.target.value)} className="mt-1.5 w-full bg-[#0A122A] border border-[#1E3354] rounded-xl px-3 py-2.5 text-sm text-[#E6E8E6] focus:outline-none focus:border-[#24476C]" /></div>
-              <div><label className="text-xs font-semibold text-[#A8A9AD] uppercase tracking-wider">Preferred Time</label><div className="grid grid-cols-3 gap-2 mt-1.5">{['09:00','10:30','12:00','14:00','15:30','17:00'].map(t => (<button key={t} onClick={() => setSelectedTime(t)} className={`py-2 rounded-xl text-sm font-semibold transition-all ${selectedTime === t ? 'bg-[#24476C] text-white' : 'bg-[#0A122A] text-[#A8A9AD] border border-[#1E3354] hover:border-[#24476C]/40 hover:text-[#E6E8E6]'}`}>{t}</button>))}</div></div>
-              <div className="flex gap-2 pt-2">
-                <button onClick={() => setShowCallModal(null)} className="flex-1 py-2.5 rounded-xl text-sm text-[#A8A9AD] border border-[#1E3354] hover:text-[#E6E8E6] transition-colors">Cancel</button>
-                <button onClick={() => setShowCallModal(null)} disabled={!selectedDate || !selectedTime} className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl bg-[#24476C] hover:bg-[#2E5A8A] text-white text-sm font-bold disabled:opacity-40 transition-all"><Send size={14} />Request Call</button>
+              <div className="p-5 space-y-4">
+                <motion.div
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.1 }}
+                  className="flex items-center gap-3 p-3 bg-[#0A122A] rounded-xl"
+                >
+                  <div className="w-10 h-10 rounded-xl flex items-center justify-center font-extrabold text-white" style={{ backgroundColor: callApp.color }}>{callApp.initials}</div>
+                  <div><p className="font-semibold text-[#E6E8E6] text-sm">{callApp.company}</p><p className="text-xs text-[#A8A9AD]">{callApp.role}</p></div>
+                </motion.div>
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.15 }}
+                >
+                  <label className="text-xs font-semibold text-[#A8A9AD] uppercase tracking-wider">Preferred Date</label>
+                  <input type="date" value={selectedDate} onChange={e => setSelectedDate(e.target.value)} className="mt-1.5 w-full bg-[#0A122A] border border-[#1E3354] rounded-xl px-3 py-2.5 text-sm text-[#E6E8E6] focus:outline-none focus:border-[#24476C] transition-all" />
+                </motion.div>
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.2 }}
+                >
+                  <label className="text-xs font-semibold text-[#A8A9AD] uppercase tracking-wider">Preferred Time</label>
+                  <div className="grid grid-cols-3 gap-2 mt-1.5">
+                    {['09:00','10:30','12:00','14:00','15:30','17:00'].map(t => (
+                      <motion.button
+                        key={t}
+                        whileTap={{ scale: 0.95 }}
+                        onClick={() => setSelectedTime(t)}
+                        className={`py-2 rounded-xl text-sm font-semibold transition-all ${selectedTime === t ? 'bg-[#24476C] text-white' : 'bg-[#0A122A] text-[#A8A9AD] border border-[#1E3354] hover:border-[#24476C]/40 hover:text-[#E6E8E6]'}`}
+                      >
+                        {t}
+                      </motion.button>
+                    ))}
+                  </div>
+                </motion.div>
+                <div className="flex gap-2 pt-2">
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => setShowCallModal(null)}
+                    className="flex-1 py-2.5 rounded-xl text-sm text-[#A8A9AD] border border-[#1E3354] hover:text-[#E6E8E6] transition-colors"
+                  >
+                    Cancel
+                  </motion.button>
+                  <motion.button
+                    whileHover={selectedDate && selectedTime ? { scale: 1.02 } : {}}
+                    whileTap={selectedDate && selectedTime ? { scale: 0.98 } : {}}
+                    onClick={() => setShowCallModal(null)}
+                    disabled={!selectedDate || !selectedTime}
+                    className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl bg-[#24476C] hover:bg-[#2E5A8A] text-white text-sm font-bold disabled:opacity-40 transition-all"
+                  >
+                    <Send size={14} />Request Call
+                  </motion.button>
+                </div>
               </div>
-            </div>
-          </div>
-        </div>
-      )}
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
-      {showContactModal && contactApp && (
-        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-fadeIn">
-          <div className="bg-[#0D1A31] rounded-2xl border border-[#24476C]/40 w-full max-w-md shadow-2xl animate-scalePop">
-            <div className="flex items-center justify-between px-5 py-4 border-b border-[#1E3354]">
-              <div className="flex items-center gap-2"><Mail size={16} className="text-[#60A5FA]" /><h3 className="font-bold text-[#E6E8E6]">Contact Employer</h3></div>
-              <button onClick={() => setShowContactModal(null)} className="p-1.5 rounded-lg hover:bg-[#24476C]/30 text-[#A8A9AD]"><X size={18} /></button>
-            </div>
-            <div className="p-5 space-y-4">
-              <div className="flex items-center gap-3 p-3 bg-[#0A122A] rounded-xl">
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center font-extrabold text-white" style={{ backgroundColor: contactApp.color }}>{contactApp.initials}</div>
-                <div><p className="font-semibold text-[#E6E8E6] text-sm">{contactApp.company}</p><p className="text-xs text-[#A8A9AD]">{contactApp.role}</p></div>
+      <AnimatePresence>
+        {showContactModal && contactApp && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              transition={{ duration: 0.25 }}
+              className="bg-[#0D1A31] rounded-2xl border border-[#24476C]/40 w-full max-w-md shadow-2xl"
+            >
+              <div className="flex items-center justify-between px-5 py-4 border-b border-[#1E3354]">
+                <div className="flex items-center gap-2"><Mail size={16} className="text-[#60A5FA]" /><h3 className="font-bold text-[#E6E8E6]">Contact Employer</h3></div>
+                <motion.button
+                  whileHover={{ rotate: 90 }}
+                  onClick={() => setShowContactModal(null)}
+                  className="p-1.5 rounded-lg hover:bg-[#24476C]/30 text-[#A8A9AD]"
+                >
+                  <X size={18} />
+                </motion.button>
               </div>
-              <div><label className="text-xs font-semibold text-[#A8A9AD] uppercase tracking-wider">Message</label><textarea value={contactMsg} onChange={e => setContactMsg(e.target.value)} rows={4} className="mt-1.5 w-full bg-[#0A122A] border border-[#1E3354] rounded-xl px-3 py-2.5 text-sm text-[#E6E8E6] resize-none focus:outline-none focus:border-[#24476C] font-inter" placeholder="Write a brief message…" /></div>
-              <div className="flex gap-2 pt-2">
-                <button onClick={() => setShowContactModal(null)} className="flex-1 py-2.5 rounded-xl text-sm text-[#A8A9AD] border border-[#1E3354] hover:text-[#E6E8E6] transition-colors">Cancel</button>
-                <button onClick={() => setShowContactModal(null)} disabled={!contactMsg.trim()} className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl bg-[#24476C] hover:bg-[#2E5A8A] text-white text-sm font-bold disabled:opacity-40 transition-all"><Send size={14} />Send</button>
+              <div className="p-5 space-y-4">
+                <motion.div
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.1 }}
+                  className="flex items-center gap-3 p-3 bg-[#0A122A] rounded-xl"
+                >
+                  <div className="w-10 h-10 rounded-xl flex items-center justify-center font-extrabold text-white" style={{ backgroundColor: contactApp.color }}>{contactApp.initials}</div>
+                  <div><p className="font-semibold text-[#E6E8E6] text-sm">{contactApp.company}</p><p className="text-xs text-[#A8A9AD]">{contactApp.role}</p></div>
+                </motion.div>
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.15 }}
+                >
+                  <label className="text-xs font-semibold text-[#A8A9AD] uppercase tracking-wider">Message</label>
+                  <textarea value={contactMsg} onChange={e => setContactMsg(e.target.value)} rows={4} className="mt-1.5 w-full bg-[#0A122A] border border-[#1E3354] rounded-xl px-3 py-2.5 text-sm text-[#E6E8E6] resize-none focus:outline-none focus:border-[#24476C] transition-all font-inter" placeholder="Write a brief message…" />
+                </motion.div>
+                <div className="flex gap-2 pt-2">
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => setShowContactModal(null)}
+                    className="flex-1 py-2.5 rounded-xl text-sm text-[#A8A9AD] border border-[#1E3354] hover:text-[#E6E8E6] transition-colors"
+                  >
+                    Cancel
+                  </motion.button>
+                  <motion.button
+                    whileHover={contactMsg.trim() ? { scale: 1.02 } : {}}
+                    whileTap={contactMsg.trim() ? { scale: 0.98 } : {}}
+                    onClick={() => setShowContactModal(null)}
+                    disabled={!contactMsg.trim()}
+                    className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl bg-[#24476C] hover:bg-[#2E5A8A] text-white text-sm font-bold disabled:opacity-40 transition-all"
+                  >
+                    <Send size={14} />Send
+                  </motion.button>
+                </div>
               </div>
-            </div>
-          </div>
-        </div>
-      )}
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
-      {showNewApp && (
-        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-fadeIn">
-          <div className="bg-[#0D1A31] rounded-2xl border border-[#24476C]/40 w-full max-w-lg shadow-2xl animate-scalePop">
-            <div className="flex items-center justify-between px-5 py-4 border-b border-[#1E3354]">
-              <div className="flex items-center gap-2"><Upload size={16} className="text-[#60A5FA]" /><h3 className="font-bold text-[#E6E8E6]">Submit New Application</h3></div>
-              <button onClick={() => setShowNewApp(false)} className="p-1.5 rounded-lg hover:bg-[#24476C]/30 text-[#A8A9AD]"><X size={18} /></button>
-            </div>
-            <div className="p-5 space-y-4">
-              <div><label className="text-xs font-semibold text-[#A8A9AD] uppercase tracking-wider">Company</label><input className="mt-1.5 w-full bg-[#0A122A] border border-[#1E3354] rounded-xl px-3 py-2.5 text-sm text-[#E6E8E6] focus:outline-none focus:border-[#24476C]" placeholder="Company name" /></div>
-              <div><label className="text-xs font-semibold text-[#A8A9AD] uppercase tracking-wider">Role</label><input className="mt-1.5 w-full bg-[#0A122A] border border-[#1E3354] rounded-xl px-3 py-2.5 text-sm text-[#E6E8E6] focus:outline-none focus:border-[#24476C]" placeholder="Job title" /></div>
-              <div><label className="text-xs font-semibold text-[#A8A9AD] uppercase tracking-wider">CV / Resume</label><div className="mt-1.5 border-2 border-dashed border-[#1E3354] rounded-xl p-6 text-center hover:border-[#24476C] transition-colors cursor-pointer"><Upload size={20} className="text-[#A8A9AD] mx-auto mb-2" /><p className="text-xs text-[#A8A9AD] font-inter">Drop your file here or click to browse</p></div></div>
-              <div className="flex gap-2 pt-2">
-                <button onClick={() => setShowNewApp(false)} className="flex-1 py-2.5 rounded-xl text-sm text-[#A8A9AD] border border-[#1E3354] hover:text-[#E6E8E6] transition-colors">Cancel</button>
-                <button className="flex-1 py-2.5 rounded-xl bg-[#24476C] hover:bg-[#2E5A8A] text-white text-sm font-bold transition-all"><Upload size={14} />Submit</button>
+      <AnimatePresence>
+        {showNewApp && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              transition={{ duration: 0.25 }}
+              className="bg-[#0D1A31] rounded-2xl border border-[#24476C]/40 w-full max-w-lg shadow-2xl"
+            >
+              <div className="flex items-center justify-between px-5 py-4 border-b border-[#1E3354]">
+                <div className="flex items-center gap-2"><Upload size={16} className="text-[#60A5FA]" /><h3 className="font-bold text-[#E6E8E6]">Submit New Application</h3></div>
+                <motion.button
+                  whileHover={{ rotate: 90 }}
+                  onClick={() => setShowNewApp(false)}
+                  className="p-1.5 rounded-lg hover:bg-[#24476C]/30 text-[#A8A9AD]"
+                >
+                  <X size={18} />
+                </motion.button>
               </div>
-            </div>
-          </div>
-        </div>
-      )}
+              <div className="p-5 space-y-4">
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.05 }}>
+                  <label className="text-xs font-semibold text-[#A8A9AD] uppercase tracking-wider">Company</label>
+                  <input className="mt-1.5 w-full bg-[#0A122A] border border-[#1E3354] rounded-xl px-3 py-2.5 text-sm text-[#E6E8E6] focus:outline-none focus:border-[#24476C] transition-all" placeholder="Company name" />
+                </motion.div>
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }}>
+                  <label className="text-xs font-semibold text-[#A8A9AD] uppercase tracking-wider">Role</label>
+                  <input className="mt-1.5 w-full bg-[#0A122A] border border-[#1E3354] rounded-xl px-3 py-2.5 text-sm text-[#E6E8E6] focus:outline-none focus:border-[#24476C] transition-all" placeholder="Job title" />
+                </motion.div>
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.15 }}
+                >
+                  <label className="text-xs font-semibold text-[#A8A9AD] uppercase tracking-wider">CV / Resume</label>
+                  <div className="mt-1.5 border-2 border-dashed border-[#1E3354] rounded-xl p-6 text-center hover:border-[#24476C] transition-colors cursor-pointer group">
+                    <motion.div
+                      whileHover={{ scale: 1.05 }}
+                      className="inline-block"
+                    >
+                      <Upload size={20} className="text-[#A8A9AD] mx-auto mb-2 group-hover:text-[#60A5FA] transition-colors" />
+                    </motion.div>
+                    <p className="text-xs text-[#A8A9AD] font-inter">Drop your file here or click to browse</p>
+                  </div>
+                </motion.div>
+                <div className="flex gap-2 pt-2">
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => setShowNewApp(false)}
+                    className="flex-1 py-2.5 rounded-xl text-sm text-[#A8A9AD] border border-[#1E3354] hover:text-[#E6E8E6] transition-colors"
+                  >
+                    Cancel
+                  </motion.button>
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="flex-1 py-2.5 rounded-xl bg-[#24476C] hover:bg-[#2E5A8A] text-white text-sm font-bold transition-all"
+                  >
+                    <Upload size={14} />Submit
+                  </motion.button>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   )
 }
-
-import { motion } from 'framer-motion'
 
 interface DashboardProps {
   onSignOut: () => void
@@ -1073,53 +1312,95 @@ export default function Dashboard({ onSignOut }: DashboardProps) {
     onSignOut()
   }
 
+  const sidebarVariants = {
+    hidden: { opacity: 0, x: -60 },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.5, ease: 'easeOut' } },
+  }
+
   const sectionVariants = {
     initial: { opacity: 0, x: 20 },
     animate: { opacity: 1, x: 0, transition: { duration: 0.3, ease: 'easeOut' } },
   }
 
+  const navItemVariants = {
+    hidden: { opacity: 0, x: -20 },
+    visible: (i: number) => ({ opacity: 1, x: 0, transition: { delay: 0.15 + i * 0.06, duration: 0.3, ease: 'easeOut' } }),
+  }
+
   return (
     <div className="min-h-screen bg-[#06091A] flex">
       {/* Sidebar */}
-      <aside className="hidden lg:flex flex-col w-64 bg-[#0A122A] border-r border-[#1E3354] fixed h-full">
-        <div className="p-6">
+      <motion.aside
+        variants={sidebarVariants}
+        initial="hidden"
+        animate="visible"
+        className="hidden lg:flex flex-col w-64 bg-[#0A122A] border-r border-[#1E3354] fixed h-full"
+      >
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1, duration: 0.4 }}
+          className="p-6"
+        >
           <h1 className="text-2xl font-extrabold bg-gradient-to-r from-[#60A5FA] to-[#24476C] bg-clip-text text-transparent">Dedran</h1>
           <p className="text-xs text-[#A8A9AD] mt-0.5 font-inter">Career Launch Platform</p>
-        </div>
+        </motion.div>
         <nav className="flex-1 px-3 space-y-1">
-          {navItems.map(item => (
-            <button
+          {navItems.map((item, idx) => (
+            <motion.button
               key={item.key}
+              custom={idx}
+              variants={navItemVariants}
+              initial="hidden"
+              animate="visible"
+              whileHover={{ x: 3, transition: { duration: 0.15 } }}
+              whileTap={{ scale: 0.98 }}
               onClick={() => setActiveNav(item.key)}
               className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all ${
                 activeNav === item.key
-                  ? 'bg-[#24476C] text-white shadow-sm'
+                  ? 'bg-[#24476C] text-white shadow-sm shadow-[#24476C]/20'
                   : 'text-[#A8A9AD] hover:text-[#E6E8E6] hover:bg-[#24476C]/20'
               }`}
             >
               <item.icon size={18} />
               {item.label}
-            </button>
+            </motion.button>
           ))}
         </nav>
-        <div className="p-3 border-t border-[#1E3354]">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.4 }}
+          className="p-3 border-t border-[#1E3354]"
+        >
           <div className="flex items-center gap-3 px-4 py-3">
             <Avatar src={ME.avatar} name={ME.name} size={36} />
             <div className="flex-1 min-w-0">
               <p className="text-sm font-semibold text-[#E6E8E6] truncate">{ME.name}</p>
               <p className="text-xs text-[#A8A9AD] truncate font-inter">{ME.title}</p>
             </div>
-            <button onClick={handleSignOut} className="p-2 rounded-lg text-[#A8A9AD] hover:text-red-400 hover:bg-red-900/20 transition-all" title="Sign out">
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              onClick={handleSignOut}
+              className="p-2 rounded-lg text-[#A8A9AD] hover:text-red-400 hover:bg-red-900/20 transition-all"
+              title="Sign out"
+            >
               <SignOut size={16} />
-            </button>
+            </motion.button>
           </div>
-        </div>
-      </aside>
+        </motion.div>
+      </motion.aside>
 
       {/* Main */}
       <div className="flex-1 lg:ml-64">
         {/* Top bar */}
-        <header className="sticky top-0 z-40 bg-[#06091A]/80 backdrop-blur-md border-b border-[#1E3354]">
+        <motion.header
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3, delay: 0.1 }}
+          className="sticky top-0 z-40 bg-[#06091A]/80 backdrop-blur-md border-b border-[#1E3354]"
+        >
           <div className="flex items-center justify-between px-4 lg:px-6 h-14">
             <div className="lg:hidden">
               <h1 className="text-lg font-extrabold bg-gradient-to-r from-[#60A5FA] to-[#24476C] bg-clip-text text-transparent">Dedran</h1>
@@ -1127,23 +1408,40 @@ export default function Dashboard({ onSignOut }: DashboardProps) {
             <div className="hidden sm:flex items-center flex-1 max-w-md mx-4">
               <div className="relative w-full">
                 <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#A8A9AD]" />
-                <input className="w-full bg-[#0A122A] border border-[#1E3354] rounded-xl pl-9 pr-4 py-2 text-sm text-[#E6E8E6] placeholder-[#A8A9AD] focus:outline-none focus:border-[#24476C] transition-colors font-inter" placeholder="Search courses, posts, people..." />
+                <input className="w-full bg-[#0A122A] border border-[#1E3354] rounded-xl pl-9 pr-4 py-2 text-sm text-[#E6E8E6] placeholder-[#A8A9AD] focus:outline-none focus:border-[#24476C] transition-all font-inter" placeholder="Search courses, posts, people..." />
               </div>
             </div>
             <div className="flex items-center gap-2">
-              <button className="p-2 rounded-xl text-[#A8A9AD] hover:text-[#E6E8E6] hover:bg-[#24476C]/20 transition-all relative">
-                <Bell size={18} />
-                <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full" />
-              </button>
-              <button className="p-2 rounded-xl text-[#A8A9AD] hover:text-[#E6E8E6] hover:bg-[#24476C]/20 transition-all">
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="p-2 rounded-xl text-[#A8A9AD] hover:text-[#E6E8E6] hover:bg-[#24476C]/20 transition-all relative"
+              >
+                <motion.div
+                  animate={{ rotate: [0, -10, 10, -10, 0] }}
+                  transition={{ duration: 1, delay: 2, repeat: Infinity, repeatDelay: 5 }}
+                >
+                  <Bell size={18} />
+                </motion.div>
+                <motion.span
+                  animate={{ scale: [1, 1.2, 1] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                  className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"
+                />
+              </motion.button>
+              <motion.button
+                whileHover={{ scale: 1.05, rotate: 45 }}
+                whileTap={{ scale: 0.95 }}
+                className="p-2 rounded-xl text-[#A8A9AD] hover:text-[#E6E8E6] hover:bg-[#24476C]/20 transition-all"
+              >
                 <Settings size={18} />
-              </button>
+              </motion.button>
               <div className="lg:hidden">
                 <Avatar src={ME.avatar} name={ME.name} size={32} />
               </div>
             </div>
           </div>
-        </header>
+        </motion.header>
 
         {/* Content */}
         <motion.div key={activeNav} variants={sectionVariants} initial="initial" animate="animate">
@@ -1155,11 +1453,20 @@ export default function Dashboard({ onSignOut }: DashboardProps) {
       </div>
 
       {/* Mobile bottom nav */}
-      <nav className="lg:hidden fixed bottom-0 left-0 right-0 bg-[#0A122A] border-t border-[#1E3354] z-50">
+      <motion.nav
+        initial={{ y: 60 }}
+        animate={{ y: 0 }}
+        transition={{ duration: 0.4, delay: 0.2 }}
+        className="lg:hidden fixed bottom-0 left-0 right-0 bg-[#0A122A] border-t border-[#1E3354] z-50"
+      >
         <div className="flex">
-          {navItems.map(item => (
-            <button
+          {navItems.map((item, idx) => (
+            <motion.button
               key={item.key}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 + idx * 0.05 }}
+              whileTap={{ scale: 0.9 }}
               onClick={() => setActiveNav(item.key)}
               className={`flex-1 flex flex-col items-center py-2 text-xs font-semibold transition-all ${
                 activeNav === item.key ? 'text-[#60A5FA]' : 'text-[#A8A9AD]'
@@ -1167,10 +1474,10 @@ export default function Dashboard({ onSignOut }: DashboardProps) {
             >
               <item.icon size={18} />
               <span className="mt-0.5">{item.label}</span>
-            </button>
+            </motion.button>
           ))}
         </div>
-      </nav>
+      </motion.nav>
     </div>
   )
 }
