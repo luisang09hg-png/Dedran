@@ -7,7 +7,7 @@ import {
   Edit3, ChevronRight, Play, Users, Eye, TrendingUp,
   Trash2, Send, Award, Zap,
   AlignLeft, Image as ImageIcon, Timer,
-  Building2, Upload, MoreHorizontal, LogOut,
+  Building2, Upload, MoreHorizontal,
   Flame, LogOut as SignOut
 } from 'lucide-react'
 import { signOut, getSession } from '@/lib/auth'
