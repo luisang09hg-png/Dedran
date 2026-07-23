@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Dedran - Companies &amp; Users</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700;800&amp;family=Manrope:wght@400;500;600&amp;family=Geist:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-fixed": "#dae2ff",
+                        "surface-container-lowest": "#0b0f12",
+                        "on-primary": "#2e3036",
+                        "primary-fixed-dim": "#c5c6cd",
+                        "secondary": "#bcc8d7",
+                        "error": "#ffb4ab",
+                        "primary-fixed": "#e2e2ea",
+                        "primary-container": "#07090e",
+                        "secondary-fixed-dim": "#bcc8d7",
+                        "on-tertiary-fixed-variant": "#3c4662",
+                        "on-secondary-fixed-variant": "#3d4854",
+                        "background": "#101417",
+                        "on-tertiary-container": "#6f7897",
+                        "tertiary-fixed-dim": "#bcc6e7",
+                        "on-secondary": "#27313d",
+                        "on-tertiary": "#26304a",
+                        "outline-variant": "#46474b",
+                        "on-tertiary-fixed": "#101b34",
+                        "surface": "#101417",
+                        "outline": "#909095",
+                        "secondary-fixed": "#d8e4f3",
+                        "surface-dim": "#101417",
+                        "secondary-container": "#3f4a56",
+                        "surface-bright": "#36393d",
+                        "surface-tint": "#c5c6cd",
+                        "surface-container-low": "#191c1f",
+                        "on-surface-variant": "#c6c6cb",
+                        "tertiary": "#bcc6e7",
+                        "on-error": "#690005",
+                        "on-primary-fixed": "#191c21",
+                        "on-surface": "#e1e2e7",
+                        "tertiary-container": "#000821",
+                        "surface-container-high": "#272a2e",
+                        "on-background": "#e1e2e7",
+                        "primary": "#c5c6cd",
+                        "inverse-primary": "#5c5e65",
+                        "error-container": "#93000a",
+                        "inverse-on-surface": "#2d3134",
+                        "on-secondary-fixed": "#111d27",
+                        "surface-variant": "#323539",
+                        "surface-container": "#1d2023",
+                        "inverse-surface": "#e1e2e7",
+                        "surface-container-highest": "#323539",
+                        "on-primary-container": "#77797f",
+                        "on-secondary-container": "#aeb9c8",
+                        "on-primary-fixed-variant": "#45474d",
+                        "on-error-container": "#ffdad6"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "container-max": "1280px",
+                        "gutter": "24px",
+                        "margin-mobile": "16px",
+                        "margin-desktop": "40px",
+                        "unit": "8px"
+                    },
+                    "fontFamily": {
+                        "display-lg": ["Hanken Grotesk"],
+                        "headline-lg-mobile": ["Hanken Grotesk"],
+                        "headline-md": ["Hanken Grotesk"],
+                        "body-lg": ["Manrope"],
+                        "body-md": ["Manrope"],
+                        "label-sm": ["Geist"],
+                        "headline-lg": ["Hanken Grotesk"],
+                        "label-md": ["Geist"]
+                    },
+                    "fontSize": {
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-lg-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "600" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.03em", "fontWeight": "500" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "fontWeight": "600" }],
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500" }]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body { background-color: #07090E; color: #FFFFFF; }
+        .bg-starry {
+            background-image: radial-gradient(circle at center, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+        .nav-sidebar { background-color: #131E29; }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+    </style>
+</head>
+<body class="flex min-h-screen bg-primary-container text-on-surface bg-starry">
+<!-- SideNavBar -->
+<aside class="nav-sidebar h-screen w-64 flex flex-col p-4 shadow-sm border-r border-outline-variant fixed left-0 top-0 justify-between md:flex hidden z-20">
+<div>
+<div class="flex items-center gap-2 text-headline-md font-headline-md font-bold text-on-surface mb-8 px-4">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">stars</span>
+<span>Dedran</span>
+</div>
+<nav class="flex flex-col gap-2">
+<a class="text-on-surface-variant hover:bg-surface-variant hover:text-on-surface rounded-xl flex items-center gap-3 px-4 py-3 transition-colors hover:bg-surface-variant dark:hover:bg-surface-container-highest transition-all duration-200" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-md text-label-md">Feed</span>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-variant hover:text-on-surface rounded-xl flex items-center gap-3 px-4 py-3 transition-colors hover:bg-surface-variant dark:hover:bg-surface-container-highest transition-all duration-200" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-md text-label-md">Profile</span>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-variant hover:text-on-surface rounded-xl flex items-center gap-3 px-4 py-3 transition-colors hover:bg-surface-variant dark:hover:bg-surface-container-highest transition-all duration-200" href="#">
+<span class="material-symbols-outlined">auto_stories</span>
+<span class="font-label-md text-label-md">Courses</span>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-variant hover:text-on-surface rounded-xl flex items-center gap-3 px-4 py-3 transition-colors hover:bg-surface-variant dark:hover:bg-surface-container-highest transition-all duration-200" href="#">
+<span class="material-symbols-outlined">work</span>
+<span class="font-label-md text-label-md">Applications</span>
+</a>
+<a class="bg-primary-container text-on-primary-container rounded-xl font-bold flex items-center gap-3 px-4 py-3 scale-95 duration-150 ease-in-out" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">groups</span>
+<span class="font-label-md text-label-md">Companies &amp; Users</span>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-variant hover:text-on-surface rounded-xl flex items-center gap-3 px-4 py-3 transition-colors hover:bg-surface-variant dark:hover:bg-surface-container-highest transition-all duration-200" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-md text-label-md">Personalization</span>
+</a>
+</nav>
+</div>
+<div class="mt-auto pt-4 border-t border-outline-variant">
+<button class="w-full flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-on-surface transition-colors rounded-xl hover:bg-surface-variant">
+<span class="material-symbols-outlined">account_circle</span>
+<span class="font-label-md text-label-md flex-1 text-left">Luis</span>
+<span class="material-symbols-outlined text-sm">logout</span>
+</button>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 ml-0 md:ml-64 p-margin-mobile md:p-margin-desktop min-h-screen relative overflow-hidden">
+<!-- Header & Search -->
+<header class="mb-12 relative z-10">
+<h1 class="font-display-lg text-display-lg text-on-surface mb-2">Network Hub</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-8 max-w-2xl">Connect with visionary companies and fellow professionals navigating the future of work.</p>
+<div class="glass-card rounded-2xl p-2 flex flex-col md:flex-row gap-4 items-center max-w-4xl shadow-lg border border-outline-variant">
+<div class="flex-1 w-full relative">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="w-full bg-surface-variant border-none rounded-xl pl-12 pr-4 py-3 text-on-surface placeholder:text-on-surface-variant focus:ring-2 focus:ring-primary focus:bg-surface transition-all font-body-md text-body-md" placeholder="Search companies, roles, or talent..." type="text"/>
+</div>
+<div class="flex gap-2 overflow-x-auto w-full md:w-auto pb-2 md:pb-0 scrollbar-hide">
+<button class="bg-[#202A44] text-white px-6 py-2 rounded-full font-label-md text-label-md whitespace-nowrap hover:bg-surface-variant transition-colors border border-outline-variant">All</button>
+<button class="bg-transparent border border-[#202A44] text-white px-6 py-2 rounded-full font-label-md text-label-md whitespace-nowrap hover:bg-[#202A44] transition-colors">Talent</button>
+<button class="bg-transparent border border-[#202A44] text-white px-6 py-2 rounded-full font-label-md text-label-md whitespace-nowrap hover:bg-[#202A44] transition-colors">Companies</button>
+<button class="bg-transparent border border-[#202A44] text-white px-6 py-2 rounded-full font-label-md text-label-md whitespace-nowrap hover:bg-[#202A44] transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">stars</span> Junior Jobs
+                    </button>
+</div>
+</div>
+</header>
+<!-- Bento Grid Content -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter relative z-10">
+<!-- Company Card Large -->
+<div class="md:col-span-8 bg-surface rounded-3xl p-8 shadow-[0_12px_24px_-4px_rgba(7,9,14,0.15)] relative overflow-hidden group">
+<div class="absolute top-0 right-0 w-64 h-64 bg-primary-container opacity-50 rounded-full blur-3xl -mr-32 -mt-32 transition-transform duration-700 group-hover:scale-110"></div>
+<div class="flex justify-between items-start mb-6 relative z-10">
+<div class="flex items-center gap-4">
+<div class="w-16 h-16 rounded-2xl bg-white flex items-center justify-center p-2 shadow-sm">
+<img class="w-full h-full object-contain rounded-xl" data-alt="Abstract sleek logo for a futuristic tech company, minimalist black and white geometric shape, professional and visionary aesthetic, soft light background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBojgohKTcxmDr1B06z7WqCN7RbgkWNC943OSQns_DFNk3OQhllMMw9yBDqRO06fXoA878shD9S8M8sbVXWLRcyLqwFYn2b59nfx7OpmNHfIoqrwDm-BRuN0w5lusuBKoiTwpd0kytsD4-m9sMmbMJGQSx1nG-wEcWVWLVxBUcE8IjnPIxDKpvX-bn928eVrKWwFceI1ePjyxxooJ6wxrZQ_9YP2d65LVe982IxfJtyOCwnsLowjOizsG9VhbV8y7nsJV32U8X-96XQ"/>
+</div>
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface">Stellar Dynamics</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Aerospace &amp; Defense</p>
+</div>
+</div>
+<span class="bg-[#202A44] text-white px-3 py-1 rounded-full font-label-sm text-label-sm border border-outline-variant">Hiring Now</span>
+</div>
+<p class="font-body-lg text-body-lg text-on-surface mb-8 relative z-10 max-w-xl">Pioneering the next generation of orbital infrastructure. Seeking curious minds ready to build beyond the horizon.</p>
+<div class="flex flex-wrap gap-3 relative z-10">
+<span class="bg-surface-variant text-on-surface px-4 py-2 rounded-lg font-label-md text-label-md flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">rocket_launch</span> No experience needed
+                    </span>
+<span class="bg-surface-variant text-on-surface px-4 py-2 rounded-lg font-label-md text-label-md flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">location_on</span> Remote (Global)
+                    </span>
+<span class="bg-surface-variant text-on-surface px-4 py-2 rounded-lg font-label-md text-label-md flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">groups</span> 500+ Employees
+                    </span>
+</div>
+</div>
+<!-- Talent Card -->
+<div class="md:col-span-4 glass-card rounded-3xl p-8 shadow-sm flex flex-col items-center text-center hover:-translate-y-1 transition-transform duration-300">
+<div class="w-24 h-24 rounded-full border-4 border-surface overflow-hidden mb-4 shadow-md relative">
+<img class="w-full h-full object-cover" data-alt="Professional headshot of a young professional in a futuristic modern workspace, confident expression, soft dramatic lighting, deep blue and white accents, corporate modern style" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDIkkJca_GrE9QCvXI3i4dHjW244Y-SmQGOhazXX8dJGtE6VNT8lQes9qRH3qVFarlduHzYAUYIyZxyw-VEY650zyohBnmingGTL3Gc0WTch2N6zvGAJon7VM-qVO4cyBpFDxBrddgcT6Wf0oErKvpwYF9fg9ZeEJypLHIb1666YtO0COKaZJCmH0FNPNss38GQcIL5bPjgsN_90-HEQdPQVTxArqtahrE3Is6RMtfKZVurXkMaydc-skJXSGQdIMB3B1Rsnrg4bkIN"/>
+<div class="absolute bottom-0 right-0 w-6 h-6 bg-green-500 rounded-full border-2 border-surface"></div>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-1">Alex Mercer</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-4">Junior UX Researcher</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant bg-surface-variant px-3 py-1 rounded-full mb-6">Open to Work</p>
+<button class="w-full bg-white text-[#07090E] font-label-md text-label-md py-3 rounded-xl hover:bg-secondary transition-colors duration-200">Connect</button>
+</div>
+<!-- Smaller Company Cards -->
+<div class="md:col-span-4 bg-surface rounded-3xl p-6 shadow-[0_12px_24px_-4px_rgba(7,9,14,0.15)] group">
+<div class="flex items-center gap-4 mb-4">
+<div class="w-12 h-12 rounded-xl bg-white p-1">
+<img class="w-full h-full object-contain rounded-lg" data-alt="Minimalist abstract leaf logo for a sustainable energy startup, clean white background, vibrant green accent, professional modern design" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAKTye9moX01FQfAn0U7CIgglQUqC0qnuXdYYoBME0OyPFMkIYCebRTAfO9jUBEO8I5ITMOl9XPtKCpO_1L-qDJ_wUE1GTvMXPGNiwlJcrKkOV36fZ5wWpnMBqnmHg6Od7kBwYZytBHkCpUZrHe3Rq23whHX3kZ14t1pa-pbTE1ZzY-25EsnzXdV8CjIgN2u-OuiuFMcpsa-sZ6NY4qavd0-ue8KTUhyOmEl6u80BReFb-IG9n6Y9lyVkVIbiHSKi8QdaDQ3daR_kvV"/>
+</div>
+<div>
+<h4 class="font-headline-md text-[20px] font-semibold text-on-surface">Nova Energy</h4>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Green Tech</p>
+</div>
+</div>
+<div class="mb-6">
+<span class="inline-flex items-center gap-1 bg-[#202A44] text-white px-2 py-1 rounded-md font-label-sm text-label-sm border border-outline-variant mb-2">
+<span class="material-symbols-outlined text-[14px]">school</span> No experience needed
+                    </span>
+<p class="font-body-md text-body-md text-on-surface-variant line-clamp-2">Innovating sustainable power solutions for urban environments.</p>
+</div>
+<button class="text-white border border-[#202A44] w-full py-2 rounded-lg font-label-md hover:bg-[#202A44] transition-colors">View Profile</button>
+</div>
+<div class="md:col-span-4 bg-surface rounded-3xl p-6 shadow-[0_12px_24px_-4px_rgba(7,9,14,0.15)] group">
+<div class="flex items-center gap-4 mb-4">
+<div class="w-12 h-12 rounded-xl bg-white p-1">
+<img class="w-full h-full object-contain rounded-lg" data-alt="Sleek typographic logo for a fintech company, deep blue and silver metallic tones, modern corporate aesthetic, clean layout" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCClAAAPs9sSJlU-NO0PZa5oDM84gORtCYABvW2dXBLU2JAh7fxc6v04v0dDrckJxeRCTKUX3HrN11RlIvsdZQRXUsrKUmwnsIKX295uFSWPwuMkASyntUFoNbss84hgT0ddrZYapA_TLImiuvVzmgU7FfniD8wAbdZQ8kCCk5Jdu1_Vz3T8Q7esq9fqJLf2FsvwzGjHW8qIPvkdplPDSJ-Axrxm7VFc_E6hYliye63PxiSgPe2PPb6DezO1u_StHmMROS1dBOVI8Tr"/>
+</div>
+<div>
+<h4 class="font-headline-md text-[20px] font-semibold text-on-surface">Quantis Flow</h4>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Financial Tech</p>
+</div>
+</div>
+<div class="mb-6">
+<span class="inline-flex items-center gap-1 bg-surface-variant text-on-surface px-2 py-1 rounded-md font-label-sm text-label-sm mb-2">
+<span class="material-symbols-outlined text-[14px]">trending_up</span> Early Career
+                    </span>
+<p class="font-body-md text-body-md text-on-surface-variant line-clamp-2">Building algorithmic trading platforms for the decentralized web.</p>
+</div>
+<button class="text-white border border-[#202A44] w-full py-2 rounded-lg font-label-md hover:bg-[#202A44] transition-colors">View Profile</button>
+</div>
+<!-- Metric Card -->
+<div class="md:col-span-4 bg-[#131E29] rounded-3xl p-6 shadow-sm border border-outline-variant relative overflow-hidden flex flex-col justify-center">
+<div class="absolute bottom-0 right-0 text-white opacity-5">
+<span class="material-symbols-outlined text-[120px]">hub</span>
+</div>
+<h4 class="font-label-md text-label-md text-on-surface-variant mb-2 uppercase tracking-wider relative z-10">Network Growth</h4>
+<div class="flex items-end gap-3 relative z-10">
+<span class="font-display-lg text-display-lg text-white">1,204</span>
+<span class="font-label-md text-label-md text-green-400 mb-2 flex items-center">
+<span class="material-symbols-outlined text-sm">arrow_upward</span> 12% this week
+                    </span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mt-2 relative z-10">New connections available in your targeted industries.</p>
+</div>
+</div>
+</main>
+</body></html>

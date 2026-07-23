@@ -1,621 +1,275 @@
 <!DOCTYPE html>
-<html lang="en">
+<html class="dark" lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dedran — Career Platform for Young Professionals</title>
-    <meta name="description" content="A curated set of tools designed to accelerate your professional development. Track jobs, learn new skills, and connect with peers.">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta charset="UTF-8">
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="Dedran — Career Platform for Young Professionals">
-    <meta property="og:description" content="A curated set of tools designed to accelerate your professional development.">
-    <link rel="canonical" href="https://dedran.com">
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Dedran - Launch your career</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;700&family=Hanken+Grotesk:wght@400;600;700;800&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet"/>
+    <!-- Material Symbols -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <!-- Custom CSS -->
+    <link href="styles.css" rel="stylesheet"/>
 
-    <script src="https://cdn.tailwindcss.com"></script>
-
-    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
-
-    <script>
-tailwind.config = {
-  theme: {
-    extend: {
-      colors: {
-        base: '#0a0a0f',
-        surface: '#12121a',
-        elevated: '#1a1a24',
-        'accent-indigo': '#6366f1',
-        'accent-indigo-light': '#818cf8',
-        'accent-purple': '#a855f7',
-        'accent-pink': '#ec4899',
-        'accent-blue': '#3b82f6',
-        'accent-green': '#22c55e',
-        'accent-amber': '#f59e0b',
-        'accent-red': '#ef4444',
-      },
-      fontFamily: {
-        sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
-        mono: ['JetBrains Mono', 'monospace'],
-      },
-      animation: {
-        'float': 'float 6s ease-in-out infinite',
-        'pulse-glow': 'pulse-glow 3s ease-in-out infinite',
-        'bounce-subtle': 'bounce-subtle 2s ease-in-out infinite',
-        'spin-slow': 'spin-slow 20s linear infinite',
-        'shimmer-once': 'shimmer-once 2s ease-in-out 0.5s 1 forwards',
-        'rotate-gradient': 'rotate-gradient 4s linear infinite',
-        'orb-drift': 'orb-drift 20s ease-in-out infinite alternate',
-      },
-    },
-  },
-}
-</script>
-
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container": "#1d2023",
+                        "surface-variant": "#323539",
+                        "surface-tint": "#c5c6cd",
+                        "on-tertiary-fixed-variant": "#3c4662",
+                        "on-background": "#e1e2e7",
+                        "surface-container-high": "#272a2e",
+                        "inverse-on-surface": "#2d3134",
+                        "on-primary": "#2e3036",
+                        "primary": "#c5c6cd",
+                        "secondary-container": "#3f4a56",
+                        "on-tertiary": "#26304a",
+                        "outline": "#909095",
+                        "on-tertiary-fixed": "#101b34",
+                        "on-error": "#690005",
+                        "inverse-surface": "#e1e2e7",
+                        "on-error-container": "#ffdad6",
+                        "primary-fixed-dim": "#c5c6cd",
+                        "on-surface": "#e1e2e7",
+                        "secondary": "#bcc8d7",
+                        "background": "#101417",
+                        "error": "#ffb4ab",
+                        "tertiary-container": "#000821",
+                        "tertiary-fixed": "#dae2ff",
+                        "surface-container-lowest": "#0b0f12",
+                        "secondary-fixed": "#d8e4f3",
+                        "on-secondary": "#27313d",
+                        "on-secondary-fixed": "#111d27",
+                        "surface-container-low": "#191c1f",
+                        "on-primary-fixed": "#191c21",
+                        "on-tertiary-container": "#6f7897",
+                        "on-primary-container": "#77797f",
+                        "error-container": "#93000a",
+                        "surface-dim": "#101417",
+                        "on-secondary-fixed-variant": "#3d4854",
+                        "secondary-fixed-dim": "#bcc8d7",
+                        "tertiary-fixed-dim": "#bcc6e7",
+                        "surface-bright": "#36393d",
+                        "outline-variant": "#46474b",
+                        "on-primary-fixed-variant": "#45474d",
+                        "surface-container-highest": "#323539",
+                        "surface": "#101417",
+                        "primary-fixed": "#e2e2ea",
+                        "primary-container": "#07090e",
+                        "inverse-primary": "#5c5e65",
+                        "on-surface-variant": "#c6c6cb",
+                        "tertiary": "#bcc6e7",
+                        "on-secondary-container": "#aeb9c8"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-mobile": "16px",
+                        "gutter": "24px",
+                        "container-max": "1280px",
+                        "unit": "8px",
+                        "margin-desktop": "40px"
+                    },
+                    "fontFamily": {
+                        "label-sm": ["Geist"],
+                        "headline-lg-mobile": ["Hanken Grotesk"],
+                        "body-lg": ["Manrope"],
+                        "headline-md": ["Hanken Grotesk"],
+                        "headline-lg": ["Hanken Grotesk"],
+                        "label-md": ["Geist"],
+                        "body-md": ["Manrope"],
+                        "display-lg": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.03em", "fontWeight": "500" }],
+                        "headline-lg-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "fontWeight": "600" }],
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        :root {
-            --bg-base: #0a0a0f;
-            --bg-surface: #12121a;
-            --bg-elevated: #1a1a24;
-            --text-primary: #f8fafc;
-            --text-secondary: #94a3b8;
-            --text-tertiary: #64748b;
-            --accent-indigo: #6366f1;
-            --accent-indigo-light: #818cf8;
-            --accent-purple: #a855f7;
-            --accent-pink: #ec4899;
-            --accent-green: #22c55e;
-            --border-subtle: rgba(255,255,255,0.06);
-            --border-hover: rgba(255,255,255,0.12);
-            --shadow-glow: 0 0 40px rgba(99,102,241,0.15);
-            --shadow-glow-strong: 0 0 60px rgba(99,102,241,0.25);
-            --shadow-button: 0 4px 14px rgba(99,102,241,0.4);
-            --gradient-hero: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%);
-            --gradient-subtle: linear-gradient(135deg, rgba(99,102,241,0.15), rgba(168,85,247,0.15));
+        .starry-bg {
+            background-image: radial-gradient(circle at center, rgba(255,255,255,0.05) 1px, transparent 1px);
+            background-size: 24px 24px;
         }
-
-        html { scroll-behavior: smooth; }
-
-        body {
-            background-color: var(--bg-base);
-            color: var(--text-secondary);
-            font-family: 'Inter', system-ui, -apple-system, sans-serif;
-            overflow-x: hidden;
-        }
-
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            pointer-events: none;
-            z-index: 9999;
-            opacity: 0.025;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-            background-repeat: repeat;
-            background-size: 256px 256px;
-        }
-
-        .gradient-text {
-            background: var(--gradient-hero);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            color: transparent;
-        }
-
-        .text-shimmer {
-            background: linear-gradient(135deg, #6366f1 0%, #a855f7 25%, #ec4899 50%, #a855f7 75%, #6366f1 100%);
-            background-size: 200% auto;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            color: transparent;
-            animation: shimmer-once 2s ease-in-out 0.5s 1 forwards;
-        }
-
-        @property --gradient-angle {
-            syntax: '<angle>';
-            initial-value: 0deg;
-            inherits: false;
-        }
-
-        .gradient-border-animated {
-            position: relative;
-            border-radius: 1.5rem;
-            background: var(--bg-surface);
-        }
-
-        .gradient-border-animated::before {
-            content: '';
-            position: absolute;
-            inset: -2px;
-            border-radius: inherit;
-            background: conic-gradient(from var(--gradient-angle), #6366f1, #a855f7, #ec4899, #6366f1);
-            animation: rotate-gradient 4s linear infinite;
-            z-index: -1;
-        }
-
-        .gradient-border-animated::after {
-            content: '';
-            position: absolute;
-            inset: 2px;
-            border-radius: inherit;
-            background: var(--bg-surface);
-            z-index: -1;
-        }
-
-        .btn-primary-shine {
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn-primary-shine::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -100%;
-            width: 50%;
-            height: 200%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
-            transform: skewX(-20deg);
-            transition: left 0.6s ease;
-        }
-
-        .btn-primary-shine:hover::after {
-            left: 150%;
-        }
-
-        .card-inner-glow {
-            position: relative;
-            overflow: hidden;
-        }
-
-        .card-inner-glow::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: radial-gradient(circle 200px at var(--card-mx,50%) var(--card-my,50%), rgba(99,102,241,0.08), transparent 60%);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        .card-inner-glow:hover::before {
-            opacity: 1;
-        }
-
-        .feature-grid-spotlight {
-            position: relative;
-            background: radial-gradient(circle 600px at var(--spotlight-x,50%) var(--spotlight-y,50%), rgba(99,102,241,0.06), transparent 40%);
-        }
-
-        .section-divider {
-            height: 1px;
-            background: linear-gradient(90deg, transparent 0%, rgba(99,102,241,0.3) 50%, transparent 100%);
-            margin: 0 auto;
-            max-width: 600px;
-        }
-
-        .floating-orb {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(80px);
-            opacity: 0.4;
-            pointer-events: none;
-            animation: orb-drift 20s ease-in-out infinite alternate;
-        }
-
-        .floating-orb-1 {
-            width: 400px; height: 400px;
-            background: rgba(99,102,241,0.3);
-            top: -10%; left: -5%;
-        }
-
-        .floating-orb-2 {
-            width: 300px; height: 300px;
-            background: rgba(168,85,247,0.3);
-            bottom: -10%; right: -5%;
-            animation-delay: -7s;
-        }
-
-        .floating-orb-3 {
-            width: 250px; height: 250px;
-            background: rgba(236,72,153,0.2);
-            top: 40%; right: 20%;
-            animation-delay: -14s;
-        }
-
-        @keyframes orb-drift {
-            0% { transform: translate(0,0) scale(1); }
-            33% { transform: translate(30px,-50px) scale(1.05); }
-            66% { transform: translate(-20px,20px) scale(0.95); }
-            100% { transform: translate(10px,-30px) scale(1.02); }
-        }
-
-        [data-reveal] {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1);
-        }
-
-        [data-reveal="left"] { transform: translateX(-40px); }
-        [data-reveal="right"] { transform: translateX(40px); }
-        [data-reveal="scale"] { transform: scale(0.95); }
-        [data-reveal="fade"] { transform: none; }
-
-        [data-reveal].revealed {
-            opacity: 1;
-            transform: translate(0) scale(1);
-        }
-
-        [data-stagger] > *:nth-child(1) { transition-delay: 0ms; }
-        [data-stagger] > *:nth-child(2) { transition-delay: 80ms; }
-        [data-stagger] > *:nth-child(3) { transition-delay: 160ms; }
-        [data-stagger] > *:nth-child(4) { transition-delay: 240ms; }
-        [data-stagger] > *:nth-child(5) { transition-delay: 320ms; }
-        [data-stagger] > *:nth-child(6) { transition-delay: 400ms; }
-
-        [data-stagger]:not(.revealed) > * {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.5s cubic-bezier(0.16,1,0.3,1), transform 0.5s cubic-bezier(0.16,1,0.3,1);
-        }
-
-        .navbar-scrolled {
-            border-bottom-color: rgba(255,255,255,0.08);
-            box-shadow: 0 1px 3px rgba(0,0,0,0.3), 0 4px 20px rgba(0,0,0,0.15);
-        }
-
-        .faq-answer {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s cubic-bezier(0.4,0,0.2,1);
-        }
-
-        .faq-icon {
-            transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
-        }
-
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: var(--bg-base); }
-        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
-        * { scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.1) var(--bg-base); }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
-        }
-
-        @keyframes pulse-glow {
-            0%, 100% { box-shadow: 0 0 20px rgba(99,102,241,0.3); }
-            50% { box-shadow: 0 0 40px rgba(99,102,241,0.6); }
-        }
-
-        @keyframes bounce-subtle {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(8px); }
-        }
-
-        @keyframes spin-slow {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        @keyframes shimmer-once {
-            0% { background-position: 0% center; }
-            100% { background-position: 200% center; }
-        }
-
-        @keyframes rotate-gradient {
-            to { --gradient-angle: 360deg; }
-        }
-
-        .skip-link {
-            position: absolute;
-            top: -100%;
-            left: 0;
-            background: var(--accent-indigo);
-            color: white;
-            padding: 8px 16px;
-            z-index: 100;
-            font-weight: 600;
-            border-radius: 0 0 8px 0;
-            transition: top 0.2s;
-        }
-
-        .skip-link:focus { top: 0; }
-
-        @media (prefers-reduced-motion: reduce) {
-            *, *::before, *::after {
-                animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: 0.01ms !important;
-                scroll-behavior: auto !important;
-            }
-            [data-reveal], [data-stagger]:not(.revealed) > *, .floating-orb, .animate-float, .animate-pulse-glow {
-                opacity: 1; transform: none;
-            }
-            .btn-primary-shine::after { display: none; }
-            .gradient-border-animated::before { animation: none; }
-            .text-shimmer { animation: none; background-position: 0% center; }
-            html { scroll-behavior: auto; }
-        }
-
-        ::selection {
-            background: rgba(99,102,241,0.3);
-            color: var(--text-primary);
+        .soft-shadow {
+            box-shadow: 0 12px 24px -4px rgba(7, 9, 14, 0.15);
         }
     </style>
-
 </head>
-<body>
-    <a href="#hero" class="skip-link">Skip to content</a>
-
-    <header id="navbar" class="fixed top-0 w-full z-50 border-b transition-all duration-300" style="background:rgba(10,10,15,0.75);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-color:rgba(255,255,255,0.06)">
-        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-            <a href="#hero" class="gradient-text text-xl font-extrabold tracking-tight">Dedran</a>
-
-            <button class="md:hidden icon-button p-2 rounded-lg hover:bg-elevated/50 text-tertiary hover:text-primary transition-all" id="mobile-menu-btn" aria-label="Toggle navigation">
-                <i data-lucide="menu" class="w-5 h-5"></i>
-            </button>
-
-            <div class="nav-links-container">
-                <ul class="nav-links hidden md:flex items-center gap-8">
-                    <li><a href="#features" class="text-sm font-medium text-secondary hover:text-primary transition-colors duration-200 relative">Features</a></li>
-                    <li><a href="#how-it-works" class="text-sm font-medium text-secondary hover:text-primary transition-colors duration-200 relative">How It Works</a></li>
-                    <li><a href="#pricing" class="text-sm font-medium text-secondary hover:text-primary transition-colors duration-200 relative">Pricing</a></li>
-                    <li><a href="#faq" class="text-sm font-medium text-secondary hover:text-primary transition-colors duration-200 relative">FAQ</a></li>
-                </ul>
-
-                <div class="nav-actions hidden md:flex items-center gap-3">
-                    <a href="#pricing" class="text-sm font-medium text-secondary hover:text-primary hover:bg-elevated/50 px-4 py-2 rounded-lg transition-all duration-200">Sign In</a>
-                    <a href="#pricing" class="btn-primary-shine bg-gradient-to-r from-accent-indigo via-accent-purple to-accent-pink text-white text-sm font-semibold px-5 py-2.5 rounded-full shadow-[0_4px_14px_rgba(99,102,241,0.4)] hover:brightness-110 hover:-translate-y-0.5 hover:shadow-[0_0_40px_rgba(99,102,241,0.15)] active:brightness-95 active:translate-y-0 transition-all duration-250 focus-visible:ring-2 focus-visible:ring-accent-indigo focus-visible:ring-offset-2 focus-visible:ring-offset-base">Get Started</a>
-                </div>
+<body class="bg-background text-on-background font-body-md antialiased selection:bg-primary-container selection:text-on-primary-container">
+    <!-- TopNavBar -->
+    <nav class="docked full-width top-0 sticky z-50 bg-background/80 backdrop-blur-md">
+        <div class="flex justify-between items-center px-margin-mobile md:px-margin-desktop py-4 max-w-container-max mx-auto">
+            <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">explore</span>
+                <span class="text-headline-md font-headline-md font-bold text-on-background">Dedran</span>
             </div>
-        </nav>
-    </header>
-
-    <div class="fixed top-0 right-0 h-full w-80 max-w-[85vw] bg-base border-l z-50 transform translate-x-full transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] overflow-y-auto md:hidden" style="border-color:rgba(255,255,255,0.06)" id="mobile-menu" aria-hidden="true" role="dialog">
-        <button class="mobile-nav-toggle absolute top-4 right-4 p-2 rounded-lg hover:bg-elevated/50 text-tertiary hover:text-primary transition-all" id="mobile-menu-close" aria-label="Close navigation">
-            <i data-lucide="x" class="w-5 h-5"></i>
-        </button>
-        <ul class="mobile-menu-links flex flex-col gap-1 mt-16">
-            <li><a href="#features" class="text-lg font-medium text-secondary hover:text-primary">Features</a></li>
-            <li><a href="#how-it-works" class="text-lg font-medium text-secondary hover:text-primary">How It Works</a></li>
-            <li><a href="#pricing" class="text-lg font-medium text-secondary hover:text-primary">Pricing</a></li>
-            <li><a href="#faq" class="text-lg font-medium text-secondary hover:text-primary">FAQ</a></li>
-            <li><a href="#pricing" class="btn-primary-shine bg-gradient-to-r from-accent-indigo via-accent-purple to-accent-pink text-white font-semibold px-6 py-3.5 rounded-full mt-4 mx-4 text-center">Get Started</a></li>
-        </ul>
-    </div>
-
-    <div class="fixed inset-0 bg-black/60 z-50 opacity-0 pointer-events-none transition-opacity duration-300 md:hidden" id="mobile-menu-backdrop" aria-hidden="true" role="dialog"></div>
-
-    <section id="hero" class="relative min-h-screen flex flex-col items-center justify-center overflow-hidden py-16 sm:py-20 px-4 sm:px-6" style="background:var(--bg-base)">
-        <div class="floating-orb floating-orb-1"></div>
-        <div class="floating-orb floating-orb-2"></div>
-        <div class="floating-orb floating-orb-3"></div>
-
-        <div class="max-w-4xl mx-auto text-center relative z-10">
-            <div class="mb-6 inline-flex items-center gap-2 bg-elevated/50 border border-white/[0.08] rounded-full px-4 py-1.5 text-accent-indigo-light font-semibold text-xs uppercase tracking-widest" data-reveal="fade">
-                <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
-                <span>For Young Professionals</span>
+            <div class="hidden md:flex gap-8">
+                <a class="text-primary font-bold border-b-2 border-primary pb-1 text-label-md font-label-md" href="#">Features</a>
+                <a class="text-on-surface-variant hover:text-on-surface transition-colors hover:text-primary transition-all duration-200 text-label-md font-label-md" href="#">How it works</a>
+                <a class="text-on-surface-variant hover:text-on-surface transition-colors hover:text-primary transition-all duration-200 text-label-md font-label-md" href="cursos.html">Courses</a>
             </div>
-
-            <h1 class="text-shimmer font-extrabold leading-tight tracking-tight mb-6" data-reveal="fade" style="font-size:clamp(2.75rem,6vw,5rem);line-height:1.05;letter-spacing:-0.03em">Everything you need to grow</h1>
-
-            <p class="text-secondary text-lg sm:text-xl max-w-2xl mx-auto mb-10 leading-relaxed" data-reveal="fade">A curated set of tools designed to accelerate your professional development — from learning paths to job tracking, all in one place.</p>
-
-            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16" data-reveal="fade">
-                <a href="#pricing" class="btn-primary-shine bg-gradient-to-r from-accent-indigo via-accent-purple to-accent-pink text-white font-semibold px-8 py-3.5 rounded-full shadow-button hover:brightness-110 hover:-translate-y-1 hover:shadow-glow active:brightness-95 active:translate-y-0 transition-all duration-250 focus-visible:ring-2 focus-visible:ring-accent-indigo focus-visible:ring-offset-2 focus-visible:ring-offset-base inline-flex items-center gap-2">Get Started Free <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
-                <a href="#how-it-works" class="border border-white/10 text-primary font-semibold px-8 py-3.5 rounded-full hover:bg-elevated hover:border-white/20 hover:shadow-sm active:bg-surface transition-all duration-250 focus-visible:ring-2 focus-visible:ring-accent-indigo focus-visible:ring-offset-2 focus-visible:ring-offset-base inline-flex items-center gap-2"><i data-lucide="play" class="w-4 h-4"></i> View Demo</a>
-            </div>
-
-            <div class="grid grid-cols-3 gap-8 max-w-2xl mx-auto" data-reveal="fade">
-                <div class="text-center">
-                    <div class="text-2xl sm:text-3xl font-bold gradient-text tabular-nums">10K</div>
-                    <div class="text-sm text-tertiary mt-1">Active Users</div>
-                </div>
-                <div class="text-center">
-                    <div class="text-2xl sm:text-3xl font-bold gradient-text tabular-nums">500</div>
-                    <div class="text-sm text-tertiary mt-1">Career Tracks</div>
-                </div>
-                <div class="text-center">
-                    <div class="text-2xl sm:text-3xl font-bold gradient-text tabular-nums">98%</div>
-                    <div class="text-sm text-tertiary mt-1">Success Rate</div>
-                </div>
-            </div>
-
-            <a href="#features" class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce-subtle opacity-40 cursor-pointer"><i data-lucide="chevron-down" class="w-5 h-5 text-tertiary"></i></a>
-        </div>
-    </section>
-
-    <section class="bg-surface py-12 sm:py-16 px-4 sm:px-6">
-        <div class="max-w-7xl mx-auto">
-            <div class="text-center mb-12" data-reveal>
-                <p class="text-center text-xs text-tertiary uppercase tracking-widest mb-8 font-medium">Trusted by professionals at</p>
-                <div class="flex items-center justify-center gap-8 sm:gap-12 lg:gap-16 flex-wrap">
-                    <span class="text-tertiary font-semibold text-base sm:text-lg opacity-30 hover:opacity-80 hover:text-secondary transition-all duration-300 cursor-default select-none">Stripe</span>
-                    <span class="text-tertiary font-semibold text-base sm:text-lg opacity-30 hover:opacity-80 hover:text-secondary transition-all duration-300 cursor-default select-none">Notion</span>
-                    <span class="text-tertiary font-semibold text-base sm:text-lg opacity-30 hover:opacity-80 hover:text-secondary transition-all duration-300 cursor-default select-none">Figma</span>
-                    <span class="text-tertiary font-semibold text-base sm:text-lg opacity-30 hover:opacity-80 hover:text-secondary transition-all duration-300 cursor-default select-none">Linear</span>
-                    <span class="text-tertiary font-semibold text-base sm:text-lg opacity-30 hover:opacity-80 hover:text-secondary transition-all duration-300 cursor-default select-none">Vercel</span>
-                    <span class="text-tertiary font-semibold text-base sm:text-lg opacity-30 hover:opacity-80 hover:text-secondary transition-all duration-300 cursor-default select-none">Discord</span>
-                </div>
+            <div class="flex items-center gap-4">
+                <a class="text-on-surface hover:text-primary transition-colors text-label-md font-label-md hidden md:block" href="dashboard.html">Sign in</a>
+                <a class="bg-primary-container text-on-primary-container px-6 py-2 rounded-full text-label-md font-label-md hover:scale-95 transition-transform flex items-center gap-2" href="dashboard.html">
+                    Get started
+                    <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                </a>
             </div>
         </div>
-    </section>
-
-    <section id="features" class="relative py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8" style="background:var(--bg-base)">
-        <div class="feature-grid-spotlight max-w-7xl mx-auto">
-            <div class="text-center mb-12 sm:mb-16" data-reveal>
-                <div class="card-badge mb-4">Features</div>
-                <h2 class="h2">Built for your career journey</h2>
-                <p class="body-large mt-4">Everything you need, nothing you don't.</p>
+    </nav>
+    <main>
+        <!-- Hero Section -->
+        <section class="relative pt-24 pb-32 px-margin-mobile md:px-margin-desktop bg-primary-container text-on-primary-container overflow-hidden">
+            <div class="absolute inset-0 starry-bg opacity-30"></div>
+            <div class="max-w-container-max mx-auto relative z-10 flex flex-col items-center text-center">
+                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-surface-container/50 border border-outline-variant/30 mb-8">
+                    <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+                    <span class="text-label-sm font-label-sm">Now onboarding the class of 2026</span>
+                </div>
+                <h1 class="text-display-lg font-display-lg mb-6 max-w-3xl">
+                    Launch your career with <span class="text-primary">Dedran</span>
+                </h1>
+                <p class="text-body-lg font-body-lg text-on-primary-container/80 max-w-2xl mb-10">
+                    Discover roles that match your ambition, learn skills from people already doing the work, and keep every application, interview and offer organised in a single dashboard built for the next generation of professionals.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
+                    <a class="bg-surface text-on-surface px-8 py-3 rounded-full text-label-md font-label-md hover:bg-surface-variant transition-colors flex items-center justify-center gap-2" href="dashboard.html">
+                        Create your free account
+                        <span class="material-symbols-outlined">arrow_forward</span>
+                    </a>
+                    <a class="bg-transparent border border-outline-variant text-on-primary-container px-8 py-3 rounded-full text-label-md font-label-md hover:bg-surface-container/30 transition-colors flex items-center justify-center" href="dashboard.html">
+                        I already have an account
+                    </a>
+                </div>
+                <p class="mt-6 text-label-sm font-label-sm text-on-primary-container/60">Free forever · No credit card · Ready in 30 seconds</p>
             </div>
+        </section>
+        
+        <!-- Stats Section -->
+        <section class="py-20 px-margin-mobile md:px-margin-desktop bg-surface-container-lowest">
+            <div class="max-w-container-max mx-auto">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-8 bg-surface-container p-8 md:p-12 rounded-[24px] soft-shadow">
+                    <div class="text-center">
+                        <h3 class="text-display-lg font-display-lg mb-2">12k+</h3>
+                        <p class="text-body-md font-body-md text-on-surface-variant">Open opportunities</p>
+                    </div>
+                    <div class="text-center">
+                        <h3 class="text-display-lg font-display-lg mb-2">300+</h3>
+                        <p class="text-body-md font-body-md text-on-surface-variant">Guided courses</p>
+                    </div>
+                    <div class="text-center">
+                        <h3 class="text-display-lg font-display-lg mb-2">92%</h3>
+                        <p class="text-body-md font-body-md text-on-surface-variant">Land a role in &lt;6 months</p>
+                    </div>
+                    <div class="text-center">
+                        <h3 class="text-display-lg font-display-lg mb-2">40+</h3>
+                        <p class="text-body-md font-body-md text-on-surface-variant">Countries hiring</p>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-            <div data-reveal data-stagger class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div class="card-inner-glow group bg-surface border border-white/[0.06] rounded-2xl p-6 sm:p-8 transition-all duration-300 hover:-translate-y-1 hover:border-white/[0.12] hover:shadow-glow cursor-default" data-reveal>
-                    <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-6" style="background:var(--gradient-subtle)"><i data-lucide="message-square" class="w-6 h-6 text-accent-indigo"></i></div>
-                    <h4 class="text-primary font-semibold">Workspace Feed</h4>
-                    <p class="text-secondary text-sm mt-3 leading-relaxed">Share insights, ask questions, and connect with peers navigating the same career trajectory.</p>
+        <!-- Features Grid -->
+        <section class="py-24 px-margin-mobile md:px-margin-desktop bg-background">
+            <div class="max-w-container-max mx-auto">
+                <div class="text-center mb-16">
+                    <span class="text-label-sm font-label-sm uppercase tracking-wider text-primary mb-4 block">WHY DEDRAN</span>
+                    <h2 class="text-headline-lg font-headline-lg mb-6">One platform for the whole journey</h2>
+                    <p class="text-body-lg font-body-lg text-on-surface-variant max-w-2xl mx-auto">
+                        Everything a job seeker needs — no more juggling ten tabs, three trackers and a folder full of PDFs.
+                    </p>
                 </div>
-                <div class="card-inner-glow group bg-surface border border-white/[0.06] rounded-2xl p-6 sm:p-8 transition-all duration-300 hover:-translate-y-1 hover:border-white/[0.12] hover:shadow-glow cursor-default" data-reveal>
-                    <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-6" style="background:var(--gradient-subtle)"><i data-lucide="graduation-cap" class="w-6 h-6 text-accent-indigo"></i></div>
-                    <h4 class="text-primary font-semibold">Career Tracks</h4>
-                    <p class="text-secondary text-sm mt-3 leading-relaxed">Enroll in short, practical courses taught by industry leaders to master in-demand skills.</p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-surface-container-high p-8 rounded-[24px] hover:-translate-y-1 transition-transform duration-300">
+                        <div class="w-12 h-12 rounded-full bg-primary-container flex items-center justify-center mb-6">
+                            <span class="material-symbols-outlined text-primary">work</span>
+                        </div>
+                        <h3 class="text-headline-md font-headline-md mb-4">A feed built for opportunity</h3>
+                        <p class="text-body-md font-body-md text-on-surface-variant">
+                            See roles, projects and mentorship from a network that shares your ambition — plus temporary posts for time-sensitive drops.
+                        </p>
+                    </div>
+                    <div class="bg-surface-container-high p-8 rounded-[24px] hover:-translate-y-1 transition-transform duration-300">
+                        <div class="w-12 h-12 rounded-full bg-primary-container flex items-center justify-center mb-6">
+                            <span class="material-symbols-outlined text-primary">school</span>
+                        </div>
+                        <h3 class="text-headline-md font-headline-md mb-4">Guided courses that stick</h3>
+                        <p class="text-body-md font-body-md text-on-surface-variant">
+                            Short, project-based tracks in design, tech, business and communication — taught by practitioners, not lecturers.
+                        </p>
+                    </div>
+                    <div class="bg-surface-container-high p-8 rounded-[24px] hover:-translate-y-1 transition-transform duration-300">
+                        <div class="w-12 h-12 rounded-full bg-primary-container flex items-center justify-center mb-6">
+                            <span class="material-symbols-outlined text-primary">monitoring</span>
+                        </div>
+                        <h3 class="text-headline-md font-headline-md mb-4">Track every application</h3>
+                        <p class="text-body-md font-body-md text-on-surface-variant">
+                            From 'applied' to 'offer received', follow every conversation, deadline and next step without spreadsheets.
+                        </p>
+                    </div>
                 </div>
-                <div class="card-inner-glow group bg-surface border border-white/[0.06] rounded-2xl p-6 sm:p-8 transition-all duration-300 hover:-translate-y-1 hover:border-white/[0.12] hover:shadow-glow cursor-default" data-reveal>
-                    <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-6" style="background:var(--gradient-subtle)"><i data-lucide="briefcase" class="w-6 h-6 text-accent-indigo"></i></div>
-                    <h4 class="text-primary font-semibold">Job Applications</h4>
-                    <p class="text-secondary text-sm mt-3 leading-relaxed">Track every opportunity from application to offer with a visual Kanban-style board.</p>
+            </div>
+        </section>
+
+        <!-- Final CTA -->
+        <section class="py-24 px-margin-mobile md:px-margin-desktop bg-primary-container text-on-primary-container">
+            <div class="max-w-4xl mx-auto text-center bg-surface-container-high rounded-[32px] p-12 md:p-20 relative overflow-hidden">
+                <div class="absolute inset-0 starry-bg opacity-20"></div>
+                <div class="relative z-10">
+                    <h2 class="text-headline-lg font-headline-lg mb-6">Ready to grow into the role you actually want?</h2>
+                    <p class="text-body-lg font-body-lg text-on-surface-variant mb-10">
+                        Join thousands of early-career professionals already building momentum on Dedran.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                        <a class="bg-surface text-on-surface px-8 py-3 rounded-full text-label-md font-label-md hover:bg-surface-variant transition-colors flex items-center justify-center gap-2" href="dashboard.html">
+                            Create free account
+                            <span class="material-symbols-outlined">arrow_forward</span>
+                        </a>
+                        <a class="bg-transparent border border-outline-variant text-on-primary-container px-8 py-3 rounded-full text-label-md font-label-md hover:bg-surface-container/30 transition-colors flex items-center justify-center" href="dashboard.html">
+                            Sign in
+                        </a>
+                    </div>
                 </div>
-                <div class="card-inner-glow group bg-surface border border-white/[0.06] rounded-2xl p-6 sm:p-8 transition-all duration-300 hover:-translate-y-1 hover:border-white/[0.12] hover:shadow-glow cursor-default" data-reveal>
-                    <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-6" style="background:var(--gradient-subtle)"><i data-lucide="shield" class="w-6 h-6 text-accent-indigo"></i></div>
-                    <h4 class="text-primary font-semibold">Secure Auth</h4>
-                    <p class="text-secondary text-sm mt-3 leading-relaxed">Enterprise-grade authentication with email/password and magic link sign-in support.</p>
-                </div>
-                <div class="card-inner-glow group bg-surface border border-white/[0.06] rounded-2xl p-6 sm:p-8 transition-all duration-300 hover:-translate-y-1 hover:border-white/[0.12] hover:shadow-glow cursor-default" data-reveal>
-                    <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-6" style="background:var(--gradient-subtle)"><i data-lucide="credit-card" class="w-6 h-6 text-accent-indigo"></i></div>
-                    <h4 class="text-primary font-semibold">Integrated Payments</h4>
-                    <p class="text-secondary text-sm mt-3 leading-relaxed">Seamless checkout with Stripe and PayPal so you can focus on learning, not logistics.</p>
-                </div>
-                <div class="card-inner-glow group bg-surface border border-white/[0.06] rounded-2xl p-6 sm:p-8 transition-all duration-300 hover:-translate-y-1 hover:border-white/[0.12] hover:shadow-glow cursor-default" data-reveal>
-                    <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-6" style="background:var(--gradient-subtle)"><i data-lucide="zap" class="w-6 h-6 text-accent-indigo"></i></div>
-                    <h4 class="text-primary font-semibold">Lightweight UI</h4>
-                    <p class="text-secondary text-sm mt-3 leading-relaxed">Zero-framework overhead. Pure HTML5, ES6+ JavaScript, and Tailwind CSS for instant load.</p>
-                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-surface-container-lowest dark:bg-surface-container-lowest border-t border-outline-variant full-width py-12">
+        <div class="flex flex-col md:flex-row justify-between items-center px-margin-desktop gap-gutter max-w-container-max mx-auto">
+            <div class="flex items-center gap-2 mb-4 md:mb-0">
+                <span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">explore</span>
+                <span class="text-label-md font-bold text-on-surface">Dedran</span>
+            </div>
+            <p class="text-label-sm font-label-sm text-on-surface-variant mb-4 md:mb-0 text-center md:text-left">
+                © 2024 Dedran. Navigating the professional universe.
+            </p>
+            <div class="flex flex-wrap justify-center gap-6">
+                <a class="text-on-surface-variant hover:text-on-surface transition-colors text-label-md font-label-md" href="#">Privacy Policy</a>
+                <a class="text-on-surface-variant hover:text-on-surface transition-colors text-label-md font-label-md" href="#">Terms of Service</a>
+                <a class="text-on-surface-variant hover:text-on-surface transition-colors text-label-md font-label-md" href="#">Contact Us</a>
+                <a class="text-on-surface-variant hover:text-on-surface transition-colors text-label-md font-label-md" href="#">Careers</a>
             </div>
         </div>
-    </section>
-
-    <section id="how-it-works" class="bg-surface py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8">
-        <div class="max-w-4xl mx-auto">
-            <div class="text-center mb-12 sm:mb-16" data-reveal>
-                <h2 class="h2">How Dedran works</h2>
-                <p class="body-large mt-4">Get started in minutes, not hours.</p>
-            </div>
-
-            <div class="relative" data-reveal>
-                <div class="absolute left-6 md:left-1/2 md:-translate-x-1/2 top-0 bottom-0 w-0.5" style="background:var(--gradient-hero);opacity:0.3"></div>
-
-                <div class="space-y-12 relative">
-                    <div class="flex items-start gap-6 md:gap-12 relative">
-                        <div class="w-14 h-14 rounded-full flex items-center justify-center text-white font-bold text-xl relative z-10 shrink-0" style="background:var(--gradient-hero)">01</div>
-                        <div class="md:max-w-sm">
-                            <h3 class="text-primary font-semibold">Create your profile</h3>
-                            <p class="text-secondary mt-2 leading-relaxed">Sign up in seconds and build your professional profile. Add your skills, experience, and career goals.</p>
-                        </div>
-                        <div class="absolute left-6 md:hidden w-0.5 h-12 bg-gradient-to-b from-accent-indigo to-accent-purple opacity-30"></div>
-                    </div>
-
-                    <div class="flex items-start gap-6 md:gap-12 md:flex-row-reverse relative">
-                        <div class="w-14 h-14 rounded-full flex items-center justify-center text-white font-bold text-xl relative z-10 shrink-0" style="background:var(--gradient-hero)">02</div>
-                        <div class="md:max-w-sm md:text-right">
-                            <h3 class="text-primary font-semibold">Explore career tracks</h3>
-                            <p class="text-secondary mt-2 leading-relaxed">Browse curated learning paths designed by industry experts. Enroll in tracks that match your ambitions.</p>
-                        </div>
-                        <div class="absolute left-6 md:hidden w-0.5 h-12 bg-gradient-to-b from-accent-indigo to-accent-purple opacity-30"></div>
-                    </div>
-
-                    <div class="flex items-start gap-6 md:gap-12 relative">
-                        <div class="w-14 h-14 rounded-full flex items-center justify-center text-white font-bold text-xl relative z-10 shrink-0" style="background:var(--gradient-hero)">03</div>
-                        <div class="md:max-w-sm">
-                            <h3 class="text-primary font-semibold">Land your dream role</h3>
-                            <p class="text-secondary mt-2 leading-relaxed">Apply to opportunities, track your progress, and connect with mentors who help you succeed.</p>
-                        </div>
-                        <div class="absolute left-6 md:hidden w-0.5 h-12 bg-gradient-to-b from-accent-indigo to-accent-purple opacity-30"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="demo" class="py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8" style="background:var(--bg-base)">
-        <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-            <div data-reveal="left">
-                <div class="card-badge mb-4">Interactive Demo</div>
-                <h2 class="h2">See the platform in action</h2>
-                <p class="body-large mt-4">Experience how Dedran streamlines your career growth with an intuitive interface designed for focus.</p>
-
-                <div class="demo-feature-list mt-8 space-y-4">
-                    <div class="demo-feature flex items-start gap-3">
-                        <i data-lucide="check" class="feature-icon w-5 h-5"></i>
-                        <span class="body">Visual Kanban board for job tracking</span>
-                    </div>
-                    <div class="demo-feature flex items-start gap-3">
-                        <i data-lucide="check" class="feature-icon w-5 h-5"></i>
-                        <span class="body">Real-time collaboration with peers</span>
-                    </div>
-                    <div class="demo-feature flex items-start gap-3">
-                        <i data-lucide="check" class="feature-icon w-5 h-5"></i>
-                        <span class="body">Progress analytics and insights</span>
-                    </div>
-                    <div class="demo-feature flex items-start gap-3">
-                        <i data-lucide="check" class="feature-icon w-5 h-5"></i>
-                        <span class="body">Mobile-responsive dashboard</span>
-                    </div>
-                </div>
-
-                <a href="#pricing" class="btn-primary-shine bg-gradient-to-r from-accent-indigo via-accent-purple to-accent-pink text-white font-semibold px-8 py-3.5 rounded-full mt-8 inline-block">Try it yourself</a>
-            </div>
-
-            <div data-reveal="right">
-                <div class="browser-frame">
-                    <div class="browser-chrome">
-                        <div class="browser-dot red rounded-full w-3 h-3"></div>
-                        <div class="browser-dot amber rounded-full w-3 h-3"></div>
-                        <div class="browser-dot green rounded-full w-3 h-3"></div>
-                    </div>
-                    <div class="browser-content p-6">
-                        <div class="kanban-column bg-elevated rounded-lg p-4 min-h-[200px]">
-                            <div class="kanban-header text-sm font-semibold text-primary mb-4">Applied</div>
-                            <div class="kanban-card bg-surface rounded-md p-3 mb-3 border border-white/[0.06]">
-                                <div class="kanban-card-dot red rounded-full w-2 h-2 inline-block mr-2"></div>
-                                <span class="text-xs text-tertiary">Marketing Coordinator - TechCorp</span>
-                            </div>
-                            <div class="kanban-card bg-surface rounded-md p-3 mb-3 border border-white/[0.06]">
-                                <div class="kanban-card-dot amber rounded-full w-2 h-2 inline-block mr-2"></div>
-                                <span class="text-xs text-tertiary">UX Designer - DesignHub</span>
-                            </div>
-                            <div class="kanban-card bg-surface rounded-md p-3 mb-3 border border-white/[0.06]">
-                                <div class="kanban-card-dot green rounded-full w-2 h-2 inline-block mr-2"></div>
-                                <span class="text-xs text-tertiary">Frontend Developer - WebSolutions</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="bg-surface py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8">
-        <div class="max-w-7xl mx-auto">
-            <div class="text-center mb-16" data-reveal>
-                <h2 class="h2">Loved by young professionals</h2>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="card bg-surface border border-white/[0.06] rounded-2xl p-8 relative" data-reveal>
-                    <div class="quote-icon absolute top-6 left-6 w-10 h-10 text-accent-indigo opacity-15"><i data-lucide="quote" class="w-8 h-8"></i></div>
-                    <p class="body italic leading-relaxed pt-8">"Dedran completely changed how I approach my career. The career tracks helped me transition from graphic design to product design in just 3 months.\"</p>
-                    <div class="flex items-center gap-4 mt-6 pt-6 border-t border-white/[0.06]">
-                        <div class="w-11 h-11 rounded-full flex items-center justify-center text-white font-bold" style="background:var(--gradient-hero)">SC</div>
-                        <div>
-                            <div class="text-sm font-semibold text-primary">Sarah Chen</div>
-                            <div class=\"text-xs text-tertiary\">Product Designer at Figma</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class=\"card bg-surface border border-white/[0.06] rounded-2xl p-8 relative\" data-reveal>
-                    <div class=\"quote-icon absolute top-6 left-6 w-10 h-10 text-accent-indigo opacity-15\"><i data-lucide=\"quote\" class=\"w-8 h-8\"></i></div>
-                    <p class=\"body italic leading-relaxed pt-8\">\"The job application tracker is a game-changer. I went from scattered spreadsheets to a clear visual pipeline. Landed my dream job because of it.\"</p>
-                    <div class=\"flex items-center gap-4 mt-6 pt-6 border-t border-white/[0.06]\">\n                        <div class=\"w-11 h-11 rounded-full flex items-center justify-center text-white font-bold\" style=\"background:var(--gradient-hero)\">MJ</div>\n                        <div>\n                            <div class=\"text-sm font-semibold text-primary\">Marcus Johnson</div>\n                            <div class=\"text-xs text-tertiary\">Software Engineer at Stripe</div>\n                        </div>\n                    </div>\n                </div>\n\n                <div class=\"card bg-surface border border-white/[0.06] rounded-2xl p-8 relative\" data-reveal>\n                    <div class=\"quote-icon absolute top-6 left-6 w-10 h-10 text-accent-indigo opacity-15\"><i data-lucide=\"quote\" class=\"w-8 h-8\"></i></div>\n                    <p class=\"body italic leading-relaxed pt-8\">\"I love the community aspect. Being able to connect with peers at similar career stages has been invaluable for my growth.\"</p>\n                    <div class=\"flex items-center gap-4 mt-6 pt-6 border-t border-white/[0.06]\">\n                        <div class=\"w-11 h-11 rounded-full flex items-center justify-center text-white font-bold\" style=\"background:var(--gradient-hero)\">AP</div>\n                        <div>\n                            <div class=\"text-sm font-semibold text-primary\">Aisha Patel</div>\n                            <div class=\"text-xs text-tertiary\">Marketing Manager at Notion</div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </section>\n
-    <section id=\"pricing\" class=\"py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8\" style=\"background:var(--bg-base)\">\n        <div class=\"max-w-7xl mx-auto\">\n            <div class=\"text-center mb-12\" data-reveal>\n                <div class=\"card-badge\">Pricing</div>\n                <h2 class=\"h2\">Simple, transparent pricing</h2>\n                <p class=\"body-large mt-4\">Start free, upgrade when you need to.</p>\n            </div>\n\n            <div class=\"pricing-toggle flex items-center justify-center gap-4 mb-12\" data-reveal>\n                <span id=\"monthlyLabel\" class=\"toggle-label text-sm font-medium text-secondary active\">Monthly</span>\n                <button class=\"toggle-switch relative w-11 h-6 rounded-full bg-elevated p-0.5 cursor-pointer transition-all duration-300\" id=\"pricingToggle\">\n                    <input type=\"checkbox\" class=\"hidden\">\n                    <div class=\"toggle-thumb w-5 h-5 rounded-full bg-text-primary shadow-sm transition-transform duration-300\"></div>\n                </button>\n                <span id=\"yearlyLabel\" class=\"toggle-label text-sm font-medium text-secondary\">Yearly</span>\n                <span class=\"save-badge bg-accent-green/10 text-accent-green text-xs px-2 py-0.5 rounded-md font-medium ml-2\">Save 20%</span>\n            </div>\n\n            <div class=\"grid grid-cols-1 md:grid-cols-3 gap-8 mt-12\">\n                <div class=\"card-pricing bg-surface border border-white/[0.06] rounded-3xl p-8\" data-reveal>\n                    <h3 class=\"h3\">Free</h3>\n                    <div class=\"mt-4\">\n                        <span class=\"price-monthly text-4xl font-bold gradient-text\">$0</span>\n                        <span class=\"price-monthly text-tertiary ml-2\">/month</span>\n                        <span class=\"price-yearly text-4xl font-bold hidden\">$0</span>\n                        <span class=\"price-yearly text-tertiary ml-2 hidden\">/month</span>\n                    </div>\n                    <p class=\"body-small text-tertiary mt-4\">Perfect for getting started</p>\n                    <ul class=\"mt-6 space-y-3\">\n                        <li class=\"flex items-center gap-3\"><i data-lucide=\"check\" class=\"w-4 h-4 text-accent-green\"></i><span class=\"text-sm\">Basic profile</span></li>\n                        <li class=\"flex items-center gap-3\"><i data-lucide=\"check\" class=\"w-4 h-4 text-accent-green\"></i><span class=\"text-sm\">3 career tracks</span></li>\n                        <li class=\"flex items-center gap-3\"><i data-lucide=\"check\" class=\"w-4 h-4 text-accent-green\"></i><span class=\"text-sm\">Job application tracker (5 jobs)</span></li>\n                        <li class=\"flex items-center gap-3\"><i data-lucide=\"check\" class=\"w-4 h-4 text-accent-green\"></i><span class=\"text-sm\">Community access</span></li>\n                        <li class=\"flex items-center gap-3\"><i data-lucide=\"check\" class=\"w-4 h-4 text-accent-green\"></i><span class=\"text-sm\">Email support</span></li>\n                    </ul>\n                    <a href=\"#\" class=\"btn btn-secondary mt-8 w-full\">Get Started</a>\n                </div>\n\n                <div class=\"card-pricing bg-surface border border-white/[0.06] rounded-3xl p-8 relative gradient-border-animated\" data-reveal>\n                    <div class=\"absolute -top-3 left-1/2 -translate-x-1/2 bg-gradient-to-r from-accent-indigo via-accent-purple to-accent-pink text-white text-xs font-semibold px-4 py-1 rounded-full shadow-button\">Most Popular</div>\n                    <h3 class=\"h3\">Pro</h3>\n                    <div class=\"mt-4\">\n                        <span class=\"price-monthly text-4xl font-bold gradient-text\">$12</span>\n                        <span class=\"price-monthly text-tertiary ml-2\">/month</span>\n                        <span class=\"price-yearly text-4xl font-bold hidden\">$115</span>\n                        <span class=\"price-yearly text-tertiary ml-2 hidden\">/month</span>\n                    </div>\n                    <p class=\"body-small text-tertiary mt-4\">For serious career growth</p>\n                    <ul class=\"mt-6 space-y-3\">\n                        <li class=\"flex items-center gap-3\"><i data-lucide=\"check\" class=\"w-4 h-4 text-accent-green\"></i><span class=\"text-sm\">Everything in Free</span></li>\n                        <li class=\"flex items-center gap-3\"><i data-lucide=\"check\" class=\"w-4 h-4 text-accent-green\"></i><span class=\"text-sm\">Unlimited career tracks</span></li>\n                        <li class=\"flex items-center gap-3\"><i data-lucide=\"check\" class=\"w-4 h-4 text-accent-green\"></i><span class=\"text-sm\">Unlimited job tracking</span></li>\n                        <li class=\"flex items-center gap-3\"><i data-lucide=\"check\" class=\"w-4 h-4 text-accent-green\"></i><span class=\"text-sm\">Priority mentorship matching</span></li>\n                        <li class=\"flex items-center gap-3\"><i data-lucide=\"check\" class=\"w-4 h-4 text-accent-green\"></i><span class=\"text-sm\">Analytics dashboard</span></li>\n                        <li class=\"flex items-center gap-3\"><i data-lucide=\"check\" class=\"w-4 h-4 text-accent-green\"></i><span class=\"text-sm\">Resume builder</span></li>\n                        <li class=\"flex items-center gap-3\"><i data-lucide=\"check\" class=\"w-4 h-4 text-accent-green\"></i><span class=\"text-sm\">Priority support</span></li>\n                    </ul>\n                    <a href=\"#\" class=\"btn btn-primary mt-8 w-full\">Start Pro Trial</a>\n                </div>\n\n                <div class=\"card-pricing bg-surface border border-white/[0.06] rounded-3xl p-8\" data-reveal>\n                    <h3 class=\"h3\">Team</h3>\n                    <div class=\"mt-4\">\n                        <span class=\"price-monthly text-4xl font-bold gradient-text\">$29</span>\n                        <span class=\"price-monthly text-tertiary ml-2\">/month</span>\n                        <span class=\"price-yearly text-4xl font-bold hidden\">$278</span>\n                        <span class=\"price-yearly text-tertiary ml-2 hidden\">/month</span>\n                    </div>\n                    <p class=\"body-small text-tertiary mt-4\">For teams and organizations</p>\n                    <ul class=\"mt-6 space-y-3\">\n                        <li class=\"flex items-center gap-3\"><i data-lucide=\"check\" class=\"w-4 h-4 text-accent-green\"></i><span class=\"text-sm\">Everything in Pro</span></li>\n                        <li class=\"flex items-center gap-3\"><i data-lucide=\"check\" class=\"w-4 h-4 text-accent-green\"></i><span class=\"text-sm\">Team collaboration</span></li>\n                        <li class=\"flex items-center gap-3\"><i data-lucide=\"check\" class=\"w-4 h-4 text-accent-green\"></i><span class=\"text-sm\">Admin dashboard</span></li>\n                        <li class=\"flex items-center gap-3\"><i data-lucide=\"check\" class=\"w-4 h-4 text-accent-green\"></i><span class=\"text-sm\">Custom integrations</span></li>\n                        <li class=\"flex items-center gap-3\"><i data-lucide=\"check\" class=\"w-4 h-4 text-accent-green\"></i><span class=\"text-sm\">Dedicated account manager</span></li>\n                        <li class=\"flex items-center gap-3\"><i data-lucide=\"check\" class=\"w-4 h-4 text-accent-green\"></i><span class=\"text-sm\">SLA guarantee</span></li>\n                    </ul>\n                    <a href=\"#\" class=\"btn btn-secondary mt-8 w-full\">Contact Sales</a>\n                </div>\n            </div>\n        </div>\n    </section>\n\n    <section id=\"faq\" class=\"bg-surface py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8\">\n        <div class=\"max-w-3xl mx-auto\">\n            <div class=\"text-center mb-16\" data-reveal>\n                <h2 class=\"h2\">Frequently asked questions</h2>\n            </div>\n\n            <div class=\"space-y-4\">\n                <div class=\"accordion-item bg-base rounded-xl border border-white/[0.06] overflow-hidden\" data-reveal>\n                    <button class=\"accordion-header w-full flex justify-between items-center p-6 text-left hover:bg-elevated/50 transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-accent-indigo/20 rounded-xl\" aria-expanded=\"false\">\n                        <span class=\"text-primary font-semibold text-base pr-4\">Is Dedran really free to start</span>\n                        <i data-lucide=\"chevron-down\" class=\"accordion-icon w-5 h-5 text-tertiary shrink-0\"></i>\n                    </button>\n                    <div class=\"accordion-content px-6 pb-6 text-secondary leading-relaxed\">\n                        <p>Yes! Our Free plan gives you access to basic features including profile creation, 3 career tracks, and limited job tracking. No credit card required.</p>\n                    </div>\n                </div>\n\n                <div class=\"accordion-item bg-base rounded-xl border border-white/[0.06] overflow-hidden\" data-reveal>\n                    <button class=\"accordion-header w-full flex justify-between items-center p-6 text-left hover:bg-elevated/50 transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-accent-indigo/20 rounded-xl\" aria-expanded=\"false\">\n                        <span class=\"text-primary font-semibold text-base pr-4\">Can I switch plans at any time</span>\n                        <i data-lucide=\"chevron-down\" class=\"accordion-icon w-5 h-5 text-tertiary shrink-0\"></i>\n                    </button>\n                    <div class=\"accordion-content px-6 pb-6 text-secondary leading-relaxed\">\n                        <p>Absolutely. You can upgrade or downgrade your plan at any time. If you upgrade, you will be charged the prorated difference. If you downgrade, you will receive credit toward future billing.</p>\n                    </div>\n                </div>\n\n                <div class=\"accordion-item bg-base rounded-xl border border-white/[0.06] overflow-hidden\" data-reveal>\n                    <button class=\"accordion-header w-full flex justify-between items-center p-6 text-left hover:bg-elevated/50 transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-accent-indigo/20 rounded-xl\" aria-expanded=\"false\">\n                        <span class=\"text-primary font-semibold text-base pr-4\">How do career tracks work</span>\n                        <i data-lucide=\"chevron-down\" class=\"accordion-icon w-5 h-5 text-tertiary shrink-0\"></i>\n                    </button>\n                    <div class=\"accordion-content px-6 pb-6 text-secondary leading-relaxed\">\n                        <p>Career tracks are curated learning paths designed by industry experts. Each track contains a series of lessons, exercises, and projects that build real-world skills. You progress at your own pace.</p>\n                    </div>\n                </div>\n\n                <div class=\"accordion-item bg-base rounded-xl border border-white/[0.06] overflow-hidden\" data-reveal>\n                    <button class=\"accordion-header w-full flex justify-between items-center p-6 text-left hover:bg-elevated/50 transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-accent-indigo/20 rounded-xl\" aria-expanded=\"false\">\n                        <span class=\"text-primary font-semibold text-base pr-4\">Is my data secure</span>\n                        <i data-lucide=\"chevron-down\" class=\"accordion-icon w-5 h-5 text-tertiary shrink-0\"></i>\n                    </button>\n                    <div class=\"accordion-content px-6 pb-6 text-secondary leading-relaxed\">\n                        <p>Security is our top priority. We use enterprise-grade encryption, SOC 2 Type II compliance, and never sell your data. You can export or delete your data at any time.</p>\n                    </div>\n                </div>\n\n                <div class=\"accordion-item bg-base rounded-xl border border-white/[0.06] overflow-hidden\" data-reveal>\n                    <button class=\"accordion-header w-full flex justify-between items-center p-6 text-left hover:bg-elevated/50 transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-accent-indigo/20 rounded-xl\" aria-expanded=\"false\">\n                        <span class=\"text-primary font-semibold text-base pr-4\">Do you offer refunds</span>\n                        <i data-lucide=\"chevron-down\" class=\"accordion-icon w-5 h-5 text-tertiary shrink-0\"></i>\n                    </button>\n                    <div class=\"accordion-content px-6 pb-6 text-secondary leading-relaxed\">\n                        <p>We offer a 14-day money-back guarantee on all paid plans. If you are not satisfied, contact our support team for a full refund — no questions asked.</p>\n                    </div>\n                </div>\n\n                <div class=\"accordion-item bg-base rounded-xl border border-white/[0.06] overflow-hidden\" data-reveal>\n                    <button class=\"accordion-header w-full flex justify-between items-center p-6 text-left hover:bg-elevated/50 transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-accent-indigo/20 rounded-xl\" aria-expanded=\"false\">\n                        <span class=\"text-primary font-semibold text-base pr-4\">Can I use Dedran for my team</span>\n                        <i data-lucide=\"chevron-down\" class=\"accordion-icon w-5 h-5 text-tertiary shrink-0\"></i>\n                    </button>\n                    <div class=\"accordion-content px-6 pb-6 text-secondary leading-relaxed\">\n                        <p>Yes! Our Team plan includes collaboration features, admin controls, and custom integrations. Contact our sales team for enterprise pricing if you need more than 50 seats.</p>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </section>\n\n    <section class=\"py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8\">\n        <div class=\"max-w-5xl mx-auto\">\n            <div class=\"cta-banner rounded-3xl relative overflow-hidden text-center py-16 px-8\" style=\"background:var(--gradient-cta)\">\n                <div class=\"absolute inset-0 bg-white/5 blur-3xl\"></div>\n                <div class=\"decorative-element\" style=\"top: 0; left: 0; width: 300px; height: 300px; transform: translate(-50%, -50%);\"></div>\n                <div class=\"decorative-element\" style=\"bottom: 0; right: 0; width: 400px; height: 400px; transform: translate(50%, 50%); animation-delay: 2s;\"></div>\n                <div class=\"cta-content relative z-10\" data-reveal=\"scale\">\n                    <h2 class=\"h2 text-white\">Ready to accelerate your career</h2>\n                    <p class=\"body-large text-white/80 mt-4\">Join thousands of young professionals already growing with Dedran.</p>\n                    <a href=\"#pricing\" class=\"inline-flex items-center gap-2 bg-white text-accent-indigo font-semibold px-8 py-3.5 rounded-full mt-8 hover:shadow-xl hover:scale-105 active:scale-100 transition-all duration-200 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-accent-indigo\">Get Started Free <i data-lucide=\"arrow-right\" class=\"w-4 h-4\"></i></a>\n                </div>\n            </div>\n        </div>\n    </section>\n\n    <footer class=\"bg-base border-t py-16 px-4 sm:px-6 lg:px-8\" style=\"border-color:rgba(255,255,255,0.06)\">\n        <div class=\"max-w-7xl mx-auto\">\n            <div class=\"footer-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12\">\n                <div class=\"footer-section\">\n                    <a href=\"#hero\" class=\"logo font-bold text-xl\">Dedran<span class=\"logo-gradient\">.</span></a>\n                    <p class=\"text-sm text-tertiary mt-3\">Career growth, simplified.</p>\n                    <div class=\"social-links flex gap-4 mt-6\">\n                        <a href=\"#\" class=\"social-link w-10 h-10 bg-elevated rounded-lg flex items-center justify-center text-tertiary hover:text-primary hover:bg-surface transition-all\"><i data-lucide=\"twitter\" class=\"w-5 h-5\"></i></a>\n                        <a href=\"#\" class=\"social-link w-10 h-10 bg-elevated rounded-lg flex items-center justify-center text-tertiary hover:text-primary hover:bg-surface transition-all\"><i data-lucide=\"github\" class=\"w-5 h-5\"></i></a>\n                        <a href=\"#\" class=\"social-link w-10 h-10 bg-elevated rounded-lg flex items-center justify-center text-tertiary hover:text-primary hover:bg-surface transition-all\"><i data-lucide=\"linkedin\" class=\"w-5 h-5\"></i></a>\n                        <a href=\"#\" class=\"social-link w-10 h-10 bg-elevated rounded-lg flex items-center justify-center text-tertiary hover:text-primary hover:bg-surface transition-all\"><i data-lucide=\"message-square\" class=\"w-5 h-5\"></i></a>\n                    </div>\n                </div>\n\n                <div class=\"footer-section\">\n                    <div class=\"footer-title text-sm font-semibold text-primary uppercase tracking-wider mb-4\">Product</div>\n                    <a href=\"#features\" class=\"footer-link block py-1\">Features</a>\n                    <a href=\"#pricing\" class=\"footer-link block py-1\">Pricing</a>\n                    <a href=\"#\" class=\"footer-link block py-1\">Changelog</a>\n                    <a href=\"#\" class=\"footer-link block py-1\">Roadmap</a>\n                </div>\n\n                <div class=\"footer-section\">\n                    <div class=\"footer-title text-sm font-semibold text-primary uppercase tracking-wider mb-4\">Resources</div>\n                    <a href=\"#\" class=\"footer-link block py-1\">Blog</a>\n                    <a href=\"#\" class=\"footer-link block py-1\">Documentation</a>\n                    <a href=\"#\" class=\"footer-link block py-1\">Community</a>\n                    <a href=\"#\" class=\"footer-link block py-1\">Support</a>\n                </div>\n\n                <div class=\"footer-section\">\n                    <div class=\"footer-title text-sm font-semibold text-primary uppercase tracking-wider mb-4\">Company</div>\n                    <a href=\"#\" class=\"footer-link block py-1\">About</a>\n                    <a href=\"#\" class=\"footer-link block py-1\">Careers</a>\n                    <a href=\"#\" class=\"footer-link block py-1\">Contact</a>\n                    <a href=\"#\" class=\"footer-link block py-1\">Press</a>\n                </div>\n            </div>\n\n            <div class=\"mt-12 pt-8 border-t flex flex-col md:flex-row justify-between items-center\" style=\"border-color:rgba(255,255,255,0.06)\">\n                <p class=\"text-xs text-tertiary\">&copy; 2026 Dedran. All rights reserved.</p>\n                <div class=\"flex gap-6 mt-4 md:mt-0\">\n                    <a href=\"#\" class=\"text-xs text-tertiary hover:text-secondary\">Privacy Policy</a>\n                    <a href=\"#\" class=\"text-xs text-tertiary hover:text-secondary\">Terms of Service</a>\n                    <a href=\"#\" class=\"text-xs text-tertiary hover:text-secondary\">Cookie Policy</a>\n                </div>\n            </div>\n        </div>\n    </footer>\n
-    <script>\n        lucide.createIcons();\n\n        const revealObserver = new IntersectionObserver((entries) => {\n            entries.forEach(entry => {\n                if (entry.isIntersecting) {\n                    entry.target.classList.add('revealed');\n                    const staggerContainer = entry.target.closest('[data-reveal].stagger-children');\n                    if (staggerContainer) {\n                        const children = Array.from(staggerContainer.children);\n                        const index = children.indexOf(entry.target);\n                        if (index !== -1) {\n                            entry.target.style.transitionDelay = `${index * 100}ms`;\n                        }\n                    }\n                }\n            });\n        }, {\n            threshold: 0.1,\n            rootMargin: '0px 0px -60px 0px'\n        });\n\n        document.querySelectorAll('[data-reveal], [data-stagger]').forEach(el => {\n            revealObserver.observe(el);\n        });\n\n        const navbar = document.getElementById('navbar');\n        let ticking = false;\n\n        function updateNavbar() {\n            if (window.scrollY > 50) {\n                navbar.classList.add('navbar-scrolled');\n                navbar.style.background = 'rgba(10, 10, 15, 0.85)';\n            } else {\n                navbar.classList.remove('navbar-scrolled');\n                navbar.style.background = 'rgba(10, 10, 15, 0.75)';\n            }\n            ticking = false;\n        }\n\n        window.addEventListener('scroll', () => {\n            if (!ticking) {\n                window.requestAnimationFrame(updateNavbar);\n                ticking = true;\n            }\n        }, { passive: true });\n\n        const mobileMenuBtn = document.getElementById('mobile-menu-btn');\n        const mobileMenu = document.getElementById('mobile-menu');\n        const mobileMenuClose = document.getElementById('mobile-menu-close');\n        const mobileMenuBackdrop = document.getElementById('mobile-menu-backdrop');\n        let isMenuOpen = false;\n\n        function toggleMenu() {\n            isMenuOpen = !isMenuOpen;\n            mobileMenu.style.transform = isMenuOpen ? 'translateX(0)' : 'translateX(100%)';\n            mobileMenuBackdrop.style.opacity = isMenuOpen ? '1' : '0';\n            mobileMenuBackdrop.style.pointerEvents = isMenuOpen ? 'auto' : 'none';\n            document.body.style.overflow = isMenuOpen ? 'hidden' : '';\n            mobileMenu.setAttribute('aria-hidden', !isMenuOpen);\n        }\n\n        mobileMenuBtn.addEventListener('click', toggleMenu);\n        mobileMenuClose.addEventListener('click', toggleMenu);\n        mobileMenuBackdrop.addEventListener('click', toggleMenu);\n\n        document.addEventListener('keydown', (e) => {\n            if (e.key === 'Escape' && isMenuOpen) {\n                toggleMenu();\n                mobileMenuBtn.focus();\n            }\n        });\n\n        const featureGrid = document.getElementById('feature-grid');\n        if (featureGrid) {\n            featureGrid.addEventListener('mousemove', (e) => {\n                const rect = featureGrid.getBoundingClientRect();\n                featureGrid.style.setProperty('--spotlight-x', `${e.clientX - rect.left}px`);\n                featureGrid.style.setProperty('--spotlight-y', `${e.clientY - rect.top}px`);\n            });\n            featureGrid.addEventListener('mouseleave', () => {\n                featureGrid.style.setProperty('--spotlight-x', '50%');\n                featureGrid.style.setProperty('--spotlight-y', '50%');\n            });\n        }\n\n        document.querySelectorAll('.card-inner-glow').forEach(card => {\n            card.addEventListener('mousemove', (e) => {\n                const rect = card.getBoundingClientRect();\n                card.style.setProperty('--card-mx', `${e.clientX - rect.left}px`);\n                card.style.setProperty('--card-my', `${e.clientY - rect.top}px`);\n            });\n        });\n\n        document.querySelectorAll('.accordion-item').forEach(item => {\n            const header = item.querySelector('.accordion-header');\n            const answer = item.querySelector('.accordion-content');\n            const icon = item.querySelector('.accordion-icon');\n\n            header.addEventListener('click', () => {\n                const isOpen = item.classList.contains('open');\n\n                document.querySelectorAll('.accordion-item.open').forEach(openItem => {\n                    if (openItem !== item) {\n                        openItem.classList.remove('open');\n                        openItem.querySelector('.accordion-content').style.maxHeight = null;\n                        openItem.querySelector('.accordion-icon').style.transform = 'rotate(0deg)';\n                        openItem.querySelector('.accordion-header').setAttribute('aria-expanded', 'false');\n                    }\n                });\n\n                if (isOpen) {\n                    item.classList.remove('open');\n                    answer.style.maxHeight = null;\n                    icon.style.transform = 'rotate(0deg)';\n                    header.setAttribute('aria-expanded', 'false');\n                } else {\n                    item.classList.add('open');\n                    answer.style.maxHeight = answer.scrollHeight + 'px';\n                    icon.style.transform = 'rotate(180deg)';\n                    header.setAttribute('aria-expanded', 'true');\n                }\n            });\n        });\n\n        const pricingToggle = document.getElementById('pricingToggle');\n        if (pricingToggle) {\n            const monthlyPrices = document.querySelectorAll('.price-monthly');\n            const yearlyPrices = document.querySelectorAll('.price-yearly');\n\n            pricingToggle.addEventListener('change', () => {\n                const isYearly = pricingToggle.checked;\n                monthlyPrices.forEach(el => el.style.display = isYearly ? 'none' : 'inline');\n                yearlyPrices.forEach(el => el.style.display = isYearly ? 'inline' : 'none');\n            });\n        }\n\n        document.querySelectorAll('a[href^="#"]').forEach(anchor => {\n            anchor.addEventListener('click', function(e) {\n                e.preventDefault();\n                const targetId = this.getAttribute('href');\n                const target = document.querySelector(targetId);\n                if (target) {\n                    const navHeight = navbar.offsetHeight;\n                    const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - navHeight;\n                    window.scrollTo({ top: targetPosition, behavior: 'smooth' });\n                    if (isMenuOpen) toggleMenu();\n                }\n            });\n        });\n\n        const sections = document.querySelectorAll('section[id]');\n        const navLinks = document.querySelectorAll('nav a[href^="#\"]');\n\n        function updateActiveLink() {\n            let current = '';\n            sections.forEach(section => {\n                const sectionTop = section.offsetTop - navbar.offsetHeight - 100;\n                if (window.scrollY >= sectionTop) {\n                    current = section.getAttribute('id');\n                }\n            });\n\n            navLinks.forEach(link => {\n                link.classList.remove('text-primary');\n                link.classList.add('text-secondary');\n                if (link.getAttribute('href') === '#' + current) {\n                    link.classList.add('text-primary');\n                    link.classList.remove('text-secondary');\n                }\n            });\n        }\n\n        window.addEventListener('scroll', updateActiveLink, { passive: true });\n\n        const sectionObserver = new IntersectionObserver((entries) => {\n            entries.forEach(entry => {\n                if (entry.isIntersecting) {\n                    entry.target.classList.add('revealed');\n                }\n            });\n        }, {\n            threshold: 0.1,\n            rootMargin: '0px'\n        });\n\n        sections.forEach(section => {\n            sectionObserver.observe(section);\n        });\n    </script>\n</body>\n</html>
+    </footer>
+</body>
+</html>

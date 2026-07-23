@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Dedran - Profile</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Hanken+Grotesk:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+    <!-- Material Symbols -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    
+    <!-- Custom CSS -->
+    <link href="styles.css" rel="stylesheet"/>
+    
+    <!-- Sidebar Web Component -->
+    <script src="sidebar.js"></script>
+
+    <!-- Tailwind Configuration -->
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-fixed": "#dae2ff",
+                        "surface-container-lowest": "#0b0f12",
+                        "on-primary": "#2e3036",
+                        "primary-fixed-dim": "#c5c6cd",
+                        "secondary": "#bcc8d7",
+                        "error": "#ffb4ab",
+                        "primary-fixed": "#e2e2ea",
+                        "primary-container": "#07090e",
+                        "secondary-fixed-dim": "#bcc8d7",
+                        "on-tertiary-fixed-variant": "#3c4662",
+                        "on-secondary-fixed-variant": "#3d4854",
+                        "background": "#101417",
+                        "on-tertiary-container": "#6f7897",
+                        "tertiary-fixed-dim": "#bcc6e7",
+                        "on-secondary": "#27313d",
+                        "on-tertiary": "#26304a",
+                        "outline-variant": "#46474b",
+                        "on-tertiary-fixed": "#101b34",
+                        "surface": "#101417",
+                        "outline": "#909095",
+                        "secondary-fixed": "#d8e4f3",
+                        "surface-dim": "#101417",
+                        "secondary-container": "#3f4a56",
+                        "surface-bright": "#36393d",
+                        "surface-tint": "#c5c6cd",
+                        "surface-container-low": "#191c1f",
+                        "on-surface-variant": "#c6c6cb",
+                        "tertiary": "#bcc6e7",
+                        "on-error": "#690005",
+                        "on-primary-fixed": "#191c21",
+                        "on-surface": "#e1e2e7",
+                        "tertiary-container": "#000821",
+                        "surface-container-high": "#272a2e",
+                        "on-background": "#e1e2e7",
+                        "primary": "#c5c6cd",
+                        "inverse-primary": "#5c5e65",
+                        "error-container": "#93000a",
+                        "inverse-on-surface": "#2d3134",
+                        "on-secondary-fixed": "#111d27",
+                        "surface-variant": "#323539",
+                        "surface-container": "#1d2023",
+                        "inverse-surface": "#e1e2e7",
+                        "surface-container-highest": "#323539",
+                        "on-primary-container": "#77797f",
+                        "on-secondary-container": "#aeb9c8",
+                        "on-primary-fixed-variant": "#45474d",
+                        "on-error-container": "#ffdad6"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "container-max": "1280px",
+                        "gutter": "24px",
+                        "margin-mobile": "16px",
+                        "margin-desktop": "40px",
+                        "unit": "8px"
+                    },
+                    "fontFamily": {
+                        "display-lg": ["Hanken Grotesk"],
+                        "headline-lg-mobile": ["Hanken Grotesk"],
+                        "headline-md": ["Hanken Grotesk"],
+                        "body-lg": ["Manrope"],
+                        "body-md": ["Manrope"],
+                        "label-sm": ["Geist"],
+                        "headline-lg": ["Hanken Grotesk"],
+                        "label-md": ["Geist"]
+                    },
+                    "fontSize": {
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-lg-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "600" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.03em", "fontWeight": "500" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "fontWeight": "600" }],
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500" }]
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .starry-bg {
+            background-image: 
+                radial-gradient(1px 1px at 10% 20%, rgba(255, 255, 255, 0.1) 100%, transparent),
+                radial-gradient(1px 1px at 30% 80%, rgba(255, 255, 255, 0.1) 100%, transparent),
+                radial-gradient(1px 1px at 70% 40%, rgba(255, 255, 255, 0.1) 100%, transparent),
+                radial-gradient(1px 1px at 90% 90%, rgba(255, 255, 255, 0.1) 100%, transparent);
+            background-size: 100px 100px;
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md antialiased min-h-screen flex starry-bg selection:bg-tertiary-fixed selection:text-on-tertiary-fixed">
+
+    <!-- Dynamically loaded Sidebar -->
+    <dedran-sidebar active-tab="perfil"></dedran-sidebar>
+
+    <!-- Main Content Canvas -->
+    <main class="flex-1 md:ml-64 p-margin-mobile md:p-margin-desktop max-w-container-max mx-auto w-full pt-24 md:pt-margin-desktop overflow-x-hidden">
+        <!-- Profile Header Card -->
+        <section class="bg-surface-container-low rounded-xl md:rounded-[24px] shadow-[0_12px_24px_-4px_rgba(7,9,14,0.15)] overflow-hidden mb-8 relative border border-outline-variant/30">
+            <!-- Cover Banner -->
+            <div class="h-32 md:h-48 w-full relative">
+                <div class="bg-cover bg-center w-full h-full" data-alt="Cover banner" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCZGTjcBknqgSE7MZPFEwY5Y30bEz_2zRgwYb8EpXis5j4jZDxB1npoc2WjFm7uZkNUOzv7zUb0mKOfw0Q_jjG4pnqfTiO-KjevQBZ0GHbO5YLCtHSAxDbUKzhCEegI8qXWa1kyZT9WLFO64zzogZQI1lBkjUhWdqo740TkNoz5JaOLQnR5-hTl6UU-9NobNVeS-gZjYYAmaOkquTKQsP9wocx7Ki8d25WIbH9VWJSIJMdYf-5d73iAx58Q_16NZY0IT1CtvQx_oOPw')"></div>
+            </div>
+            <div class="px-6 md:px-8 pb-8">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-end -mt-12 md:-mt-16 mb-6 gap-4">
+                    <!-- Avatar & Info -->
+                    <div class="flex flex-col md:flex-row gap-4 items-start md:items-end">
+                        <div class="w-24 h-24 md:w-32 md:h-32 rounded-xl md:rounded-[24px] border-4 border-surface-container-low overflow-hidden relative shadow-lg shrink-0">
+                            <img class="w-full h-full object-cover" data-alt="Avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAzZgR9D7adZ2Tu_DUWZ_RiRUE9GRNprkYAY-jmrRon58j2Ujec_pc3i6J96DJSi5vs5VUk3S2a4K5a_-6AJEy-SOHmUZT2G0b4AQheT9VPst_Gq68WXyDnUl38NGW0_G9tO42rCxyUyskfMChV0lnb2ZAdviQSllH6JTrOzhr1brWqfHXAcXmFMQg7mG-_g-AV7UTb8TmYmKliJ4kx_z7mxClL82_cS0af7kRIM8LTEeumNgBAaM7-tNDT6nM3vA-TD9gWG9tkdlWI"/>
+                        </div>
+                        <div class="pt-2 md:pt-0">
+                            <h1 class="font-headline-lg text-headline-lg text-on-surface m-0">Luis</h1>
+                            <p class="font-body-lg text-body-lg text-on-surface-variant mb-1">Junior UX Designer</p>
+                            <div class="flex items-center text-on-tertiary-container font-label-md text-label-md gap-1">
+                                <span class="material-symbols-outlined text-sm">location_on</span>
+                                <span>Barcelona, Spain</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Edit Button -->
+                    <button class="bg-transparent border border-outline text-on-surface hover:bg-surface-variant transition-all duration-200 rounded-full px-4 py-2 font-label-md text-label-md flex items-center gap-2 self-start md:self-auto shrink-0 mt-2 md:mt-0">
+                        <span class="material-symbols-outlined text-sm">edit</span>
+                        Edit
+                    </button>
+                </div>
+                <!-- Stats Grid (Bento Style) -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div class="bg-surface-container p-4 rounded-xl flex flex-col items-center justify-center text-center border border-outline-variant/20 hover:bg-surface-container-high transition-colors">
+                        <span class="material-symbols-outlined text-on-secondary-container mb-2">group</span>
+                        <span class="font-headline-md text-headline-md text-on-surface font-bold">342</span>
+                        <span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Connections</span>
+                    </div>
+                    <div class="bg-surface-container p-4 rounded-xl flex flex-col items-center justify-center text-center border border-outline-variant/20 hover:bg-surface-container-high transition-colors">
+                        <span class="material-symbols-outlined text-on-secondary-container mb-2">visibility</span>
+                        <span class="font-headline-md text-headline-md text-on-surface font-bold">1248</span>
+                        <span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Profile Views</span>
+                    </div>
+                    <div class="bg-surface-container p-4 rounded-xl flex flex-col items-center justify-center text-center border border-outline-variant/20 hover:bg-surface-container-high transition-colors">
+                        <span class="material-symbols-outlined text-on-secondary-container mb-2">cases</span>
+                        <span class="font-headline-md text-headline-md text-on-surface font-bold">12</span>
+                        <span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Applications</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tabs & Content Section -->
+        <section class="mt-8">
+            <!-- Sticky Tabs -->
+            <div class="border-b border-outline-variant mb-6 sticky top-16 md:top-0 bg-background/95 backdrop-blur-sm z-30 pt-2">
+                <div class="flex gap-8 overflow-x-auto no-scrollbar px-2">
+                    <button class="pb-3 border-b-2 border-primary text-primary font-label-md text-label-md whitespace-nowrap px-1">About</button>
+                    <button class="pb-3 border-b-2 border-transparent text-on-surface-variant hover:text-on-surface transition-colors font-label-md text-label-md whitespace-nowrap px-1">Experience</button>
+                    <button class="pb-3 border-b-2 border-transparent text-on-surface-variant hover:text-on-surface transition-colors font-label-md text-label-md whitespace-nowrap px-1">Skills</button>
+                    <button class="pb-3 border-b-2 border-transparent text-on-surface-variant hover:text-on-surface transition-colors font-label-md text-label-md whitespace-nowrap px-1">Certificates</button>
+                </div>
+            </div>
+            <!-- Tab Content: About -->
+            <div class="bg-surface-container-low p-6 md:p-8 rounded-xl md:rounded-[24px] shadow-[0_12px_24px_-4px_rgba(7,9,14,0.15)] border border-outline-variant/30">
+                <p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+                    Passionate about crafting human-centred digital experiences. Currently seeking opportunities in product design and UX research. Open to hybrid and remote roles across Europe.
+                </p>
+            </div>
+        </section>
+    </main>
+</body>
+</html>
