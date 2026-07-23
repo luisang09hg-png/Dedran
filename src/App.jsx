@@ -7,6 +7,7 @@ import Profile from './pages/Profile/Profile';
 import Applications from './pages/Applications/Applications';
 import Network from './pages/Network/Network';
 import Settings from './pages/Settings/Settings';
+import Messages from './pages/Messages/Messages';
 
 // Mock protected layout
 const ProtectedLayout = () => {
@@ -32,6 +33,7 @@ const App = () => {
           <Route path="/" element={<Navigate to="/feed" replace />} />
           <Route path="/feed" element={<Feed />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/messages" element={<Messages />} />
           <Route path="/courses" element={<div>Courses (Coming Soon)</div>} />
           <Route path="/applications" element={<Applications />} />
           <Route path="/network" element={<Network />} />
