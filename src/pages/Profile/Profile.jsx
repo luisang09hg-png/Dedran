@@ -2,9 +2,9 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
 import { 
-  Edit, Save, X, Camera, MapPin, Link2, Github, Linkedin, Twitter, Globe, 
+  Edit, Save, X, Camera, MapPin, Link2, Globe, 
   Briefcase, Award, Star, Settings, Loader2, Plus, Trash2, FileText, Users, 
-  LayoutGrid, MessageSquare, Heart, Share2, MoreHorizontal, ChevronDown 
+  LayoutGrid, MessageSquare, Heart, Share2, MoreHorizontal, ChevronDown, ExternalLink, User
 } from 'lucide-react';
 
 const Profile = () => {
@@ -440,9 +440,9 @@ const Profile = () => {
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div>
-                    <label className="block text-label-md font-label-md mb-2 text-on-surface-variant flex items-center gap-1">
-                      <Linkedin size={16} /> LinkedIn
-                    </label>
+<label className="block text-label-md font-label-md mb-2 text-on-surface-variant flex items-center gap-1">
+                    <ExternalLink size={16} /> LinkedIn
+                  </label>
                     <input
                       type="url"
                       name="linkedin_url"
@@ -453,9 +453,9 @@ const Profile = () => {
                     />
                   </div>
                   <div>
-                    <label className="block text-label-md font-label-md mb-2 text-on-surface-variant flex items-center gap-1">
-                      <Github size={16} /> GitHub
-                    </label>
+<label className="block text-label-md font-label-md mb-2 text-on-surface-variant flex items-center gap-1">
+                    <ExternalLink size={16} /> GitHub
+                  </label>
                     <input
                       type="url"
                       name="github_url"
@@ -466,9 +466,9 @@ const Profile = () => {
                     />
                   </div>
                   <div>
-                    <label className="block text-label-md font-label-md mb-2 text-on-surface-variant flex items-center gap-1">
-                      <Twitter size={16} /> Twitter/X
-                    </label>
+<label className="block text-label-md font-label-md mb-2 text-on-surface-variant flex items-center gap-1">
+                    <MessageSquare size={16} /> Twitter/X
+                  </label>
                     <input
                       type="url"
                       name="twitter_url"
@@ -529,7 +529,7 @@ const Profile = () => {
                       rel="noopener noreferrer"
                       className="flex items-center gap-1 hover:text-primary transition-colors"
                     >
-                      <Linkedin size={14} />
+                      <ExternalLink size={14} />
                       LinkedIn
                     </a>
                   )}
@@ -540,7 +540,7 @@ const Profile = () => {
                       rel="noopener noreferrer"
                       className="flex items-center gap-1 hover:text-primary transition-colors"
                     >
-                      <Github size={14} />
+                      <ExternalLink size={14} />
                       GitHub
                     </a>
                   )}
@@ -551,7 +551,7 @@ const Profile = () => {
                       rel="noopener noreferrer"
                       className="flex items-center gap-1 hover:text-primary transition-colors"
                     >
-                      <Twitter size={14} />
+                      <MessageSquare size={14} />
                       Twitter
                     </a>
                   )}

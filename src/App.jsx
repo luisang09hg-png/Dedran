@@ -2,6 +2,11 @@ import { BrowserRouter as Router, Routes, Route, Outlet, Navigate } from 'react-
 import Sidebar from './components/layout/Sidebar';
 import Login from './pages/Auth/Login';
 import Register from './pages/Auth/Register';
+import Feed from './pages/Feed/Feed';
+import Profile from './pages/Profile/Profile';
+import Applications from './pages/Applications/Applications';
+import Network from './pages/Network/Network';
+import Settings from './pages/Settings/Settings';
 
 // Mock protected layout
 const ProtectedLayout = () => {
@@ -24,10 +29,13 @@ const App = () => {
         
         {/* Protected routes */}
         <Route element={<ProtectedLayout />}>
-          <Route path="/" element={<Navigate to="/login" replace />} />
-          <Route path="/feed" element={<div>Feed (Coming Soon)</div>} />
-          <Route path="/profile" element={<div>Profile (Coming Soon)</div>} />
+          <Route path="/" element={<Navigate to="/feed" replace />} />
+          <Route path="/feed" element={<Feed />} />
+          <Route path="/profile" element={<Profile />} />
           <Route path="/courses" element={<div>Courses (Coming Soon)</div>} />
+          <Route path="/applications" element={<Applications />} />
+          <Route path="/network" element={<Network />} />
+          <Route path="/settings" element={<Settings />} />
         </Route>
       </Routes>
     </Router>
