@@ -457,70 +457,71 @@ const Messages = () => {
                   <p className="text-body-md text-on-surface-variant">No hay mensajes aún</p>
                   <p className="text-label-sm text-on-surface-variant/70 mt-1">Envía el primer mensaje</p>
                 </div>
-              ) : (
-                messages.map((msg, idx) => {
-                  const isOwn = msg.sender_id === currentUserId.current;
-                  const showTime = idx === 0 || 
-                    new Date(msg.created_at).getHours() !== new Date(messages[idx - 1]?.created_at)?.getHours() ||
-                    new Date(msg.created_at).getDate() !== new Date(messages[idx - 1]?.created_at)?.getDate();
-                  const showAvatar = idx === messages.length - 1 || 
-                    messages[idx + 1]?.sender_id !== msg.sender_id;
-                  
-                  return (
-                    <div 
-                      key={msg.id} 
-                      className={`flex gap-2 ${isOwn ? 'flex-row-reverse' : ''}`}
-                    >
-                      {!isOwn && showAvatar && (
-                        <div className="flex-shrink-0">
-                          <div className="w-8 h-8 rounded-full overflow-hidden bg-surface-container">
-                            {msg.sender?.avatar_url ? (
-                              <img src={msg.sender.avatar_url} alt="" className="w-full h-full object-cover" />
-                            ) : (
-                              <div className="w-full h-full flex items-center justify-center">
-                                <span className="text-label-md font-bold text-primary">
-                                  {msg.sender?.full_name?.[0]?.toUpperCase() || msg.sender?.username?.[0]?.toUpperCase() || '?'}
-                                </span>
-                              </div>
+) : (
+                <div>
+                  {messages.map((msg, idx) => {
+                    const isOwn = msg.sender_id === currentUserId.current;
+                    const showTime = idx === 0 || 
+                      new Date(msg.created_at).getHours() !== new Date(messages[idx - 1]?.created_at)?.getHours() ||
+                      new Date(msg.created_at).getDate() !== new Date(messages[idx - 1]?.created_at)?.getDate();
+                    const showAvatar = idx === messages.length - 1 || 
+                      messages[idx + 1]?.sender_id !== msg.sender_id;
+                    
+                    return (
+                      <div 
+                        key={msg.id} 
+                        className={`flex gap-2 ${isOwn ? 'flex-row-reverse' : ''}`}
+                      >
+                        {!isOwn && showAvatar && (
+                          <div className="flex-shrink-0">
+                            <div className="w-8 h-8 rounded-full overflow-hidden bg-surface-container">
+                              {msg.sender?.avatar_url ? (
+                                <img src={msg.sender.avatar_url} alt="" className="w-full h-full object-cover" />
+                              ) : (
+                                <div className="w-full h-full flex items-center justify-center">
+                                  <span className="text-label-md font-bold text-primary">
+                                    {msg.sender?.full_name?.[0]?.toUpperCase() || msg.sender?.username?.[0]?.toUpperCase() || '?'}
+                                  </span>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        )}
+                        {!isOwn && !showAvatar && <div className="w-8 flex-shrink-0" />}
+                        
+                        <div className={`flex-1 max-w-[70%] ${isOwn ? 'items-end' : 'items-start'} flex flex-col`}>
+                          {!isOwn && idx === 0 && (
+                            <p className="text-label-sm text-on-surface-variant/70 mb-1 ml-1">
+                              {msg.sender?.full_name || msg.sender?.username}
+                            </p>
+                          )}
+                          <div className={`relative px-4 py-2 rounded-2xl ${
+                            isOwn 
+                              ? 'bg-primary-container text-on-primary-container rounded-tr-sm' 
+                              : 'bg-surface-container text-on-surface rounded-tl-sm'
+                          }`}>
+                            <p className="text-body-md whitespace-pre-wrap">{msg.content}</p>
+                          </div>
+                          <div className={`flex items-center gap-1 mt-1 ${isOwn ? 'justify-end' : 'justify-start'} ml-1 mr-1`}>
+                            <span className="text-[10px] text-on-surface-variant/50">
+                              {formatTime(msg.created_at)}
+                            </span>
+                            {isOwn && (
+                              <span className="text-[10px] text-on-primary-container/70">
+                                {msg.deleted_at ? 'Eliminado' : '✓✓'}
+                              </span>
                             )}
                           </div>
                         </div>
-                      )}
-                      {!isOwn && !showAvatar && <div className="w-8 flex-shrink-0" />}
-                      
-                      <div className={`flex-1 max-w-[70%] ${isOwn ? 'items-end' : 'items-start'} flex flex-col`}>
-                        {!isOwn && idx === 0 && (
-                          <p className="text-label-sm text-on-surface-variant/70 mb-1 ml-1">
-                            {msg.sender?.full_name || msg.sender?.username}
-                          </p>
-                        )}
-                        <div className={`relative px-4 py-2 rounded-2xl ${
-                          isOwn 
-                            ? 'bg-primary-container text-on-primary-container rounded-tr-sm' 
-                            : 'bg-surface-container text-on-surface rounded-tl-sm'
-                        }`}>
-                          <p className="text-body-md whitespace-pre-wrap">{msg.content}</p>
-                        </div>
-                        <div className={`flex items-center gap-1 mt-1 ${isOwn ? 'justify-end' : 'justify-start'} ml-1 mr-1`}>
-                          <span className="text-[10px] text-on-surface-variant/50">
-                            {formatTime(msg.created_at)}
-                          </span>
-                          {isOwn && (
-                            <span className="text-[10px] text-on-primary-container/70">
-                              {msg.deleted_at ? 'Eliminado' : '✓✓'}
-                            </span>
-                          )}
-                        </div>
+                        
+                        {isOwn && showAvatar && <div className="w-8 flex-shrink-0" />}
                       </div>
-                      
-                      {isOwn && showAvatar && <div className="w-8 flex-shrink-0" />}
-                    </div>
-                  );
-                })}
+                    );
+                  })}
+                  <div ref={messagesEndRef} />
+                </div>
               )}
-                <div ref={messagesEndRef} />
-              )}
-            </div>
+          </div>
 
             {/* Message Input */}
             <div className="p-4 border-t border-outline-variant/30 bg-surface">

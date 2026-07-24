@@ -26,12 +26,15 @@ const Sidebar = () => {
 
     // Subscribe to notifications
     if (user) {
-      const { count } = await supabase
-        .from('notifications')
-        .select('*', { count: 'exact', head: true })
-        .eq('user_id', user.id)
-        .eq('is_read', false);
-      setUnreadNotifications(count || 0);
+      const fetchNotifications = async () => {
+        const { count } = await supabase
+          .from('notifications')
+          .select('*', { count: 'exact', head: true })
+          .eq('user_id', user.id)
+          .eq('is_read', false);
+        setUnreadNotifications(count || 0);
+      };
+      fetchNotifications();
 
       const channel = supabase
         .channel(`notifications:${user.id}`)
