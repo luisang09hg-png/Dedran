@@ -1,7 +1,7 @@
 import { 
   Heart, MessageSquare, Share2, MoreHorizontal, Flag, Bookmark, 
   Code2, Image, Briefcase, Award, Star, Globe, Link2, 
-  Loader2, Trash2, Edit, Copy, ExternalLink 
+  Loader2, Trash2, Edit, Copy, ExternalLink, FileText 
 } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';

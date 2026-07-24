@@ -242,6 +242,7 @@ const Messages = () => {
   };
 
   const getOtherUser = (conversation) => {
+    if (!conversation) return {};
     if (conversation.type === 'direct') {
       return {
         id: conversation.other_user_id,
@@ -272,6 +273,187 @@ const Messages = () => {
       <div className="h-screen bg-background text-on-background flex starry-bg">
         <div className="flex-1 flex items-center justify-center">
           <Loader2 className="w-8 h-8 text-primary animate-spin" />
+        </div>
+      </div>
+    );
+  }
+
+  // Compute chat content outside JSX to avoid IIFE parsing issues
+  let chatContent;
+  if (!activeConversation) {
+    chatContent = (
+      <div className="flex-1 flex flex-col items-center justify-center p-8 text-center">
+        <MessageSquare className="w-24 h-24 text-on-surface-variant/20 mb-6" />
+        <h2 className="text-headline-lg font-headline-lg text-on-surface mb-2">Selecciona una conversación</h2>
+        <p className="text-body-md text-on-surface-variant mb-6">O empieza una nueva</p>
+        <button
+          onClick={() => setShowNewChat(true)}
+          className="bg-primary-container text-on-primary-container px-6 py-3 rounded-xl font-label-md flex items-center gap-2 hover:scale-[0.98] transition-transform"
+        >
+          <Plus size={18} />
+          Nuevo mensaje
+        </button>
+      </div>
+    );
+  } else {
+    chatContent = (
+      <div className="flex flex-col h-full max-w-4xl mx-auto w-full">
+        {/* Chat Header */}
+        <div className="flex items-center justify-between p-4 border-b border-outline-variant/30 bg-surface">
+          <button
+            onClick={() => setActiveConversation(null)}
+            className="md:hidden p-2 rounded-xl hover:bg-surface-variant text-on-surface-variant"
+            aria-label="Volver"
+          >
+            <ArrowLeft size={24} />
+          </button>
+          <div className="flex items-center gap-3 flex-1">
+            <div className="relative">
+              <div className="w-10 h-10 rounded-full overflow-hidden bg-surface-container border border-outline-variant/30">
+                {getOtherUser(activeConversation).avatar_url ? (
+                  <img src={getOtherUser(activeConversation).avatar_url} alt="" className="w-full h-full object-cover" />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center">
+                    <span className="text-headline-sm font-bold text-primary">
+                      {getOtherUser(activeConversation).full_name?.[0]?.toUpperCase() || '?'}
+                    </span>
+                  </div>
+                )}
+              </div>
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-body-md font-semibold text-on-surface truncate">
+                {getOtherUser(activeConversation).full_name || getOtherUser(activeConversation).username}
+              </p>
+              {getOtherUser(activeConversation).headline && (
+                <p className="text-label-sm text-on-surface-variant truncate">
+                  {getOtherUser(activeConversation).headline}
+                </p>
+              )}
+            </div>
+          </div>
+          <button className="p-2 rounded-xl hover:bg-surface-variant text-on-surface-variant" aria-label="Más opciones">
+            <MoreVertical size={24} />
+          </button>
+        </div>
+
+        {/* Messages */}
+        <div 
+          ref={messagesContainerRef}
+          className="flex-1 overflow-y-auto p-4 space-y-4 no-scrollbar"
+          onScroll={(e) => {
+            // Load more messages on scroll up
+          }}
+        >
+          {loadingMessages ? (
+            <div className="flex justify-center py-8">
+              <Loader2 className="w-8 h-8 text-primary animate-spin" />
+            </div>
+          ) : messages.length === 0 ? (
+            <div className="flex flex-col items-center justify-center h-full text-center p-8">
+              <MessageSquare className="w-16 h-16 text-on-surface-variant/30 mb-4" />
+              <p className="text-body-md text-on-surface-variant">No hay mensajes aún</p>
+              <p className="text-label-sm text-on-surface-variant/70 mt-1">Envía el primer mensaje</p>
+            </div>
+          ) : (
+            <>
+              {messages.map((msg, idx) => {
+                const isOwn = msg.sender_id === currentUserId.current;
+                const showTime = idx === 0 || 
+                  new Date(msg.created_at).getHours() !== new Date(messages[idx - 1]?.created_at)?.getHours() ||
+                  new Date(msg.created_at).getDate() !== new Date(messages[idx - 1]?.created_at)?.getDate();
+                const showAvatar = idx === messages.length - 1 || 
+                  messages[idx + 1]?.sender_id !== msg.sender_id;
+                
+                return (
+                  <div 
+                    key={msg.id} 
+                    className={`flex gap-2 ${isOwn ? 'flex-row-reverse' : ''}`}
+                  >
+                    {!isOwn && showAvatar && (
+                      <div className="flex-shrink-0">
+                        <div className="w-8 h-8 rounded-full overflow-hidden bg-surface-container">
+                          {msg.sender?.avatar_url ? (
+                            <img src={msg.sender.avatar_url} alt="" className="w-full h-full object-cover" />
+                          ) : (
+                            <div className="w-full h-full flex items-center justify-center">
+                              <span className="text-label-md font-bold text-primary">
+                                {msg.sender?.full_name?.[0]?.toUpperCase() || msg.sender?.username?.[0]?.toUpperCase() || '?'}
+                              </span>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    )}
+                    {!isOwn && !showAvatar && <div className="w-8 flex-shrink-0" />}
+                    
+                    <div className={`flex-1 max-w-[70%] ${isOwn ? 'items-end' : 'items-start'} flex flex-col`}>
+                      {!isOwn && idx === 0 && (
+                        <p className="text-label-sm text-on-surface-variant/70 mb-1 ml-1">
+                          {msg.sender?.full_name || msg.sender?.username}
+                        </p>
+                      )}
+                      <div className={`relative px-4 py-2 rounded-2xl ${
+                        isOwn 
+                          ? 'bg-primary-container text-on-primary-container rounded-tr-sm' 
+                          : 'bg-surface-container text-on-surface rounded-tl-sm'
+                      }`}>
+                        <p className="text-body-md whitespace-pre-wrap">{msg.content}</p>
+                      </div>
+                      <div className={`flex items-center gap-1 mt-1 ${isOwn ? 'justify-end' : 'justify-start'} ml-1 mr-1`}>
+                        <span className="text-[10px] text-on-surface-variant/50">
+                          {formatTime(msg.created_at)}
+                        </span>
+                        {isOwn && (
+                          <span className="text-[10px] text-on-primary-container/70">
+                            {msg.deleted_at ? 'Eliminado' : '✓✓'}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                    
+                    {isOwn && showAvatar && <div className="w-8 flex-shrink-0" />}
+                  </div>
+                );
+              })}
+              <div ref={messagesEndRef} />
+            </>
+          )}
+        </div>
+
+        {/* Message Input */}
+        <div className="p-4 border-t border-outline-variant/30 bg-surface">
+          <form onSubmit={handleSendMessage} className="flex items-end gap-2">
+            <button
+              type="button"
+              className="p-2 rounded-xl hover:bg-surface-variant text-on-surface-variant flex-shrink-0"
+              aria-label="Adjuntar archivo"
+            >
+              <Paperclip size={22} />
+            </button>
+            <div className="flex-1 relative">
+              <textarea
+                value={newMessage}
+                onChange={(e) => setNewMessage(e.target.value)}
+                placeholder="Escribe un mensaje..."
+                rows={1}
+                className="w-full bg-surface-container border border-outline-variant rounded-2xl px-4 py-3 text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none resize-none max-h-32"
+                style={{ minHeight: '48px' }}
+              />
+            </div>
+            <button
+              type="submit"
+              disabled={!newMessage.trim() || sending}
+              className="p-2.5 rounded-xl bg-primary-container text-on-primary-container hover:scale-[0.95] transition-transform disabled:opacity-50 disabled:cursor-not-allowed flex-shrink-0"
+              aria-label="Enviar mensaje"
+            >
+              {sending ? (
+                <Loader2 size={20} className="animate-spin" />
+              ) : (
+                <Send size={20} />
+              )}
+            </button>
+          </form>
         </div>
       </div>
     );
@@ -398,181 +580,7 @@ const Messages = () => {
       {/* Chat Area */}
       <div className="flex-1 flex flex-col md:flex-row min-w-0">
         {/* Empty State / Chat Window */}
-        {activeConversation ? (
-          <div className="flex flex-col h-full max-w-4xl mx-auto w-full">
-            {/* Chat Header */}
-            <div className="flex items-center justify-between p-4 border-b border-outline-variant/30 bg-surface">
-              <button
-                onClick={() => setActiveConversation(null)}
-                className="md:hidden p-2 rounded-xl hover:bg-surface-variant text-on-surface-variant"
-                aria-label="Volver"
-              >
-                <ArrowLeft size={24} />
-              </button>
-              <div className="flex items-center gap-3 flex-1">
-                <div className="relative">
-                  <div className="w-10 h-10 rounded-full overflow-hidden bg-surface-container border border-outline-variant/30">
-                    {getOtherUser(activeConversation).avatar_url ? (
-                      <img src={getOtherUser(activeConversation).avatar_url} alt="" className="w-full h-full object-cover" />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center">
-                        <span className="text-headline-sm font-bold text-primary">
-                          {getOtherUser(activeConversation).full_name?.[0]?.toUpperCase() || '?'}
-                        </span>
-                      </div>
-                    )}
-                  </div>
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-body-md font-semibold text-on-surface truncate">
-                    {getOtherUser(activeConversation).full_name || getOtherUser(activeConversation).username}
-                  </p>
-                  {getOtherUser(activeConversation).headline && (
-                    <p className="text-label-sm text-on-surface-variant truncate">
-                      {getOtherUser(activeConversation).headline}
-                    </p>
-                  )}
-                </div>
-              </div>
-              <button className="p-2 rounded-xl hover:bg-surface-variant text-on-surface-variant" aria-label="Más opciones">
-                <MoreVertical size={24} />
-              </button>
-            </div>
-
-            {/* Messages */}
-            <div 
-              ref={messagesContainerRef}
-              className="flex-1 overflow-y-auto p-4 space-y-4 no-scrollbar"
-              onScroll={(e) => {
-                // Load more messages on scroll up
-              }}
-            >
-              {loadingMessages ? (
-                <div className="flex justify-center py-8">
-                  <Loader2 className="w-8 h-8 text-primary animate-spin" />
-                </div>
-              ) : messages.length === 0 ? (
-                <div className="flex flex-col items-center justify-center h-full text-center p-8">
-                  <MessageSquare className="w-16 h-16 text-on-surface-variant/30 mb-4" />
-                  <p className="text-body-md text-on-surface-variant">No hay mensajes aún</p>
-                  <p className="text-label-sm text-on-surface-variant/70 mt-1">Envía el primer mensaje</p>
-                </div>
-) : (
-                <div>
-                  {messages.map((msg, idx) => {
-                    const isOwn = msg.sender_id === currentUserId.current;
-                    const showTime = idx === 0 || 
-                      new Date(msg.created_at).getHours() !== new Date(messages[idx - 1]?.created_at)?.getHours() ||
-                      new Date(msg.created_at).getDate() !== new Date(messages[idx - 1]?.created_at)?.getDate();
-                    const showAvatar = idx === messages.length - 1 || 
-                      messages[idx + 1]?.sender_id !== msg.sender_id;
-                    
-                    return (
-                      <div 
-                        key={msg.id} 
-                        className={`flex gap-2 ${isOwn ? 'flex-row-reverse' : ''}`}
-                      >
-                        {!isOwn && showAvatar && (
-                          <div className="flex-shrink-0">
-                            <div className="w-8 h-8 rounded-full overflow-hidden bg-surface-container">
-                              {msg.sender?.avatar_url ? (
-                                <img src={msg.sender.avatar_url} alt="" className="w-full h-full object-cover" />
-                              ) : (
-                                <div className="w-full h-full flex items-center justify-center">
-                                  <span className="text-label-md font-bold text-primary">
-                                    {msg.sender?.full_name?.[0]?.toUpperCase() || msg.sender?.username?.[0]?.toUpperCase() || '?'}
-                                  </span>
-                                </div>
-                              )}
-                            </div>
-                          </div>
-                        )}
-                        {!isOwn && !showAvatar && <div className="w-8 flex-shrink-0" />}
-                        
-                        <div className={`flex-1 max-w-[70%] ${isOwn ? 'items-end' : 'items-start'} flex flex-col`}>
-                          {!isOwn && idx === 0 && (
-                            <p className="text-label-sm text-on-surface-variant/70 mb-1 ml-1">
-                              {msg.sender?.full_name || msg.sender?.username}
-                            </p>
-                          )}
-                          <div className={`relative px-4 py-2 rounded-2xl ${
-                            isOwn 
-                              ? 'bg-primary-container text-on-primary-container rounded-tr-sm' 
-                              : 'bg-surface-container text-on-surface rounded-tl-sm'
-                          }`}>
-                            <p className="text-body-md whitespace-pre-wrap">{msg.content}</p>
-                          </div>
-                          <div className={`flex items-center gap-1 mt-1 ${isOwn ? 'justify-end' : 'justify-start'} ml-1 mr-1`}>
-                            <span className="text-[10px] text-on-surface-variant/50">
-                              {formatTime(msg.created_at)}
-                            </span>
-                            {isOwn && (
-                              <span className="text-[10px] text-on-primary-container/70">
-                                {msg.deleted_at ? 'Eliminado' : '✓✓'}
-                              </span>
-                            )}
-                          </div>
-                        </div>
-                        
-                        {isOwn && showAvatar && <div className="w-8 flex-shrink-0" />}
-                      </div>
-                    );
-                  })}
-                  <div ref={messagesEndRef} />
-                </div>
-              )}
-          </div>
-
-            {/* Message Input */}
-            <div className="p-4 border-t border-outline-variant/30 bg-surface">
-              <form onSubmit={handleSendMessage} className="flex items-end gap-2">
-                <button
-                  type="button"
-                  className="p-2 rounded-xl hover:bg-surface-variant text-on-surface-variant flex-shrink-0"
-                  aria-label="Adjuntar archivo"
-                >
-                  <Paperclip size={22} />
-                </button>
-                <div className="flex-1 relative">
-                  <textarea
-                    value={newMessage}
-                    onChange={(e) => setNewMessage(e.target.value)}
-                    placeholder="Escribe un mensaje..."
-                    rows={1}
-                    className="w-full bg-surface-container border border-outline-variant rounded-2xl px-4 py-3 text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none resize-none max-h-32"
-                    style={{ minHeight: '48px' }}
-                  />
-                </div>
-                <button
-                  type="submit"
-                  disabled={!newMessage.trim() || sending}
-                  className="p-2.5 rounded-xl bg-primary-container text-on-primary-container hover:scale-[0.95] transition-transform disabled:opacity-50 disabled:cursor-not-allowed flex-shrink-0"
-                  aria-label="Enviar mensaje"
-                >
-                  {sending ? (
-                    <Loader2 size={20} className="animate-spin" />
-                  ) : (
-                    <Send size={20} />
-                  )}
-                </button>
-              </form>
-            </div>
-          </div>
-        ) : (
-          {/* Empty State */}
-          <div className="flex-1 flex flex-col items-center justify-center p-8 text-center">
-            <MessageSquare className="w-24 h-24 text-on-surface-variant/20 mb-6" />
-            <h2 className="text-headline-lg font-headline-lg text-on-surface mb-2">Selecciona una conversación</h2>
-            <p className="text-body-md text-on-surface-variant mb-6">O empieza una nueva</p>
-            <button
-              onClick={() => setShowNewChat(true)}
-              className="bg-primary-container text-on-primary-container px-6 py-3 rounded-xl font-label-md flex items-center gap-2 hover:scale-[0.98] transition-transform"
-            >
-              <Plus size={18} />
-              Nuevo mensaje
-            </button>
-          </div>
-        )}
+        {chatContent}
       </div>
 
       {/* New Chat Modal */}
