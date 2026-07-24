@@ -8,13 +8,15 @@ import Applications from './pages/Applications/Applications';
 import Network from './pages/Network/Network';
 import Settings from './pages/Settings/Settings';
 import Messages from './pages/Messages/Messages';
+import CosmicBackground from './components/ui/CosmicBackground';
 
 // Mock protected layout
 const ProtectedLayout = () => {
   return (
-    <div className="bg-background text-on-background font-body-md antialiased min-h-screen flex starry-bg selection:bg-tertiary-fixed selection:text-on-tertiary-fixed">
+    <div className="bg-background antialiased min-h-screen flex selection:bg-tertiary-fixed selection:text-on-tertiary-fixed relative overflow-hidden">
+      <CosmicBackground />
       <Sidebar />
-      <main className="flex-1 md:ml-64 p-margin-mobile md:p-margin-desktop max-w-container-max mx-auto w-full pt-24 md:pt-margin-desktop overflow-x-hidden">
+      <main className="flex-1 md:ml-64 p-margin-mobile md:p-margin-desktop max-w-container-max mx-auto w-full pt-24 md:pt-margin-desktop overflow-x-hidden relative z-10">
         <Outlet />
       </main>
     </div>
