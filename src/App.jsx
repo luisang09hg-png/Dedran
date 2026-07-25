@@ -11,6 +11,8 @@ import Messages from './pages/Messages/Messages';
 import Courses from './pages/Courses/Courses';
 import Galaxy from './pages/Galaxy/Galaxy';
 import CosmicBackground from './components/ui/CosmicBackground';
+import { GlobalErrorBoundary } from './components/error/GlobalErrorBoundary';
+import { SectionErrorBoundary } from './components/error/SectionErrorBoundary';
 
 const ProtectedLayout = () => {
   return (
@@ -28,27 +30,29 @@ const ProtectedLayout = () => {
 
 const App = () => {
   return (
-    <Router>
-      <Routes>
-        {/* Public routes */}
-        <Route path="/" element={<Landing />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+    <GlobalErrorBoundary>
+      <Router>
+        <Routes>
+          {/* Public routes */}
+          <Route path="/" element={<Landing />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
 
-        {/* Authenticated routes */}
-        <Route element={<ProtectedLayout />}>
-          <Route path="/feed" element={<Feed />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/messages" element={<Messages />} />
-          <Route path="/applications" element={<Applications />} />
-          <Route path="/settings" element={<Settings />} />
+          {/* Authenticated routes */}
+          <Route element={<ProtectedLayout />}>
+            <Route path="/feed" element={<SectionErrorBoundary section="Feed"><Feed /></SectionErrorBoundary>} />
+            <Route path="/profile" element={<SectionErrorBoundary section="Profile"><Profile /></SectionErrorBoundary>} />
+            <Route path="/messages" element={<SectionErrorBoundary section="Messages"><Messages /></SectionErrorBoundary>} />
+            <Route path="/applications" element={<SectionErrorBoundary section="Applications"><Applications /></SectionErrorBoundary>} />
+            <Route path="/settings" element={<SectionErrorBoundary section="Settings"><Settings /></SectionErrorBoundary>} />
 
-          {/* New celestial nav pages */}
-          <Route path="/galaxy" element={<Galaxy />} />
-          <Route path="/star-systems" element={<Courses />} />
-        </Route>
-      </Routes>
-    </Router>
+            {/* New celestial nav pages */}
+            <Route path="/galaxy" element={<SectionErrorBoundary section="Galaxy"><Galaxy /></SectionErrorBoundary>} />
+            <Route path="/star-systems" element={<SectionErrorBoundary section="Courses"><Courses /></SectionErrorBoundary>} />
+          </Route>
+        </Routes>
+      </Router>
+    </GlobalErrorBoundary>
   );
 };
 
