@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Celestial Course Catalog</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=Montserrat:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "nebula-stroke": "rgba(217, 217, 214, 0.15)",
+                      "charcoal-gray": "#53565A",
+                      "on-background": "#e2e2ea",
+                      "inverse-on-surface": "#2e3036",
+                      "on-surface": "#e2e2ea",
+                      "primary": "#bcc6e7",
+                      "tertiary-fixed": "#d8e4f3",
+                      "on-tertiary-fixed-variant": "#3d4854",
+                      "secondary-fixed": "#e3e3df",
+                      "surface-bright": "#37393f",
+                      "on-tertiary-container": "#8893a1",
+                      "outline-variant": "#45464d",
+                      "tertiary": "#bcc8d7",
+                      "error": "#ffb4ab",
+                      "on-secondary-container": "#b8b9b6",
+                      "primary-container": "#202a44",
+                      "on-primary-container": "#8791b0",
+                      "tertiary-fixed-dim": "#bcc8d7",
+                      "inverse-surface": "#e2e2ea",
+                      "outline": "#909098",
+                      "secondary": "#c6c7c4",
+                      "surface-tint": "#bcc6e7",
+                      "surface-container-low": "#191c21",
+                      "surface-container-highest": "#33353b",
+                      "surface-container-high": "#282a30",
+                      "on-tertiary": "#27313d",
+                      "on-secondary-fixed": "#1a1c1a",
+                      "on-tertiary-fixed": "#111d27",
+                      "on-primary": "#26304a",
+                      "on-primary-fixed": "#101b34",
+                      "star-glow": "#FFFFFF",
+                      "on-secondary-fixed-variant": "#464745",
+                      "on-error-container": "#ffdad6",
+                      "surface-dim": "#111319",
+                      "on-primary-fixed-variant": "#3c4662",
+                      "inverse-primary": "#545e7b",
+                      "on-secondary": "#2f312f",
+                      "surface": "#111319",
+                      "on-surface-variant": "#c6c6ce",
+                      "surface-container": "#1d2025",
+                      "surface-container-lowest": "#0c0e13",
+                      "on-error": "#690005",
+                      "background": "#111319",
+                      "primary-fixed": "#dae2ff",
+                      "secondary-container": "#484947",
+                      "error-container": "#93000a",
+                      "tertiary-container": "#212c37",
+                      "surface-variant": "#33353b",
+                      "primary-fixed-dim": "#bcc6e7",
+                      "secondary-fixed-dim": "#c6c7c4"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "stack-sm": "8px",
+                      "stack-lg": "32px",
+                      "margin-mobile": "16px",
+                      "gutter": "24px",
+                      "margin-desktop": "40px",
+                      "stack-md": "16px",
+                      "unit": "4px"
+              },
+              "fontFamily": {
+                      "headline-sm": [
+                              "Montserrat"
+                      ],
+                      "body-sm": [
+                              "Inter"
+                      ],
+                      "display-lg-mobile": [
+                              "Montserrat"
+                      ],
+                      "headline-md": [
+                              "Montserrat"
+                      ],
+                      "body-md": [
+                              "Inter"
+                      ],
+                      "data-heavy": [
+                              "Inter"
+                      ],
+                      "body-lg": [
+                              "Inter"
+                      ],
+                      "label-caps": [
+                              "Inter"
+                      ],
+                      "display-lg": [
+                              "Montserrat"
+                      ]
+              },
+              "fontSize": {
+                      "headline-sm": [
+                              "20px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-sm": [
+                              "14px",
+                              {
+                                      "lineHeight": "20px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "display-lg-mobile": [
+                              "32px",
+                              {
+                                      "lineHeight": "40px",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "headline-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "data-heavy": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "label-caps": [
+                              "12px",
+                              {
+                                      "lineHeight": "16px",
+                                      "letterSpacing": "0.1em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "display-lg": [
+                              "48px",
+                              {
+                                      "lineHeight": "56px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+        .glass-card {
+            background-color: rgba(32, 42, 68, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(217, 217, 214, 0.15);
+        }
+        
+        .nav-glow {
+            box-shadow: inset 0 0 10px rgba(188, 198, 231, 0.2);
+        }
+        
+        .progress-trail {
+            background: linear-gradient(90deg, #bcc6e7 0%, rgba(188,198,231,0.2) 100%);
+            box-shadow: 0 0 10px rgba(188, 198, 231, 0.8);
+        }
+
+        .image-wash {
+            position: relative;
+        }
+        .image-wash::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(32, 42, 68, 0.4); /* Blue color wash */
+            mix-blend-mode: overlay;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body class="bg-surface-dim text-on-surface min-h-screen flex flex-col md:flex-row font-body-md overflow-x-hidden relative">
+<!-- Background Stars Effect -->
+<div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+<div class="absolute top-1/4 left-1/4 w-2 h-2 rounded-full bg-star-glow opacity-60 shadow-[0_0_8px_rgba(255,255,255,0.8)]"></div>
+<div class="absolute top-1/3 right-1/4 w-1 h-1 rounded-full bg-star-glow opacity-30 shadow-[0_0_4px_rgba(255,255,255,0.5)]"></div>
+<div class="absolute bottom-1/4 left-1/3 w-1.5 h-1.5 rounded-full bg-star-glow opacity-80 shadow-[0_0_6px_rgba(255,255,255,0.9)]"></div>
+<div class="absolute top-2/3 right-1/3 w-1 h-1 rounded-full bg-star-glow opacity-40 shadow-[0_0_3px_rgba(255,255,255,0.6)]"></div>
+</div>
+<!-- SideNavBar (Desktop) -->
+<nav class="hidden md:flex flex-col h-screen py-8 px-gutter w-72 bg-surface-container border-r border-nebula-stroke fixed left-0 top-0 z-50">
+<div class="mb-stack-lg">
+<h1 class="font-headline-md text-headline-md font-bold text-on-surface">Nova Analytics</h1>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-unit">Deep Space Explorer</p>
+</div>
+<ul class="flex flex-col gap-stack-sm flex-1">
+<li>
+<a class="flex items-center gap-stack-md py-stack-sm px-stack-sm rounded hover:bg-primary-container/20 hover:text-primary transition-all duration-300 ease-in-out text-on-surface-variant font-medium" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">explore</span>
+<span>Galaxy View</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-stack-md py-stack-sm px-stack-sm rounded nav-glow text-primary font-bold border-r-2 border-primary transition-all duration-300 ease-in-out" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">wb_sunny</span>
+<span>Star Systems</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-stack-md py-stack-sm px-stack-sm rounded hover:bg-primary-container/20 hover:text-primary transition-all duration-300 ease-in-out text-on-surface-variant font-medium" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">flare</span>
+<span>Nebula Analytics</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-stack-md py-stack-sm px-stack-sm rounded hover:bg-primary-container/20 hover:text-primary transition-all duration-300 ease-in-out text-on-surface-variant font-medium" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">group_work</span>
+<span>Orbits</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-stack-md py-stack-sm px-stack-sm rounded hover:bg-primary-container/20 hover:text-primary transition-all duration-300 ease-in-out text-on-surface-variant font-medium" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">auto_stories</span>
+<span>Celestial Logs</span>
+</a>
+</li>
+</ul>
+<button class="w-full py-stack-sm px-stack-md bg-secondary-fixed text-on-secondary-fixed font-headline-sm text-headline-sm rounded mb-stack-lg transition-colors hover:bg-tertiary-fixed">
+            Launch Mission
+        </button>
+<ul class="flex flex-col gap-stack-sm mt-auto border-t border-nebula-stroke pt-stack-md">
+<li>
+<a class="flex items-center gap-stack-md py-stack-sm px-stack-sm rounded hover:bg-primary-container/20 hover:text-primary transition-all duration-300 ease-in-out text-on-surface-variant font-medium" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">settings</span>
+<span>Settings</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-stack-md py-stack-sm px-stack-sm rounded hover:bg-primary-container/20 hover:text-primary transition-all duration-300 ease-in-out text-on-surface-variant font-medium" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">help</span>
+<span>Support</span>
+</a>
+</li>
+</ul>
+</nav>
+<!-- TopAppBar (Desktop) -->
+<header class="hidden md:flex justify-between items-center h-20 px-margin-desktop fixed top-0 right-0 w-[calc(100%-280px)] z-40 bg-background/60 backdrop-blur-md border-b border-nebula-stroke">
+<div class="flex items-center gap-stack-md">
+<span class="font-headline-sm text-headline-sm font-bold text-on-surface">Nova Dashboard</span>
+<div class="relative ml-stack-lg flex items-center">
+<span class="material-symbols-outlined absolute left-stack-sm text-on-surface-variant pointer-events-none" style="font-variation-settings: 'FILL' 0;">search</span>
+<input class="bg-surface-dim border border-charcoal-gray rounded pl-10 pr-stack-md py-stack-sm text-body-sm text-on-surface focus:outline-none focus:border-secondary-fixed focus:shadow-[0_0_4px_rgba(255,255,255,0.2)] transition-all placeholder:text-on-surface-variant w-64" placeholder="Search constellations..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-stack-md">
+<button class="text-on-surface-variant hover:text-primary transition-colors scale-95 active:scale-90 transition-transform">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">notifications</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors scale-95 active:scale-90 transition-transform">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">settings</span>
+</button>
+<div class="w-10 h-10 rounded-full bg-surface-container-high border border-nebula-stroke overflow-hidden cursor-pointer">
+<img alt="Chief Astronomer" class="w-full h-full object-cover" data-alt="A portrait of a highly advanced astronaut in a sleek, dark-blue and silver spacesuit, set against a backdrop of deep space with subtle glowing nebula effects. High-end sci-fi aesthetic, dramatic lighting, sharp focus on the visor reflecting starlight." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAnQFNYUoZfhngeNGJbE3ajHtPBX4ysDokp5LjUo2b8wM8cpAXu8K41JkDOovIH0d415MErkV3dzhROsjStYYCURC5xXbjtnfCK9v5lOVt7Wqc6-DL67LB2PMBBTuDeJxLof8oCtF9ClwFBBN1oSTkGznErFf0uPWe2Zg2N8RYBgGeO8YjAN2xWT98oppsc3pwTjXHIvqk_igw8I5LdOU3tEYUesUzd0Xf4tTEdZM9v4nbGsqMQ-NTL6gk5doS0MDmiHREoSotzmxbR"/>
+</div>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="flex-1 md:ml-72 mt-0 md:mt-20 p-margin-mobile md:p-margin-desktop relative z-10">
+<div class="mb-stack-lg">
+<h2 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface mb-stack-sm">Guided Courses</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Navigate the technical cosmos with curated learning paths.</p>
+</div>
+<!-- Filter Chips -->
+<div class="flex flex-wrap gap-stack-sm mb-stack-lg">
+<button class="px-stack-md py-unit rounded-sm bg-primary-container/40 border border-primary text-primary font-label-caps text-label-caps transition-colors hover:bg-primary-container/60">ALL MISSIONS</button>
+<button class="px-stack-md py-unit rounded-sm bg-surface-container border border-charcoal-gray text-on-surface-variant font-label-caps text-label-caps transition-colors hover:border-secondary-fixed hover:text-on-surface">DESIGN</button>
+<button class="px-stack-md py-unit rounded-sm bg-surface-container border border-charcoal-gray text-on-surface-variant font-label-caps text-label-caps transition-colors hover:border-secondary-fixed hover:text-on-surface">TECH</button>
+<button class="px-stack-md py-unit rounded-sm bg-surface-container border border-charcoal-gray text-on-surface-variant font-label-caps text-label-caps transition-colors hover:border-secondary-fixed hover:text-on-surface">BUSINESS</button>
+</div>
+<!-- Course Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-gutter">
+<!-- Course Card 1: Tech -->
+<article class="glass-card rounded-xl overflow-hidden flex flex-col transition-transform hover:-translate-y-1 duration-300">
+<div class="h-48 image-wash relative overflow-hidden bg-surface-container-low">
+<img alt="Quantum Data Structures" class="w-full h-full object-cover" data-alt="A highly detailed, abstract visualization of quantum computing data streams flowing through a dark, void-like space. Glowing cyan and deep blue nodes connected by precise, thin geometric lines. A modern, glassmorphism aesthetic representing advanced technology in a celestial void." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBpxRM8VjUUbD4NrwmZxssXEYNIdaQfakskcPaYTinDtGm5DHSTGY3n9zM2SFWLsZGqk85yYCGZKq8lS9kEyUG4632YGTXUAOApMv65oMWNYN6xzZ48GxmU0uMJUtr1Z1h6-9gz8AZ_T-T7z2ffAhkmtQRYqLb7uvLLJBgceW0WvZpRrUtD6Xrq47WDVB0b0jmKVx77ubA532if3D-gdJv_GEjxHvpX51QeL1rM68-26UPkqgIaeXUp55iUnmixGv9D9STo2U5dDmA5"/>
+<div class="absolute top-stack-sm right-stack-sm bg-surface-container-high/80 backdrop-blur-sm px-stack-sm py-unit rounded border border-nebula-stroke flex items-center gap-unit">
+<span class="material-symbols-outlined text-primary text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-label-caps text-label-caps text-primary">4.9</span>
+</div>
+<div class="absolute bottom-stack-sm left-stack-sm px-stack-sm py-unit rounded-sm bg-primary-container/60 backdrop-blur-md border border-primary/30 text-primary font-label-caps text-label-caps">TECH</div>
+</div>
+<div class="p-stack-md flex-1 flex flex-col">
+<h3 class="font-headline-md text-headline-md text-on-surface mb-unit">Quantum Data Structures</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-stack-md line-clamp-2">Master the architecture of multi-dimensional data storage arrays designed for faster-than-light retrieval.</p>
+<div class="mt-auto pt-stack-sm border-t border-nebula-stroke flex justify-between items-center text-on-surface-variant font-body-sm text-body-sm">
+<div class="flex items-center gap-unit">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 0;">schedule</span>
+<span>12 Parsecs</span>
+</div>
+<div class="flex items-center gap-unit">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 0;">group</span>
+<span>3.2k Cadets</span>
+</div>
+</div>
+<!-- Progress -->
+<div class="mt-stack-md">
+<div class="flex justify-between font-label-caps text-label-caps text-on-surface-variant mb-unit">
+<span>Trajectory</span>
+<span>45%</span>
+</div>
+<div class="h-1 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full progress-trail rounded-full w-[45%]"></div>
+</div>
+</div>
+</div>
+</article>
+<!-- Course Card 2: Design -->
+<article class="glass-card rounded-xl overflow-hidden flex flex-col transition-transform hover:-translate-y-1 duration-300">
+<div class="h-48 image-wash relative overflow-hidden bg-surface-container-low">
+<img alt="Holographic Interface Design" class="w-full h-full object-cover" data-alt="A sleek, minimalist user interface design floating in a dark, atmospheric space setting. Holographic UI elements in pristine white and soft blue radiating a subtle inner glow. The composition conveys precision, modern design aesthetics, and high-tech usability in a celestial void." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAzvlZ84iJC7M7vBhkDec3osqb8xO7MkoF9dqEsW8dLyliTC5nql4dEfnYxuGUgm-iXYEzRZU2t6e_WxkdhH2kdZF7xkLHKPKK8zew9OavyuQbVfG1sHsuuziM_7r0xxrg8N6kOBK4OvKWRNwr_o2HHLAsnnCw4we4wMUq67QBYEwntlEpViEuaJWQpbpXCN3qKIevOdXlKcYVicgsz2ioL7m-ifxTFDeP6WWmIIrMy1RSd-lAmnkgJmf_fYfZZx-UtK39MobtTHA3Q"/>
+<div class="absolute top-stack-sm right-stack-sm bg-surface-container-high/80 backdrop-blur-sm px-stack-sm py-unit rounded border border-nebula-stroke flex items-center gap-unit">
+<span class="material-symbols-outlined text-primary text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-label-caps text-label-caps text-primary">4.8</span>
+</div>
+<div class="absolute bottom-stack-sm left-stack-sm px-stack-sm py-unit rounded-sm bg-primary-container/60 backdrop-blur-md border border-primary/30 text-primary font-label-caps text-label-caps">DESIGN</div>
+</div>
+<div class="p-stack-md flex-1 flex flex-col">
+<h3 class="font-headline-md text-headline-md text-on-surface mb-unit">Holographic UI Patterns</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-stack-md line-clamp-2">Construct intuitive spatial interfaces using volumetric projection techniques for zero-gravity environments.</p>
+<div class="mt-auto pt-stack-sm border-t border-nebula-stroke flex justify-between items-center text-on-surface-variant font-body-sm text-body-sm">
+<div class="flex items-center gap-unit">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 0;">schedule</span>
+<span>8 Parsecs</span>
+</div>
+<div class="flex items-center gap-unit">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 0;">group</span>
+<span>1.5k Cadets</span>
+</div>
+</div>
+<!-- Progress -->
+<div class="mt-stack-md">
+<div class="flex justify-between font-label-caps text-label-caps text-on-surface-variant mb-unit">
+<span>Trajectory</span>
+<span>15%</span>
+</div>
+<div class="h-1 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full progress-trail rounded-full w-[15%]"></div>
+</div>
+</div>
+</div>
+</article>
+<!-- Course Card 3: Business -->
+<article class="glass-card rounded-xl overflow-hidden flex flex-col transition-transform hover:-translate-y-1 duration-300">
+<div class="h-48 image-wash relative overflow-hidden bg-surface-container-low">
+<img alt="Interstellar Trade Logistics" class="w-full h-full object-cover" data-alt="A sophisticated, dark-themed dashboard visualization mapping complex interstellar trade routes. Thin glowing lines connect nodes representing planets, set against a backdrop of a subtle deep-space nebula. The aesthetic is corporate modern, highly analytical, utilizing shades of deep charcoal, crisp whites, and muted blue accents." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBjO9SBQ6J3rKBJ-P4eUWHik0U1NjikUOO1xnSWMggKq7nZioz6Qzlz46dagzc_xQtKQ0fiBDQ6awyuNGixduXsg3ay_x2YWvn5zm1U7MS8s-ZoL_9cUj7I5vQ1vmGRq9ZpxT-pe5ee33u2WO7sabpztiA68QNDlWj6k5ohLatCY8Mz0t5wQCCH-GjoqA84gmqDkCZ4V7gLrIVnORhGP6pg_Lm5lsJ57noapK4UX5G_2KPxwIoowmdurzBku9H_X0y5kJb41bMTw1tM"/>
+<div class="absolute top-stack-sm right-stack-sm bg-surface-container-high/80 backdrop-blur-sm px-stack-sm py-unit rounded border border-nebula-stroke flex items-center gap-unit">
+<span class="material-symbols-outlined text-primary text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-label-caps text-label-caps text-primary">4.7</span>
+</div>
+<div class="absolute bottom-stack-sm left-stack-sm px-stack-sm py-unit rounded-sm bg-primary-container/60 backdrop-blur-md border border-primary/30 text-primary font-label-caps text-label-caps">BUSINESS</div>
+</div>
+<div class="p-stack-md flex-1 flex flex-col">
+<h3 class="font-headline-md text-headline-md text-on-surface mb-unit">Nebula Trade Logistics</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-stack-md line-clamp-2">Optimize supply chain networks across multiple star systems using predictive cosmic variance modeling.</p>
+<div class="mt-auto pt-stack-sm border-t border-nebula-stroke flex justify-between items-center text-on-surface-variant font-body-sm text-body-sm">
+<div class="flex items-center gap-unit">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 0;">schedule</span>
+<span>24 Parsecs</span>
+</div>
+<div class="flex items-center gap-unit">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 0;">group</span>
+<span>5.8k Cadets</span>
+</div>
+</div>
+<!-- Progress -->
+<div class="mt-stack-md">
+<div class="flex justify-between font-label-caps text-label-caps text-on-surface-variant mb-unit">
+<span>Trajectory</span>
+<span>0%</span>
+</div>
+<div class="h-1 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full progress-trail rounded-full w-[0%]"></div>
+</div>
+</div>
+</div>
+</article>
+</div>
+</main>
+</body></html>

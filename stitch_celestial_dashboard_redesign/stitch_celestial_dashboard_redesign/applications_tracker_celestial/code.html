@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Job Applications Tracker</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=Montserrat:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "nebula-stroke": "rgba(217, 217, 214, 0.15)",
+                        "charcoal-gray": "#53565A",
+                        "on-background": "#e2e2ea",
+                        "inverse-on-surface": "#2e3036",
+                        "on-surface": "#e2e2ea",
+                        "primary": "#bcc6e7",
+                        "tertiary-fixed": "#d8e4f3",
+                        "on-tertiary-fixed-variant": "#3d4854",
+                        "secondary-fixed": "#e3e3df",
+                        "surface-bright": "#37393f",
+                        "on-tertiary-container": "#8893a1",
+                        "outline-variant": "#45464d",
+                        "tertiary": "#bcc8d7",
+                        "error": "#ffb4ab",
+                        "on-secondary-container": "#b8b9b6",
+                        "primary-container": "#202a44",
+                        "on-primary-container": "#8791b0",
+                        "tertiary-fixed-dim": "#bcc8d7",
+                        "inverse-surface": "#e2e2ea",
+                        "outline": "#909098",
+                        "secondary": "#c6c7c4",
+                        "surface-tint": "#bcc6e7",
+                        "surface-container-low": "#191c21",
+                        "surface-container-highest": "#33353b",
+                        "surface-container-high": "#282a30",
+                        "on-tertiary": "#27313d",
+                        "on-secondary-fixed": "#1a1c1a",
+                        "on-tertiary-fixed": "#111d27",
+                        "on-primary": "#26304a",
+                        "on-primary-fixed": "#101b34",
+                        "star-glow": "#FFFFFF",
+                        "on-secondary-fixed-variant": "#464745",
+                        "on-error-container": "#ffdad6",
+                        "surface-dim": "#111319",
+                        "on-primary-fixed-variant": "#3c4662",
+                        "inverse-primary": "#545e7b",
+                        "on-secondary": "#2f312f",
+                        "surface": "#111319",
+                        "on-surface-variant": "#c6c6ce",
+                        "surface-container": "#1d2025",
+                        "surface-container-lowest": "#0c0e13",
+                        "on-error": "#690005",
+                        "background": "#111319",
+                        "primary-fixed": "#dae2ff",
+                        "secondary-container": "#484947",
+                        "error-container": "#93000a",
+                        "tertiary-container": "#212c37",
+                        "surface-variant": "#33353b",
+                        "primary-fixed-dim": "#bcc6e7",
+                        "secondary-fixed-dim": "#c6c7c4"
+                    },
+                    borderRadius: {
+                        DEFAULT: "0.125rem",
+                        lg: "0.25rem",
+                        xl: "0.5rem",
+                        full: "0.75rem"
+                    },
+                    spacing: {
+                        "stack-sm": "8px",
+                        "stack-lg": "32px",
+                        "margin-mobile": "16px",
+                        "gutter": "24px",
+                        "margin-desktop": "40px",
+                        "stack-md": "16px",
+                        "unit": "4px"
+                    },
+                    fontFamily: {
+                        "headline-sm": ["Montserrat"],
+                        "body-sm": ["Inter"],
+                        "display-lg-mobile": ["Montserrat"],
+                        "headline-md": ["Montserrat"],
+                        "body-md": ["Inter"],
+                        "data-heavy": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "display-lg": ["Montserrat"]
+                    },
+                    fontSize: {
+                        "headline-sm": ["20px", { lineHeight: "28px", fontWeight: "600" }],
+                        "body-sm": ["14px", { lineHeight: "20px", fontWeight: "400" }],
+                        "display-lg-mobile": ["32px", { lineHeight: "40px", letterSpacing: "-0.01em", fontWeight: "700" }],
+                        "headline-md": ["24px", { lineHeight: "32px", fontWeight: "600" }],
+                        "body-md": ["16px", { lineHeight: "24px", fontWeight: "400" }],
+                        "data-heavy": ["24px", { lineHeight: "32px", letterSpacing: "-0.01em", fontWeight: "700" }],
+                        "body-lg": ["18px", { lineHeight: "28px", fontWeight: "400" }],
+                        "label-caps": ["12px", { lineHeight: "16px", letterSpacing: "0.1em", fontWeight: "600" }],
+                        "display-lg": ["48px", { lineHeight: "56px", letterSpacing: "-0.02em", fontWeight: "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            background-color: #07090E;
+            color: #e2e2ea;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Subtle Starfield Background */
+        .starfield {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background-image: 
+                radial-gradient(1px 1px at 10% 20%, rgba(255, 255, 255, 0.4) 1px, transparent 1px),
+                radial-gradient(1px 1px at 30% 50%, rgba(255, 255, 255, 0.3) 1px, transparent 1px),
+                radial-gradient(2px 2px at 70% 80%, rgba(255, 255, 255, 0.5) 1px, transparent 1px),
+                radial-gradient(1px 1px at 90% 10%, rgba(255, 255, 255, 0.2) 1px, transparent 1px);
+            background-size: 200px 200px;
+            opacity: 0.6;
+        }
+
+        /* Glassmorphism Card Style */
+        .glass-card {
+            background-color: rgba(19, 30, 41, 0.8); /* #131E29 */
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(217, 217, 214, 0.15); /* nebula-stroke */
+            border-radius: 0.25rem; /* lg */
+        }
+
+        .job-card {
+            background-color: rgba(32, 42, 68, 0.6); /* #202A44 at 60% */
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(83, 86, 90, 0.3); /* charcoal-gray at 30% */
+            transition: all 0.3s ease;
+        }
+
+        .job-card:hover {
+            box-shadow: 0 0 10px rgba(217, 217, 214, 0.1); /* Inner glow simulation on hover */
+            border-color: rgba(217, 217, 214, 0.5);
+        }
+
+        /* Status Glows */
+        .glow-applied { box-shadow: inset 0 0 8px rgba(188, 198, 231, 0.2); } /* primary */
+        .glow-review { box-shadow: inset 0 0 8px rgba(135, 145, 176, 0.3); } /* on-primary-container */
+        .glow-interview { box-shadow: inset 0 0 12px rgba(216, 228, 243, 0.4); } /* tertiary-fixed */
+        .glow-offer { box-shadow: inset 0 0 15px rgba(255, 255, 255, 0.3); border-color: rgba(255, 255, 255, 0.5); }
+        .glow-rejected { box-shadow: inset 0 0 8px rgba(255, 180, 171, 0.2); } /* error */
+
+        /* Connective Lines (Star Map Metaphor) */
+        .connective-line {
+            position: absolute;
+            top: 50%;
+            left: 100%;
+            width: 24px; /* Gutter width */
+            height: 1px;
+            background: linear-gradient(90deg, rgba(217, 217, 214, 0.3) 0%, rgba(217, 217, 214, 0) 100%);
+            z-index: 0;
+            display: none; /* Hide by default, show on desktop grid */
+        }
+        
+        @media (min-width: 1200px) {
+            .kanban-column:not(:last-child) .job-card {
+                position: relative;
+            }
+            .kanban-column:not(:last-child) .connective-line-container {
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body class="antialiased">
+<div class="starfield"></div>
+<!-- SideNavBar (from JSON) -->
+<nav class="fixed left-0 top-0 h-full w-72 bg-surface-container dark:bg-surface-container border-r border-nebula-stroke flex flex-col py-8 px-gutter transition-all duration-300 ease-in-out z-50 hidden md:flex">
+<div class="flex items-center gap-4 mb-12 px-2">
+<img class="w-10 h-10 rounded-full border border-nebula-stroke object-cover" data-alt="A small circular avatar placeholder for a professional user profile, set against a dark celestial background. Minimalist, modern style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD3Gz51jz3l8QQT68i9iayZzDdZiM9l6ivwYM20a7LwEDSYG6k4TIvLgkAQkgs6rBplo1B94n_do_xb7RbE0lyPw0asuGFhGPl6o-VExvL4e1BZCRUYpxgWTAkZZYR0n14r3QBkczU63zq83G0khFL27O1O8yHiUsCzmbQnTN-YI4VhF0L6HuUEbNXJxIrQCwVshOWpcn-G9kifX4KJcEi6bdMdRVp1oqvfLDLsR67DNLEuC5JXhN_bJB1T7KahsXW2kQeCGTvt1_0N"/>
+<div>
+<h1 class="font-headline-md text-headline-md font-bold text-on-surface dark:text-on-surface">Nova Analytics</h1>
+<p class="font-label-caps text-label-caps text-on-surface-variant">Deep Space Explorer</p>
+</div>
+</div>
+<div class="flex-1 flex flex-col gap-2">
+<!-- Active State on 'Celestial Logs' mapped to Application Tracker context -->
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-primary-container/20 hover:text-primary transition-all duration-300 ease-in-out" href="#">
+<span class="material-symbols-outlined">explore</span>
+<span class="font-body-md text-body-md">Galaxy View</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-primary-container/20 hover:text-primary transition-all duration-300 ease-in-out" href="#">
+<span class="material-symbols-outlined">wb_sunny</span>
+<span class="font-body-md text-body-md">Star Systems</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-primary-container/20 hover:text-primary transition-all duration-300 ease-in-out" href="#">
+<span class="material-symbols-outlined">flare</span>
+<span class="font-body-md text-body-md">Nebula Analytics</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-primary-container/20 hover:text-primary transition-all duration-300 ease-in-out" href="#">
+<span class="material-symbols-outlined">group_work</span>
+<span class="font-body-md text-body-md">Orbits</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-primary font-bold border-r-2 border-primary bg-primary-container/10 transition-all duration-300 ease-in-out" href="#">
+<span class="material-symbols-outlined">auto_stories</span>
+<span class="font-body-md text-body-md">Celestial Logs</span>
+</a>
+</div>
+<div class="mt-auto">
+<button class="w-full py-3 mb-6 bg-[#D9D9D6] text-[#07090E] rounded-DEFAULT font-label-caps text-label-caps hover:bg-white transition-colors">
+                Launch Mission
+            </button>
+<div class="flex flex-col gap-2 border-t border-nebula-stroke pt-6">
+<a class="flex items-center gap-3 px-4 py-2 rounded-lg text-on-surface-variant font-medium hover:bg-primary-container/20 hover:text-primary transition-all duration-300 ease-in-out" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-body-sm text-body-sm">Settings</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 rounded-lg text-on-surface-variant font-medium hover:bg-primary-container/20 hover:text-primary transition-all duration-300 ease-in-out" href="#">
+<span class="material-symbols-outlined">help</span>
+<span class="font-body-sm text-body-sm">Support</span>
+</a>
+</div>
+</div>
+</nav>
+<!-- TopAppBar (from JSON) -->
+<header class="fixed top-0 right-0 w-full md:w-[calc(100%-280px)] z-40 bg-background/60 backdrop-blur-md border-b border-nebula-stroke flex justify-between items-center h-20 px-margin-mobile md:px-margin-desktop">
+<!-- Mobile Menu Trigger -->
+<button class="md:hidden text-primary hover:text-white transition-colors">
+<span class="material-symbols-outlined text-[24px]">menu</span>
+</button>
+<div class="font-headline-sm text-headline-sm font-bold text-on-surface">
+            Nova Dashboard
+        </div>
+<div class="flex items-center gap-4">
+<div class="hidden sm:flex items-center bg-[#07090E] border border-charcoal-gray rounded-DEFAULT px-3 py-2 focus-within:border-[#D9D9D6] focus-within:shadow-[0_0_4px_rgba(255,255,255,0.2)] transition-all">
+<span class="material-symbols-outlined text-charcoal-gray mr-2 text-[20px]">search</span>
+<input class="bg-transparent border-none outline-none text-body-sm text-on-surface placeholder:text-charcoal-gray w-48" placeholder="Search logs..." type="text"/>
+</div>
+<button class="text-on-surface-variant hover:text-primary transition-colors scale-95 active:scale-90">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors scale-95 active:scale-90">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<img class="w-8 h-8 rounded-full border border-nebula-stroke object-cover ml-2" data-alt="A small profile image for the Chief Astronomer, depicted with a deep blue cosmic lighting overlay. Professional and mysterious." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCXKXGiV2MYTdT2ZKRXQBMz1eSz_CDuhU2OFaNQb2eZlad0kYKNUgQkUXtwItrnNv7-l-KYC4fRW-sPasqxsLwK47TOcTBOuyckxaHB9Zk10kFLlW-Gg4JwEyANJ1UNsqwRwWrXeeGGbz1qeX3dVLO7PEx1h3bbxiIsF8rzoxbZPoP75DNYtQxICfQB1Vrabv6zRQDAB-FPPClRgCuhI5fkBV-3O1jgBFmbsTT2X3igP-ZAqTeuOmhjznrON-FXYljaXC89vFn5iOmp"/>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="pt-28 pb-12 px-margin-mobile md:px-margin-desktop md:ml-72 min-h-screen">
+<header class="mb-stack-lg flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4">
+<div>
+<h2 class="font-display-lg-mobile md:font-display-lg text-star-glow mb-2">Application Trajectory</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">Monitoring active deployment sequences across target constellations. 14 active vectors detected.</p>
+</div>
+<button class="bg-[#D9D9D6] text-[#07090E] px-4 py-2 rounded-DEFAULT font-label-caps text-label-caps flex items-center gap-2 hover:bg-white transition-colors">
+<span class="material-symbols-outlined text-[16px]">add</span>
+                NEW LOG
+            </button>
+</header>
+<!-- Kanban Grid -->
+<div class="flex flex-col xl:flex-row gap-gutter overflow-x-auto pb-8 items-start snap-x">
+<!-- Applied Column -->
+<div class="kanban-column w-full sm:w-[320px] shrink-0 snap-start">
+<div class="glass-card p-4 mb-4 flex items-center justify-between border-b-2 border-b-primary/50">
+<h3 class="font-label-caps text-label-caps text-[#D9D9D6]">APPLIED</h3>
+<span class="bg-primary-container/40 text-primary px-2 py-1 rounded-sm font-label-caps text-[10px]">4</span>
+</div>
+<div class="flex flex-col gap-4">
+<!-- Card 1 -->
+<div class="job-card glow-applied rounded-lg p-stack-md relative group">
+<div class="flex items-start justify-between mb-3">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-sm bg-surface-container flex items-center justify-center border border-charcoal-gray/30 overflow-hidden">
+<img class="w-full h-full object-cover opacity-80 mix-blend-screen" data-alt="Minimalist geometric logo for a tech company, styled in deep blues and greys. Corporate modern aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDF9cDT6_vy0hgnGhVymkpe8cLD1390_dlQPbTI7bkAz3eMJsiN3aMgfQkNtUzTVPgiQ2X-EM_mrream4p3mgQ9HObqMQYYphLONStDIENUzNALjyfrynztsUnsSbyXtmqNrwUFv_MJZ4U6la2PhdkfUNBUFHxb_FbXqSdCqYb55zUgcH4XBrHeEqNcGQFN2YwIAzpI3K0RzgDK5M0tkomOJwVRBGPeQn-3hKTxMxW46kAQVG5c9-JwCpS7GdT171Vk9ehu6Q3YVBF-"/>
+</div>
+<div>
+<h4 class="font-body-md text-body-md font-bold text-[#D9D9D6]">Stellar Dynamics</h4>
+<p class="font-body-sm text-body-sm text-charcoal-gray">Data Scientist</p>
+</div>
+</div>
+<button class="text-charcoal-gray hover:text-[#D9D9D6] transition-colors"><span class="material-symbols-outlined text-[18px]">more_horiz</span></button>
+</div>
+<div class="border-t border-nebula-stroke/50 pt-3 flex justify-between items-center">
+<span class="font-label-caps text-[10px] text-charcoal-gray">T-MINUS 12 DAYS</span>
+<div class="bg-primary-container/40 px-2 py-1 rounded-sm flex items-center gap-1">
+<div class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></div>
+<span class="font-label-caps text-[10px] text-primary">TRANSMITTED</span>
+</div>
+</div>
+<div class="connective-line-container hidden xl:block absolute top-1/2 left-full w-gutter h-[1px] -translate-y-1/2 z-0 opacity-0 group-hover:opacity-100 transition-opacity">
+<div class="w-full h-full bg-gradient-to-r from-primary/30 to-transparent"></div>
+<div class="absolute right-0 top-1/2 w-1 h-1 bg-primary rounded-full -translate-y-1/2 shadow-[0_0_4px_#bcc6e7]"></div>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="job-card glow-applied rounded-lg p-stack-md relative group">
+<div class="flex items-start justify-between mb-3">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-sm bg-surface-container flex items-center justify-center border border-charcoal-gray/30 overflow-hidden">
+<span class="material-symbols-outlined text-charcoal-gray text-[24px]">public</span>
+</div>
+<div>
+<h4 class="font-body-md text-body-md font-bold text-[#D9D9D6]">Orbital Tech</h4>
+<p class="font-body-sm text-body-sm text-charcoal-gray">Frontend Engineer</p>
+</div>
+</div>
+</div>
+<div class="border-t border-nebula-stroke/50 pt-3 flex justify-between items-center">
+<span class="font-label-caps text-[10px] text-charcoal-gray">T-MINUS 2 DAYS</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Under Review Column -->
+<div class="kanban-column w-full sm:w-[320px] shrink-0 snap-start">
+<div class="glass-card p-4 mb-4 flex items-center justify-between border-b-2 border-b-on-primary-container/50">
+<h3 class="font-label-caps text-label-caps text-[#D9D9D6]">UNDER REVIEW</h3>
+<span class="bg-on-primary-container/20 text-on-primary-container px-2 py-1 rounded-sm font-label-caps text-[10px]">2</span>
+</div>
+<div class="flex flex-col gap-4">
+<!-- Card 3 -->
+<div class="job-card glow-review rounded-lg p-stack-md relative group">
+<div class="flex items-start justify-between mb-3">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-sm bg-surface-container flex items-center justify-center border border-charcoal-gray/30 overflow-hidden">
+<img class="w-full h-full object-cover opacity-80 mix-blend-screen" data-alt="Abstract corporate logo featuring a sleek orbital ring design. Dark mode aesthetic, cool blue tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCBoF7RO04N_OPHxqEKY7qZcuXDdEnQUUy_NvHCrTs2hHP0IvWyZx3NTn52ojVppQARcxPAXD2EeH0tW9aEAmKpwRg-yD9TpTIZM7XsexR7hnC24v2JkclRxp9Moi3fDwyNHq0njKbWgbLkpZWMruoB8MpRQTUUpTl7cQT8Eg1lUfe1d_9SKsSg_m5-lJgHrtw36hXcI4lrNlhufk9GxiZ2mS1jQFNQ3RAdStf5InfsTg735QtgN2nNBD9a8svSnVltD89ArJplZF_u"/>
+</div>
+<div>
+<h4 class="font-body-md text-body-md font-bold text-[#D9D9D6]">AstroCorp</h4>
+<p class="font-body-sm text-body-sm text-charcoal-gray">UX Designer</p>
+</div>
+</div>
+</div>
+<div class="border-t border-nebula-stroke/50 pt-3 flex justify-between items-center">
+<span class="font-label-caps text-[10px] text-charcoal-gray">ANALYZING SIGNAL</span>
+<div class="bg-on-primary-container/20 px-2 py-1 rounded-sm flex items-center gap-1">
+<div class="w-1.5 h-1.5 rounded-full bg-on-primary-container"></div>
+<span class="font-label-caps text-[10px] text-on-primary-container">VIEWED</span>
+</div>
+</div>
+<div class="connective-line-container hidden xl:block absolute top-1/2 left-full w-gutter h-[1px] -translate-y-1/2 z-0 opacity-0 group-hover:opacity-100 transition-opacity">
+<div class="w-full h-full bg-gradient-to-r from-on-primary-container/30 to-transparent"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Interview Column -->
+<div class="kanban-column w-full sm:w-[320px] shrink-0 snap-start">
+<div class="glass-card p-4 mb-4 flex items-center justify-between border-b-2 border-b-tertiary-fixed/50">
+<h3 class="font-label-caps text-label-caps text-[#D9D9D6]">INTERVIEW SCHEDULED</h3>
+<span class="bg-tertiary-fixed/20 text-tertiary-fixed px-2 py-1 rounded-sm font-label-caps text-[10px]">1</span>
+</div>
+<div class="flex flex-col gap-4">
+<!-- Card 4 -->
+<div class="job-card glow-interview rounded-lg p-stack-md relative group border-t-tertiary-fixed/50">
+<div class="flex items-start justify-between mb-3">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-sm bg-surface-container flex items-center justify-center border border-charcoal-gray/30 overflow-hidden">
+<span class="material-symbols-outlined text-tertiary-fixed text-[24px]">language</span>
+</div>
+<div>
+<h4 class="font-body-md text-body-md font-bold text-[#D9D9D6]">Nexus Systems</h4>
+<p class="font-body-sm text-body-sm text-charcoal-gray">Systems Architect</p>
+</div>
+</div>
+</div>
+<div class="my-2 bg-[#07090E] rounded p-2 border border-nebula-stroke flex items-center gap-2">
+<span class="material-symbols-outlined text-tertiary-fixed text-[16px]">event</span>
+<span class="font-body-sm text-body-sm text-[#D9D9D6]">Oct 24, 14:00 UTC</span>
+</div>
+<div class="border-t border-nebula-stroke/50 pt-3 flex justify-between items-center">
+<span class="font-label-caps text-[10px] text-charcoal-gray">STAGE: TECHNICAL</span>
+<div class="bg-tertiary-fixed/20 px-2 py-1 rounded-sm flex items-center gap-1">
+<div class="w-1.5 h-1.5 rounded-full bg-tertiary-fixed shadow-[0_0_4px_#d8e4f3]"></div>
+<span class="font-label-caps text-[10px] text-tertiary-fixed">CONFIRMED</span>
+</div>
+</div>
+<div class="connective-line-container hidden xl:block absolute top-1/2 left-full w-gutter h-[1px] -translate-y-1/2 z-0 opacity-0 group-hover:opacity-100 transition-opacity">
+<div class="w-full h-full bg-gradient-to-r from-tertiary-fixed/50 to-transparent"></div>
+<div class="absolute right-0 top-1/2 w-1.5 h-1.5 bg-tertiary-fixed rounded-full -translate-y-1/2 shadow-[0_0_6px_#d8e4f3]"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Offer Column -->
+<div class="kanban-column w-full sm:w-[320px] shrink-0 snap-start">
+<div class="glass-card p-4 mb-4 flex items-center justify-between border-b-2 border-b-star-glow">
+<h3 class="font-label-caps text-label-caps text-[#D9D9D6]">OFFER SECURED</h3>
+<span class="bg-white/20 text-star-glow px-2 py-1 rounded-sm font-label-caps text-[10px]">1</span>
+</div>
+<div class="flex flex-col gap-4">
+<!-- Card 5 -->
+<div class="job-card glow-offer rounded-lg p-stack-md relative group border border-white/30">
+<div class="absolute -top-1 -right-1 w-3 h-3 bg-white rounded-full shadow-[0_0_10px_#FFFFFF] animate-pulse"></div>
+<div class="flex items-start justify-between mb-3">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-sm bg-surface-container flex items-center justify-center border border-white/50 overflow-hidden">
+<img class="w-full h-full object-cover mix-blend-screen" data-alt="A glowing, high-contrast logo of an advanced deep-space research facility. Crisp white lines on dark background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAqo6JANb5NSEzZjb1VzHTabRBUMUxLfsRzV8qPqSPwU0giE1srheTsblV9vK6Mwj2JgC0w9Xp_erwUCgvTkl7E7GJY-UTh5bjTqW3BA1f5RMNdvksImWp7RCEUgDbozlxwZTYSAaghYD2H1eC08Lbbp70IBXh0TluIQXftMWYypp3muBqykDFV0lsAD8xVlMvbMyruhS8-H564F_6bAmB0WfrZSuVxPt4XLeE-VTywi79D6ok82k9XO9w1JeFrI4S3ef3edAiXLs6p"/>
+</div>
+<div>
+<h4 class="font-body-md text-body-md font-bold text-star-glow">DeepVoid Analytics</h4>
+<p class="font-body-sm text-body-sm text-charcoal-gray">Lead Researcher</p>
+</div>
+</div>
+</div>
+<div class="border-t border-nebula-stroke/50 pt-3 flex flex-col gap-2">
+<div class="flex justify-between items-end">
+<span class="font-label-caps text-[10px] text-charcoal-gray">COMPENSATION PROJECTION</span>
+<span class="font-data-heavy text-data-heavy text-star-glow">160k</span>
+</div>
+<button class="w-full mt-2 py-1.5 border border-white/50 text-white rounded-sm font-label-caps text-label-caps hover:bg-white/10 transition-colors">
+                                 REVIEW TERMS
+                             </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Rejected Column -->
+<div class="kanban-column w-full sm:w-[320px] shrink-0 snap-start opacity-70 hover:opacity-100 transition-opacity">
+<div class="glass-card p-4 mb-4 flex items-center justify-between border-b-2 border-b-error/30">
+<h3 class="font-label-caps text-label-caps text-charcoal-gray">TRAJECTORY LOST</h3>
+<span class="bg-error/10 text-error px-2 py-1 rounded-sm font-label-caps text-[10px]">3</span>
+</div>
+<div class="flex flex-col gap-4">
+<!-- Card 6 -->
+<div class="job-card glow-rejected rounded-lg p-stack-md relative filter grayscale-[50%] hover:grayscale-0 transition-all">
+<div class="flex items-start justify-between mb-3">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-sm bg-surface-container flex items-center justify-center border border-charcoal-gray/30 overflow-hidden">
+<span class="material-symbols-outlined text-charcoal-gray text-[24px]">block</span>
+</div>
+<div>
+<h4 class="font-body-md text-body-md font-medium text-charcoal-gray">Lunar Logistics</h4>
+<p class="font-body-sm text-body-sm text-charcoal-gray/70">Operations</p>
+</div>
+</div>
+</div>
+<div class="border-t border-nebula-stroke/30 pt-2">
+<span class="font-label-caps text-[10px] text-error/70">CONNECTION SEVERED</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

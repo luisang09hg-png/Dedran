@@ -1,11 +1,16 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
-import { 
-  Edit, Save, X, Camera, MapPin, Link2, Globe, 
-  Briefcase, Award, Star, Settings, Loader2, Plus, Trash2, FileText, Users, 
-  LayoutGrid, MessageSquare, Heart, Share2, MoreHorizontal, ChevronDown, ExternalLink, User
-} from 'lucide-react';
+import { Edit, Save, X, Camera, MapPin, Star, Loader2, Briefcase, Users, Eye } from 'lucide-react';
+import GlassCard from '../../components/ui/GlassCard';
+import Button from '../../components/ui/Button';
+import MetricCard from '../../components/ui/MetricCard';
+
+const SKILL_SUGGESTIONS = [
+  'React', 'TypeScript', 'Python', 'Node.js', 'Tailwind CSS',
+  'GraphQL', 'PostgreSQL', 'Docker', 'AWS', 'Figma', 'REST APIs',
+  'Supabase', 'UI/UX', 'Go', 'Rust',
+];
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -14,55 +19,29 @@ const Profile = () => {
   const [editing, setEditing] = useState(false);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState(null);
-  const [activeTab, setActiveTab] = useState('posts');
+  const [activeTab, setActiveTab] = useState('about');
 
-  const [formData, setFormData] = useState({
-    full_name: '',
-    username: '',
-    headline: '',
-    bio: '',
-    location: '',
-    website_url: '',
-    linkedin_url: '',
-    github_url: '',
-    twitter_url: '',
+  const [form, setForm] = useState({
+    full_name: '', username: '', headline: '', bio: '',
+    location: '', website_url: '', linkedin_url: '', github_url: '', twitter_url: '',
     skills: [],
   });
-
   const [newSkill, setNewSkill] = useState('');
   const [avatarPreview, setAvatarPreview] = useState(null);
+  const [stats, setStats] = useState({ connections: 0, views: 0, applications: 0 });
 
-  const skillsList = [
-    'React', 'TypeScript', 'JavaScript', 'Python', 'Node.js', 'Next.js',
-    'Tailwind CSS', 'GraphQL', 'PostgreSQL', 'MongoDB', 'Docker', 'AWS',
-    'Git', 'CI/CD', 'Testing', 'Figma', 'UI/UX', 'REST APIs', 'Firebase',
-    'Supabase', 'Prisma', 'Redis', 'Kubernetes', 'Go', 'Rust', 'Java', 'C#'
-  ];
-
-  useEffect(() => {
-    fetchProfile();
-  }, []);
+  useEffect(() => { fetchProfile(); }, []);
 
   const fetchProfile = async () => {
     try {
       setLoading(true);
       const { data: { user } } = await supabase.auth.getUser();
-      if (!user) {
-        navigate('/login');
-        return;
-      }
+      if (!user) { navigate('/login'); return; }
 
-      const { data, error } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('id', user.id)
-        .single();
-
-      if (error && error.code !== 'PGRST116') throw error;
-      
+      const { data } = await supabase.from('profiles').select('*').eq('id', user.id).single();
       if (data) {
         setProfile(data);
-        setFormData({
+        setForm({
           full_name: data.full_name || '',
           username: data.username || '',
           headline: data.headline || '',
@@ -76,6 +55,10 @@ const Profile = () => {
         });
         if (data.avatar_url) setAvatarPreview(data.avatar_url);
       }
+
+      const { count: connections } = await supabase.from('follows').select('*', { count: 'exact', head: true }).eq('following_id', user.id);
+      const { count: applications } = await supabase.from('job_applications').select('*', { count: 'exact', head: true }).eq('applicant_id', user.id);
+      setStats({ connections: connections || 0, views: 0, applications: applications || 0 });
     } catch (err) {
       setError(err.message);
     } finally {
@@ -83,27 +66,16 @@ const Profile = () => {
     }
   };
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-  };
+  const handleInputChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
   const handleSkillAdd = () => {
-    if (newSkill.trim() && !formData.skills.includes(newSkill.trim())) {
-      setFormData(prev => ({ ...prev, skills: [...prev.skills, newSkill.trim()] }));
+    if (newSkill.trim() && !form.skills.includes(newSkill.trim())) {
+      setForm({ ...form, skills: [...form.skills, newSkill.trim()] });
       setNewSkill('');
     }
   };
 
-  const handleSkillSelect = (skill) => {
-    if (!formData.skills.includes(skill)) {
-      setFormData(prev => ({ ...prev, skills: [...prev.skills, skill] }));
-    }
-  };
-
-  const handleSkillRemove = (skill) => {
-    setFormData(prev => ({ ...prev, skills: prev.skills.filter(s => s !== skill) }));
-  };
+  const handleSkillRemove = (skill) => setForm({ ...form, skills: form.skills.filter(s => s !== skill) });
 
   const handleAvatarChange = (e) => {
     const file = e.target.files[0];
@@ -118,41 +90,26 @@ const Profile = () => {
     try {
       setSaving(true);
       setError(null);
-
       const { data: { user } } = await supabase.auth.getUser();
-      if (!user) throw new Error('No autenticado');
+      if (!user) throw new Error('Not authenticated');
 
       let avatarUrl = profile?.avatar_url;
       if (avatarPreview && avatarPreview.startsWith('data:')) {
-        const file = dataURLtoFile(avatarPreview, 'avatar.jpg');
+        const blob = await fetch(avatarPreview).then(r => r.blob());
         const { data: uploadData, error: uploadError } = await supabase.storage
-          .from('avatars')
-          .upload(`${user.id}/avatar.jpg`, file, { upsert: true });
-        
+          .from('avatars').upload(`${user.id}/avatar.jpg`, blob, { upsert: true });
         if (uploadError) throw uploadError;
-        
-        const { data: { publicUrl } } = supabase.storage
-          .from('avatars')
-          .getPublicUrl(uploadData.path);
+        const { data: { publicUrl } } = supabase.storage.from('avatars').getPublicUrl(uploadData.path);
         avatarUrl = publicUrl;
       }
 
-      const { error } = await supabase
-        .from('profiles')
-        .upsert({
-          id: user.id,
-          email: user.email,
-          ...formData,
-          avatar_url: avatarUrl,
-          is_onboarding_complete: true,
-          updated_at: new Date().toISOString(),
-        });
-
+      const { error } = await supabase.from('profiles').upsert({
+        id: user.id, ...form, avatar_url: avatarUrl, updated_at: new Date().toISOString(),
+      });
       if (error) throw error;
 
-      setProfile(prev => ({ ...prev, ...formData, avatar_url: avatarUrl }));
+      setProfile({ ...profile, ...form, avatar_url: avatarUrl });
       setEditing(false);
-      setAvatarPreview(avatarUrl);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -160,470 +117,235 @@ const Profile = () => {
     }
   };
 
-  const dataURLtoFile = (dataurl, filename) => {
-    const arr = dataurl.split(',');
-    const mime = arr[0].match(/:(.*?);/)[1];
-    const bstr = atob(arr[1]);
-    let n = bstr.length;
-    const u8arr = new Uint8Array(n);
-    while (n--) u8arr[n] = bstr.charCodeAt(n);
-    return new File([u8arr], filename, { type: mime });
-  };
-
-  const formatDate = (dateStr) => {
-    if (!dateStr) return '';
-    return new Date(dateStr).toLocaleDateString('es-ES', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    });
-  };
-
   if (loading) {
-    return (
-      <div className="min-h-screen bg-background text-on-background flex items-center justify-center starry-bg">
-        <Loader2 className="w-8 h-8 text-primary animate-spin" />
-      </div>
-    );
+    return <div className="flex items-center justify-center min-h-[60vh]"><Loader2 className="w-8 h-8 text-primary animate-spin" /></div>;
   }
-
-  if (!profile) {
-    return (
-      <div className="min-h-screen bg-background text-on-background flex items-center justify-center starry-bg">
-        <div className="text-center p-8">
-          <h2 className="text-headline-lg font-headline-lg mb-4">Perfil no encontrado</h2>
-          <button 
-            onClick={() => navigate('/feed')}
-            className="bg-primary-container text-on-primary-container px-6 py-3 rounded-xl font-label-md"
-          >
-            Ir al Feed
-          </button>
-        </div>
-      </div>
-    );
-  }
-
-  const isOwnProfile = true;
 
   return (
-    <div className="min-h-screen bg-background text-on-background starry-bg">
-      <div className="max-w-4xl mx-auto px-margin-mobile md:px-margin-desktop py-8 md:py-12">
-        {/* Profile Header */}
-        <div className="glass-card rounded-3xl p-6 md:p-8 mb-6 relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-tertiary/5" />
-          
-          <div className="relative flex flex-col md:flex-row items-start md:items-center gap-6">
-            {/* Avatar */}
-            <div className="relative w-32 h-32 md:w-40 md:h-40 flex-shrink-0">
-              <div className="relative w-full h-full rounded-2xl overflow-hidden border-2 border-primary/30 bg-surface-container">
-                {avatarPreview ? (
-                  <img 
-                    src={avatarPreview} 
-                    alt={formData.full_name || 'Avatar'} 
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center bg-surface-variant">
-                    <Users size={80} className="text-on-surface-variant/50" />
-                  </div>
-                )}
-                
-                {editing && (
-                  <label className="absolute bottom-0 right-0 w-10 h-10 bg-primary rounded-full flex items-center justify-center cursor-pointer hover:scale-105 transition-transform">
-                    <Camera size={20} className="text-on-primary" />
-                    <input 
-                      type="file" 
-                      accept="image/*" 
-                      onChange={handleAvatarChange}
-                      className="absolute inset-0 opacity-0 cursor-pointer"
-                    />
-                  </label>
-                )}
+    <div className="pb-stack-lg">
+      {/* Hero Banner */}
+      <div className="relative h-48 md:h-56 w-full rounded-xl overflow-hidden mb-6 bg-gradient-to-br from-primary-container/40 via-surface-container to-surface"
+        style={{
+          backgroundImage: `radial-gradient(ellipse at 30% 20%, rgba(188,198,231,0.15) 0%, transparent 60%), radial-gradient(ellipse at 70% 80%, rgba(32,42,68,0.4) 0%, transparent 50%)`,
+        }}
+      >
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
+      </div>
+
+      {/* Profile Header */}
+      <div className="relative z-10 -mt-16 md:-mt-20 flex flex-col md:flex-row items-center md:items-end gap-5 mb-stack-lg px-2">
+        <div className="relative p-1 bg-surface rounded-full">
+          <div className="w-28 h-28 md:w-32 md:h-32 rounded-full overflow-hidden border-2 border-surface-container">
+            {avatarPreview ? (
+              <img src={avatarPreview} alt="" className="w-full h-full object-cover" />
+            ) : (
+              <div className="w-full h-full bg-surface-variant flex items-center justify-center">
+                <Users size={48} className="text-on-surface-variant/50" />
               </div>
-            </div>
+            )}
+            {editing && (
+              <label className="absolute bottom-1 right-1 w-9 h-9 bg-primary rounded-full flex items-center justify-center cursor-pointer hover:scale-105 transition-transform z-10">
+                <Camera size={16} className="text-on-primary" />
+                <input type="file" accept="image/*" onChange={handleAvatarChange} className="absolute inset-0 opacity-0 cursor-pointer" />
+              </label>
+            )}
+          </div>
+        </div>
 
-            {/* Profile Info */}
-            <div className="flex-1 min-w-0 text-center md:text-left">
-              {editing ? (
-                <div className="space-y-4 w-full">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <input
-                      type="text"
-                      name="full_name"
-                      value={formData.full_name}
-                      onChange={handleInputChange}
-                      placeholder="Nombre completo"
-                      className="bg-surface-container border border-outline-variant rounded-xl px-4 py-3 text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none text-headline-md font-headline-md"
-                    />
-                    <input
-                      type="text"
-                      name="username"
-                      value={formData.username}
-                      onChange={handleInputChange}
-                      placeholder="@usuario"
-                      className="bg-surface-container border border-outline-variant rounded-xl px-4 py-3 text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none text-label-lg"
-                    />
-                  </div>
-                  <input
-                    type="text"
-                    name="headline"
-                    value={formData.headline}
-                    onChange={handleInputChange}
-                    placeholder="Título profesional (ej: Junior Frontend Developer)"
-                    className="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-3 text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none text-body-lg"
-                  />
-                </div>
-              ) : (
-                <div>
-                  <h1 className="text-headline-lg md:text-headline-xl font-headline-lg font-bold text-on-surface">
-                    {formData.full_name || profile.full_name || 'Sin nombre'}
-                  </h1>
-                  <p className="text-label-lg text-primary mt-1 font-label-lg">
-                    @{formData.username || profile.username || 'usuario'}
-                  </p>
-                  {formData.headline || profile.headline ? (
-                    <p className="text-body-md text-on-surface-variant mt-2 font-body-md">
-                      {formData.headline || profile.headline}
-                    </p>
-                  ) : null}
-                  <div className="flex flex-wrap items-center justify-center md:justify-start gap-4 mt-4 text-label-md text-on-surface-variant">
-                    {formData.location || profile.location ? (
-                      <span className="flex items-center gap-1">
-                        <MapPin size={14} />
-                        {formData.location || profile.location}
-                      </span>
-                    ) : null}
-                    <span className="flex items-center gap-1">
-                      <Award size={14} />
-                      {profile.role || 'junior'}
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <Star size={14} />
-                      Miembro desde {formatDate(profile.created_at)}
-                    </span>
-                  </div>
-                </div>
-              )}
+        <div className="text-center md:text-left flex-1">
+          {editing ? (
+            <div className="space-y-2">
+              <input name="full_name" value={form.full_name} onChange={handleInputChange} placeholder="Full Name" className="w-full bg-[#07090E] border border-charcoal-gray rounded px-3 py-2 text-on-surface text-headline-md focus:border-[#D9D9D6] outline-none" />
+              <input name="username" value={form.username} onChange={handleInputChange} placeholder="@username" className="w-full bg-[#07090E] border border-charcoal-gray rounded px-3 py-2 text-on-surface text-body-sm focus:border-[#D9D9D6] outline-none" />
+              <input name="headline" value={form.headline} onChange={handleInputChange} placeholder="e.g. Lead Astrodynamics Researcher" className="w-full bg-[#07090E] border border-charcoal-gray rounded px-3 py-2 text-on-surface text-body-sm focus:border-[#D9D9D6] outline-none" />
             </div>
+          ) : (
+            <>
+              <h1 className="font-display-lg-mobile md:font-display-lg text-on-surface">{form.full_name || profile?.full_name || 'User'}</h1>
+              <p className="font-headline-sm text-primary mt-1">{form.headline || profile?.headline}</p>
+              {(form.location || profile?.location) && (
+                <p className="font-body-sm text-body-sm text-on-surface-variant mt-1 flex items-center justify-center md:justify-start gap-1">
+                  <MapPin size={14} /> {form.location || profile?.location}
+                </p>
+              )}
+              <div className="flex flex-wrap gap-2 justify-center md:justify-start mt-3">
+                {(form.skills.length > 0 ? form.skills : profile?.skills || []).slice(0, 5).map((skill) => (
+                  <span key={skill} className="px-3 py-1 bg-primary-container/40 border border-nebula-stroke rounded-sm font-label-caps text-label-caps text-secondary-fixed">
+                    {skill.toUpperCase()}
+                  </span>
+                ))}
+              </div>
+            </>
+          )}
+        </div>
 
-            {/* Action Buttons */}
-            <div className="flex items-center gap-3 md:ml-auto">
-              {editing ? (
-                <>
-                  <button
-                    onClick={() => { setFormData({...formData}); setEditing(false); setAvatarPreview(profile?.avatar_url || null); }}
-                    className="px-6 py-2.5 rounded-xl bg-surface-container border border-outline-variant text-on-surface font-label-md hover:bg-surface-variant transition-colors"
-                  >
-                    <X size={18} className="inline-block mr-1" /> Cancelar
-                  </button>
-                  <button
-                    onClick={handleSave}
-                    disabled={saving}
-                    className="px-6 py-2.5 rounded-xl bg-primary-container text-on-primary-container font-label-md flex items-center gap-2 hover:scale-[0.98] transition-transform disabled:opacity-50"
-                  >
-                    {saving ? (
-                      <>
-                        <Loader2 size={18} className="animate-spin" />
-                        Guardando...
-                      </>
-                    ) : (
-                      <>
-                        <Save size={18} />
-                        Guardar
-                      </>
-                    )}
-                  </button>
-                </>
-              ) : (
-                <button
-                  onClick={() => setEditing(true)}
-                  className="px-6 py-2.5 rounded-xl bg-primary-container text-on-primary-container font-label-md flex items-center gap-2 hover:scale-[0.98] transition-transform"
-                >
-                  <Edit size={18} />
-                  Editar Perfil
-                </button>
-              )}
-            </div>
+        <div className="flex gap-3">
+          {editing ? (
+            <>
+              <Button variant="ghost" onClick={() => { setEditing(false); setAvatarPreview(profile?.avatar_url || null); }}>
+                <X size={16} /> Cancel
+              </Button>
+              <Button variant="primary" onClick={handleSave} disabled={saving}>
+                {saving ? <><Loader2 size={16} className="animate-spin" /> Saving</> : <><Save size={16} /> Save</>}
+              </Button>
+            </>
+          ) : (
+            <Button variant="primary" onClick={() => setEditing(true)}><Edit size={16} /> Edit Profile</Button>
+          )}
+        </div>
+      </div>
+
+      {error && (
+        <div className="bg-error-container text-on-error-container p-4 rounded mb-6 font-body-sm text-body-sm">{error}</div>
+      )}
+
+      {/* Stats Row */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-gutter mb-stack-lg">
+        <MetricCard value={stats.connections.toLocaleString()} label="Connections" icon={Users} />
+        <MetricCard value={stats.views.toLocaleString()} label="Profile Views" icon={Eye} />
+        <MetricCard value={stats.applications.toLocaleString()} label="Applications" icon={Briefcase} />
+      </div>
+
+      {/* Main Content */}
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+        {/* Left Column — Tabs */}
+        <div className="md:col-span-8 space-y-gutter">
+          {/* Tab Bar */}
+          <div className="border-b border-nebula-stroke flex gap-6">
+            {['about', 'experience', 'skills'].map((tab) => (
+              <button
+                key={tab}
+                onClick={() => setActiveTab(tab)}
+                className={`pb-3 border-b-2 font-headline-sm text-headline-sm transition-colors capitalize ${
+                  activeTab === tab ? 'border-primary text-primary' : 'border-transparent text-on-surface-variant hover:text-on-surface'
+                }`}
+              >
+                {tab}
+              </button>
+            ))}
           </div>
 
-          {/* Bio & Skills - Editable */}
-          <div className="mt-6 pt-6 border-t border-outline-variant/30">
-            {editing ? (
-              <div className="space-y-6">
-                <div>
-                  <label className="block text-label-md font-label-md mb-2 text-on-surface-variant">Biografía</label>
-                  <textarea
-                    name="bio"
-                    value={formData.bio}
-                    onChange={handleInputChange}
-                    rows={4}
-                    placeholder="Cuéntanos sobre ti, tus intereses, objetivos..."
-                    className="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-3 text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none resize-none font-body-md"
-                  />
-                </div>
-                
-                <div>
-                  <label className="block text-label-md font-label-md mb-2 text-on-surface-variant">Habilidades</label>
-                  <div className="flex flex-wrap gap-2 mb-3">
-                    {formData.skills.map((skill) => (
-                      <span key={skill} className="inline-flex items-center gap-1 bg-primary-container text-on-primary-container px-3 py-1 rounded-full text-label-sm">
+          {/* About */}
+          {activeTab === 'about' && (
+            <GlassCard className="p-stack-lg">
+              <h3 className="font-headline-md text-headline-md text-on-surface mb-4">Mission Statement</h3>
+              {editing ? (
+                <textarea name="bio" value={form.bio} onChange={handleInputChange} rows={4} placeholder="Tell us about yourself..."
+                  className="w-full bg-[#07090E] border border-charcoal-gray rounded px-4 py-3 text-on-surface focus:border-[#D9D9D6] outline-none resize-none font-body-md text-body-md mb-4" />
+              ) : (
+                <p className="font-body-lg text-body-lg text-on-surface-variant leading-relaxed mb-6">
+                  {(form.bio || profile?.bio) || 'No bio yet.'}
+                </p>
+              )}
+              <div className="border-t border-nebula-stroke pt-6">
+                <h4 className="font-label-caps text-label-caps text-charcoal-gray mb-3">Current Coordinates</h4>
+                {editing ? (
+                  <input name="location" value={form.location} onChange={handleInputChange} placeholder="City, Country"
+                    className="w-full bg-[#07090E] border border-charcoal-gray rounded px-3 py-2 text-on-surface focus:border-[#D9D9D6] outline-none" />
+                ) : (
+                  <div className="flex items-center gap-2">
+                    <MapPin size={16} className="text-primary" />
+                    <span className="font-body-md text-body-md text-on-surface">{form.location || profile?.location || 'Not set'}</span>
+                  </div>
+                )}
+              </div>
+            </GlassCard>
+          )}
+
+          {/* Experience */}
+          {activeTab === 'experience' && (
+            <GlassCard className="p-stack-lg">
+              <h3 className="font-headline-md text-headline-md text-on-surface mb-4">Experience</h3>
+              <p className="font-body-md text-body-md text-on-surface-variant">
+                {editing ? 'Experience entries can be added in a future update.' : 'No experience entries yet.'}
+              </p>
+            </GlassCard>
+          )}
+
+          {/* Skills */}
+          {activeTab === 'skills' && (
+            <GlassCard className="p-stack-lg">
+              <h3 className="font-headline-md text-headline-md text-on-surface mb-4">Skills</h3>
+              {editing && (
+                <div className="space-y-4 mb-4">
+                  <div className="flex flex-wrap gap-2">
+                    {(form.skills.length > 0 ? form.skills : []).map((skill) => (
+                      <span key={skill} className="inline-flex items-center gap-1 px-3 py-1 rounded-sm bg-primary-container/40 text-primary font-label-caps text-label-caps">
                         {skill}
-                        <button 
-                          type="button"
-                          onClick={() => handleSkillRemove(skill)}
-                          className="hover:bg-primary/20 rounded-full p-0.5"
-                        >
-                          <X size={12} />
-                        </button>
+                        <button onClick={() => handleSkillRemove(skill)} className="hover:bg-primary/20 rounded-full p-0.5"><X size={12} /></button>
                       </span>
                     ))}
                   </div>
-                  <div className="flex flex-wrap gap-2 mb-3">
-                    {skillsList
-                      .filter(s => !formData.skills.includes(s))
-                      .slice(0, 15)
-                      .map((skill) => (
-                        <button
-                          key={skill}
-                          type="button"
-                          onClick={() => handleSkillSelect(skill)}
-                          className="px-3 py-1 rounded-full bg-surface-container border border-outline-variant text-on-surface-variant text-label-sm hover:border-primary hover:text-primary transition-colors"
-                        >
-                          + {skill}
-                        </button>
-                      ))}
+                  <div className="flex flex-wrap gap-2">
+                    {SKILL_SUGGESTIONS.filter(s => !form.skills.includes(s)).slice(0, 10).map((skill) => (
+                      <button key={skill} onClick={() => setForm({ ...form, skills: [...form.skills, skill] })}
+                        className="px-3 py-1 rounded-sm bg-surface-container border border-charcoal-gray text-on-surface-variant font-label-caps text-label-caps hover:border-primary hover:text-primary transition-colors">
+                        + {skill}
+                      </button>
+                    ))}
                   </div>
                   <div className="flex gap-2">
-                    <input
-                      type="text"
-                      value={newSkill}
-                      onChange={(e) => setNewSkill(e.target.value)}
-                      onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), handleSkillAdd())}
-                      placeholder="Agregar habilidad personalizada..."
-                      className="flex-1 bg-surface-container border border-outline-variant rounded-xl px-4 py-2 text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none text-label-md"
-                    />
-                    <button
-                      type="button"
-                      onClick={handleSkillAdd}
-                      disabled={!newSkill.trim()}
-                      className="px-4 py-2 rounded-xl bg-primary-container text-on-primary-container font-label-md disabled:opacity-50"
-                    >
-                      <Plus size={16} />
-                    </button>
+                    <input value={newSkill} onChange={(e) => setNewSkill(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), handleSkillAdd())} placeholder="Add custom skill..."
+                      className="flex-1 bg-[#07090E] border border-charcoal-gray rounded px-3 py-2 text-on-surface focus:border-[#D9D9D6] outline-none text-body-sm" />
+                    <Button variant="primary" size="sm" onClick={handleSkillAdd} disabled={!newSkill.trim()}>Add</Button>
                   </div>
                 </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-label-md font-label-md mb-2 text-on-surface-variant">Ubicación</label>
-                    <input
-                      type="text"
-                      name="location"
-                      value={formData.location}
-                      onChange={handleInputChange}
-                      placeholder="Ciudad, País"
-                      className="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-3 text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-label-md font-label-md mb-2 text-on-surface-variant">Web / Portfolio</label>
-                    <input
-                      type="url"
-                      name="website_url"
-                      value={formData.website_url}
-                      onChange={handleInputChange}
-                      placeholder="https://tupagina.com"
-                      className="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-3 text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none"
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div>
-<label className="block text-label-md font-label-md mb-2 text-on-surface-variant flex items-center gap-1">
-                    <ExternalLink size={16} /> LinkedIn
-                  </label>
-                    <input
-                      type="url"
-                      name="linkedin_url"
-                      value={formData.linkedin_url}
-                      onChange={handleInputChange}
-                      placeholder="https://linkedin.com/in/tuusuario"
-                      className="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-3 text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none"
-                    />
-                  </div>
-                  <div>
-<label className="block text-label-md font-label-md mb-2 text-on-surface-variant flex items-center gap-1">
-                    <ExternalLink size={16} /> GitHub
-                  </label>
-                    <input
-                      type="url"
-                      name="github_url"
-                      value={formData.github_url}
-                      onChange={handleInputChange}
-                      placeholder="https://github.com/tuusuario"
-                      className="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-3 text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none"
-                    />
-                  </div>
-                  <div>
-<label className="block text-label-md font-label-md mb-2 text-on-surface-variant flex items-center gap-1">
-                    <MessageSquare size={16} /> Twitter/X
-                  </label>
-                    <input
-                      type="url"
-                      name="twitter_url"
-                      value={formData.twitter_url}
-                      onChange={handleInputChange}
-                      placeholder="https://x.com/tuusuario"
-                      className="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-3 text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none"
-                    />
-                  </div>
-                </div>
-              </div>
-            ) : (
-              <div className="space-y-6">
-                {(formData.bio || profile.bio) && (
-                  <div>
-                    <h3 className="text-label-lg font-label-lg text-on-surface-variant mb-2">Sobre mí</h3>
-                    <p className="text-body-md text-on-surface font-body-md whitespace-pre-wrap">
-                      {formData.bio || profile.bio}
-                    </p>
-                  </div>
+              )}
+              <div className="flex flex-wrap gap-2">
+                {(form.skills.length > 0 ? form.skills : profile?.skills || []).map((skill) => (
+                  <span key={skill} className="px-3 py-1 rounded-sm bg-primary-container/40 border border-nebula-stroke text-primary font-label-caps text-label-caps">
+                    {skill}
+                  </span>
+                ))}
+                {(!profile?.skills || profile.skills.length === 0) && !editing && (
+                  <p className="font-body-md text-body-md text-on-surface-variant">No skills added yet.</p>
                 )}
-
-                {(formData.skills.length > 0 || (profile.skills && profile.skills.length > 0)) && (
-                  <div>
-                    <h3 className="text-label-lg font-label-lg text-on-surface-variant mb-2">Habilidades</h3>
-                    <div className="flex flex-wrap gap-2">
-                      {(formData.skills.length > 0 ? formData.skills : profile.skills || []).map((skill) => (
-                        <span key={skill} className="px-3 py-1 rounded-full bg-primary-container text-on-primary-container text-label-sm font-label-sm">
-                          {skill}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                <div className="flex flex-wrap gap-4 text-label-md text-on-surface-variant">
-                  {(formData.location || profile.location) && (
-                    <span className="flex items-center gap-1">
-                      <MapPin size={14} />
-                      {formData.location || profile.location}
-                    </span>
-                  )}
-                  {(formData.website_url || profile.website_url) && (
-                    <a 
-                      href={formData.website_url || profile.website_url} 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-1 hover:text-primary transition-colors"
-                    >
-                      <Globe size={14} />
-                      Portfolio
-                    </a>
-                  )}
-                  {(formData.linkedin_url || profile.linkedin_url) && (
-                    <a 
-                      href={formData.linkedin_url || profile.linkedin_url} 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-1 hover:text-primary transition-colors"
-                    >
-                      <ExternalLink size={14} />
-                      LinkedIn
-                    </a>
-                  )}
-                  {(formData.github_url || profile.github_url) && (
-                    <a 
-                      href={formData.github_url || profile.github_url} 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-1 hover:text-primary transition-colors"
-                    >
-                      <ExternalLink size={14} />
-                      GitHub
-                    </a>
-                  )}
-                  {(formData.twitter_url || profile.twitter_url) && (
-                    <a 
-                      href={formData.twitter_url || profile.twitter_url} 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-1 hover:text-primary transition-colors"
-                    >
-                      <MessageSquare size={14} />
-                      Twitter
-                    </a>
-                  )}
-                </div>
               </div>
-            )}
-          </div>
+            </GlassCard>
+          )}
         </div>
 
-        {error && (
-          <div className="bg-error-container text-on-error-container p-4 rounded-xl mb-6 text-label-md flex items-center justify-between animate-slide-in">
-            {error}
-            <button onClick={() => setError(null)} className="ml-4 p-1 hover:bg-error/20 rounded">✕</button>
-          </div>
-        )}
+        {/* Right Column — Sidebar Panels */}
+        <div className="md:col-span-4 space-y-gutter">
+          {/* Proficiencies */}
+          <GlassCard className="p-stack-md">
+            <h3 className="font-headline-md text-headline-md text-on-surface mb-6 pb-2 border-b border-nebula-stroke">Core Proficiencies</h3>
+            <div className="space-y-5">
+              {['Telemetry Analysis', 'Quantum Comm', 'Astro-Navigation'].map((skill) => (
+                <div key={skill}>
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="font-body-md text-body-md text-on-surface">{skill}</span>
+                  </div>
+                  <div className="flex gap-1">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <Star key={star} size={14} className={star <= 4 ? 'text-primary fill-primary' : 'text-charcoal-gray'} />
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </GlassCard>
 
-        {/* Tabs */}
-        <div className="glass-card rounded-2xl overflow-hidden">
-          <nav className="flex border-b border-outline-variant/30" aria-label="Profile tabs">
-            {[
-              { id: 'posts', label: 'Publicaciones', icon: <Briefcase size={18} /> },
-              { id: 'activity', label: 'Actividad', icon: <Award size={18} /> },
-              { id: 'applications', label: 'Aplicaciones', icon: <Briefcase size={18} /> },
-            ].map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className={`flex-1 flex items-center justify-center gap-2 px-4 py-4 text-label-md font-label-md transition-all duration-200 relative ${
-                  activeTab === tab.id
-                    ? 'text-primary border-b-2 border-primary'
-                    : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/50'
-                }`}
-              >
-                {tab.icon}
-                {tab.label}
-              </button>
-            ))}
-          </nav>
-
-          <div className="p-6">
-            {activeTab === 'posts' && (
-              <div className="text-center py-12">
-                <FileText className="text-on-surface-variant/50 mx-auto mb-4" size={64} />
-                <h3 className="text-headline-md font-headline-md text-on-surface mb-2">Sin publicaciones aún</h3>
-                <p className="text-body-md text-on-surface-variant mb-6">Comparte tu primer proyecto, logro o artículo</p>
-                <button className="bg-primary-container text-on-primary-container px-6 py-3 rounded-xl font-label-md flex items-center gap-2 mx-auto hover:scale-[0.98] transition-transform">
-                  <Plus size={18} />
-                  Crear publicación
-                </button>
-              </div>
-            )}
-
-            {activeTab === 'activity' && (
-              <div className="text-center py-12">
-                <LayoutGrid className="text-on-surface-variant/50 mx-auto mb-4" size={64} />
-                <h3 className="text-headline-md font-headline-md text-on-surface mb-2">Actividad reciente</h3>
-                <p className="text-body-md text-on-surface-variant">Tu actividad aparecerá aquí</p>
-              </div>
-            )}
-
-            {activeTab === 'applications' && (
-              <div className="text-center py-12">
-                <Briefcase className="text-on-surface-variant/50 mx-auto mb-4" size={64} />
-                <h3 className="text-headline-md font-headline-md text-on-surface mb-2">Sin aplicaciones</h3>
-                <p className="text-body-md text-on-surface-variant mb-6">Cuando apliques a ofertas, aparecerán aquí</p>
-                <button className="bg-primary-container text-on-primary-container px-6 py-3 rounded-xl font-label-md flex items-center gap-2 mx-auto hover:scale-[0.98] transition-transform">
-                  <Briefcase size={18} />
-                  Ver ofertas
-                </button>
-              </div>
-            )}
-          </div>
+          {/* Recent Logs */}
+          <GlassCard className="p-stack-md">
+            <h3 className="font-headline-sm text-headline-sm text-on-surface mb-4">Recent Logs</h3>
+            <ul className="space-y-4">
+              <li className="flex gap-3">
+                <Briefcase size={16} className="text-charcoal-gray shrink-0 mt-0.5" />
+                <div>
+                  <p className="font-body-sm text-body-sm text-on-surface">Profile updated</p>
+                  <p className="font-label-caps text-label-caps text-primary mt-0.5">Today</p>
+                </div>
+              </li>
+              <li className="flex gap-3">
+                <Users size={16} className="text-charcoal-gray shrink-0 mt-0.5" />
+                <div>
+                  <p className="font-body-sm text-body-sm text-on-surface">Application submitted</p>
+                  <p className="font-label-caps text-label-caps text-primary mt-0.5">3 days ago</p>
+                </div>
+              </li>
+            </ul>
+          </GlassCard>
         </div>
       </div>
     </div>

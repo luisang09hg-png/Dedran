@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Celestial User Profile</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&amp;family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "nebula-stroke": "rgba(217, 217, 214, 0.15)",
+                        "charcoal-gray": "#53565A",
+                        "on-background": "#e2e2ea",
+                        "inverse-on-surface": "#2e3036",
+                        "on-surface": "#e2e2ea",
+                        "primary": "#bcc6e7",
+                        "tertiary-fixed": "#d8e4f3",
+                        "on-tertiary-fixed-variant": "#3d4854",
+                        "secondary-fixed": "#e3e3df",
+                        "surface-bright": "#37393f",
+                        "on-tertiary-container": "#8893a1",
+                        "outline-variant": "#45464d",
+                        "tertiary": "#bcc8d7",
+                        "error": "#ffb4ab",
+                        "on-secondary-container": "#b8b9b6",
+                        "primary-container": "#202a44",
+                        "on-primary-container": "#8791b0",
+                        "tertiary-fixed-dim": "#bcc8d7",
+                        "inverse-surface": "#e2e2ea",
+                        "outline": "#909098",
+                        "secondary": "#c6c7c4",
+                        "surface-tint": "#bcc6e7",
+                        "surface-container-low": "#191c21",
+                        "surface-container-highest": "#33353b",
+                        "surface-container-high": "#282a30",
+                        "on-tertiary": "#27313d",
+                        "on-secondary-fixed": "#1a1c1a",
+                        "on-tertiary-fixed": "#111d27",
+                        "on-primary": "#26304a",
+                        "on-primary-fixed": "#101b34",
+                        "star-glow": "#FFFFFF",
+                        "on-secondary-fixed-variant": "#464745",
+                        "on-error-container": "#ffdad6",
+                        "surface-dim": "#111319",
+                        "on-primary-fixed-variant": "#3c4662",
+                        "inverse-primary": "#545e7b",
+                        "on-secondary": "#2f312f",
+                        "surface": "#111319",
+                        "on-surface-variant": "#c6c6ce",
+                        "surface-container": "#1d2025",
+                        "surface-container-lowest": "#0c0e13",
+                        "on-error": "#690005",
+                        "background": "#111319",
+                        "primary-fixed": "#dae2ff",
+                        "secondary-container": "#484947",
+                        "error-container": "#93000a",
+                        "tertiary-container": "#212c37",
+                        "surface-variant": "#33353b",
+                        "primary-fixed-dim": "#bcc6e7",
+                        "secondary-fixed-dim": "#c6c7c4"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "stack-sm": "8px",
+                        "stack-lg": "32px",
+                        "margin-mobile": "16px",
+                        "gutter": "24px",
+                        "margin-desktop": "40px",
+                        "stack-md": "16px",
+                        "unit": "4px"
+                    },
+                    "fontFamily": {
+                        "headline-sm": ["Montserrat"],
+                        "body-sm": ["Inter"],
+                        "display-lg-mobile": ["Montserrat"],
+                        "headline-md": ["Montserrat"],
+                        "body-md": ["Inter"],
+                        "data-heavy": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "display-lg": ["Montserrat"]
+                    },
+                    "fontSize": {
+                        "headline-sm": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "display-lg-mobile": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "data-heavy": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "600" }],
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .glass-panel {
+            background: rgba(32, 42, 68, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(217, 217, 214, 0.15);
+        }
+        .orbit-border {
+            position: relative;
+            border-radius: 50%;
+        }
+        .orbit-border::before {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border-radius: 50%;
+            border: 1px solid rgba(217, 217, 214, 0.3);
+            animation: spin 10s linear infinite;
+        }
+        .orbit-border::after {
+            content: '';
+            position: absolute;
+            top: -6px;
+            left: 50%;
+            width: 4px;
+            height: 4px;
+            background-color: #bcc6e7;
+            border-radius: 50%;
+            box-shadow: 0 0 8px 2px #bcc6e7;
+            animation: orbit-dot 10s linear infinite;
+            transform-origin: 50% calc(100% + 6px);
+        }
+        @keyframes spin {
+            100% { transform: rotate(360deg); }
+        }
+        @keyframes orbit-dot {
+            from { transform: rotate(0deg) translateY(0); }
+            to { transform: rotate(360deg) translateY(0); }
+        }
+        
+        .glow-text {
+            text-shadow: 0 0 10px rgba(188, 198, 231, 0.5);
+        }
+        
+        .constellation-line {
+            position: absolute;
+            background: rgba(217, 217, 214, 0.2);
+            z-index: 0;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md min-h-screen flex flex-col md:flex-row">
+<!-- Side Navigation -->
+<nav class="hidden md:flex bg-surface-container dark:bg-surface-container text-primary dark:text-primary font-body-md text-body-md fixed left-0 top-0 h-full w-72 border-r border-nebula-stroke flex-col py-8 px-gutter transition-all duration-300 ease-in-out z-50">
+<div class="mb-10">
+<h1 class="font-headline-md text-headline-md font-bold text-on-surface dark:text-on-surface">Nova Analytics</h1>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Deep Space Explorer</p>
+</div>
+<ul class="flex-1 space-y-2">
+<li>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-primary-container/20 hover:text-primary transition-all duration-300 ease-in-out" href="#">
+<span class="material-symbols-outlined">explore</span>
+                    Galaxy View
+                </a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-primary-container/20 hover:text-primary transition-all duration-300 ease-in-out" href="#">
+<span class="material-symbols-outlined">wb_sunny</span>
+                    Star Systems
+                </a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-primary-container/20 hover:text-primary transition-all duration-300 ease-in-out" href="#">
+<span class="material-symbols-outlined">flare</span>
+                    Nebula Analytics
+                </a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-primary-container/20 hover:text-primary transition-all duration-300 ease-in-out" href="#">
+<span class="material-symbols-outlined">group_work</span>
+                    Orbits
+                </a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-4 py-3 text-primary font-bold border-r-2 border-primary bg-primary-container/10 transition-all duration-300 ease-in-out" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">auto_stories</span>
+                    Celestial Logs
+                </a>
+</li>
+</ul>
+<div class="mt-auto space-y-2 pt-6 border-t border-nebula-stroke">
+<a class="flex items-center gap-3 px-4 py-2 rounded-lg text-on-surface-variant font-medium hover:bg-primary-container/20 hover:text-primary transition-all duration-300 ease-in-out" href="#">
+<span class="material-symbols-outlined">settings</span>
+                Settings
+            </a>
+<a class="flex items-center gap-3 px-4 py-2 rounded-lg text-on-surface-variant font-medium hover:bg-primary-container/20 hover:text-primary transition-all duration-300 ease-in-out" href="#">
+<span class="material-symbols-outlined">help</span>
+                Support
+            </a>
+<button class="w-full mt-4 bg-[#D9D9D6] text-[#07090E] font-bold py-3 rounded-lg hover:bg-white transition-colors">
+                Launch Mission
+            </button>
+</div>
+</nav>
+<!-- Top App Bar -->
+<header class="hidden md:flex bg-background/60 backdrop-blur-md text-primary dark:text-primary font-label-caps text-label-caps fixed top-0 right-0 w-[calc(100%-280px)] z-40 border-b border-nebula-stroke justify-between items-center h-20 px-margin-desktop">
+<div class="flex items-center gap-4">
+<h2 class="font-headline-sm text-headline-sm font-bold text-on-surface">Nova Dashboard</h2>
+<div class="relative ml-8">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="bg-surface-container border border-charcoal-gray rounded-full py-2 pl-10 pr-4 text-on-surface focus:outline-none focus:border-surface-tint focus:ring-1 focus:ring-surface-tint/50 transition-all w-64 placeholder-on-surface-variant" placeholder="Search cosmos..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<button class="text-on-surface-variant hover:text-primary transition-colors scale-95 active:scale-90 transition-transform">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors scale-95 active:scale-90 transition-transform">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<img alt="Chief Astronomer" class="w-10 h-10 rounded-full border border-nebula-stroke" data-alt="A small circular avatar image of an astronaut in a modern, sleek space suit against a dark background, indicating the profile of a Chief Astronomer. Modern sci-fi aesthetic, high contrast." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDVkhrBs0Y-2xMmBt0jg-TUk1ngb2XJe_TsmJdOk5IplC5QRzoV3E0KuOdi8EO_ZHcOurQSg43GZtdF6yRWU3kswA6wueHP2Wy7bn70O-jMHeacSUQgp046kO1qj11Y5g99jGP4BtoQlgl7F5DsiHDA_UFsKf9flY9PkK7tF3bMHY-JnB5Mkj7m3wW_GiYJdNRA2fmwuwoDuaV3Y6ZHKwIt-jkwTO3Wfi_JYZsUMZo_mlcavSrXLrbhbl4aVCH1_OvtkOrb897QHCBi"/>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-1 md:ml-72 pt-0 md:pt-20 min-h-screen relative overflow-hidden">
+<!-- Hero Banner -->
+<div class="relative h-64 md:h-80 w-full overflow-hidden" data-alt="A vast, high-resolution cosmic nebula background. Deep purples, rich dark blues, and vibrant magenta dust clouds swirling with countless tiny, brilliant white stars. The scene evokes a sense of deep space exploration and celestial wonder, with a highly polished, modern digital art style. High contrast between the dark void and luminous gas." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuA3usawHFpXKtJjkbsaW-bLQM1hSper2zy-0Q4xtB1ZsPSRfd6r9L8m78cK3CiDg1HolRgFUifS7UomPga-603nCDuSsNKMaQYr7s1VaThlyk1A9txc2367Qw5WZ0yYD8jknAx2qHY-IcDcICr2ji1wJVKeT0U4U-m_Y87aucCYngayOHB6zSUouDfYTFry6HPknalOPEZ9HipUqchRfSrAXlICR1bVnGMyh89N1jEEv5Dc1VjuWIIS4vccpQezJ8KD-ayuE5q8IwxE')">
+<div class="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent"></div>
+</div>
+<!-- Profile Section -->
+<div class="px-margin-mobile md:px-margin-desktop relative z-10 -mt-20 md:-mt-24 max-w-7xl mx-auto">
+<div class="flex flex-col md:flex-row items-center md:items-end gap-6 mb-stack-lg">
+<div class="orbit-border p-1 bg-background rounded-full">
+<img alt="User Profile" class="w-32 h-32 md:w-40 md:h-40 rounded-full object-cover border-2 border-surface-container" data-alt="A large, striking portrait of a professional looking individual, stylized with subtle glowing holographic overlays, set against a dark void background. Corporate modern sci-fi aesthetic, emphasizing authority and discovery. High quality, sharp focus." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC0uRMCZOg3q73BiRi-uSv3k-BdixnYv8519oCVquTVjJthYZgpldlGbmtjAmJcYA11BwiuLMERjQTQifkOKrd-4tift9MgXFsm_ASH-45c9BXW7LXZYr0DtIj5F-Gr63UAmTjGO7jztoFXIEis5D8OkJyKHqLarPMzwokKj26YjNNQZwCKG1RX_PxIs_0A9ttv0HUWawxuHau1WJWppBD90RQtiKBlRNMe1B7cWuEhRMBY04suquUKNOgsFaBeAwX9ht451DalCWr1"/>
+</div>
+<div class="text-center md:text-left flex-1 mb-4 md:mb-0">
+<h1 class="font-display-lg-mobile md:font-display-lg text-on-surface mb-2">Dr. Aris Vance</h1>
+<p class="font-headline-sm text-primary mb-4">Lead Astrodynamics Researcher</p>
+<div class="flex flex-wrap gap-2 justify-center md:justify-start">
+<span class="px-3 py-1 bg-primary-container/40 border border-nebula-stroke rounded-sm font-label-caps text-label-caps text-secondary-fixed">ORBITAL MECHANICS</span>
+<span class="px-3 py-1 bg-primary-container/40 border border-nebula-stroke rounded-sm font-label-caps text-label-caps text-secondary-fixed">DEEP SPACE COMM</span>
+<span class="px-3 py-1 bg-primary-container/40 border border-nebula-stroke rounded-sm font-label-caps text-label-caps text-secondary-fixed">LVL 9 CLEARANCE</span>
+</div>
+</div>
+<div class="flex gap-4 w-full md:w-auto mt-4 md:mt-0">
+<button class="flex-1 md:flex-none px-6 py-2 bg-[#D9D9D6] text-[#07090E] font-label-caps text-label-caps rounded-DEFAULT hover:bg-white transition-colors">CONNECT</button>
+<button class="flex-1 md:flex-none px-6 py-2 border border-[#D9D9D6] text-[#D9D9D6] font-label-caps text-label-caps rounded-DEFAULT hover:bg-white/10 transition-colors">MESSAGE</button>
+</div>
+</div>
+<!-- Bento Grid Content -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter pb-stack-lg">
+<!-- Stats Row (Constellation Theme) -->
+<div class="col-span-1 md:col-span-12 grid grid-cols-1 md:grid-cols-3 gap-gutter relative">
+<!-- Constellation connecting lines (desktop only) -->
+<div class="hidden md:block absolute top-1/2 left-[16%] right-[16%] h-[1px] bg-nebula-stroke z-0"></div>
+<div class="glass-panel p-stack-md rounded-lg relative z-10 flex flex-col items-center justify-center text-center">
+<div class="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center mb-2 shadow-[0_0_15px_rgba(188,198,231,0.2)]">
+<span class="material-symbols-outlined text-primary text-sm">hub</span>
+</div>
+<p class="font-label-caps text-label-caps text-charcoal-gray mb-1">CONNECTIONS</p>
+<p class="font-data-heavy text-data-heavy text-on-background glow-text">1,492</p>
+</div>
+<div class="glass-panel p-stack-md rounded-lg relative z-10 flex flex-col items-center justify-center text-center">
+<div class="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center mb-2 shadow-[0_0_15px_rgba(188,198,231,0.2)]">
+<span class="material-symbols-outlined text-primary text-sm">visibility</span>
+</div>
+<p class="font-label-caps text-label-caps text-charcoal-gray mb-1">PROFILE VIEWS</p>
+<p class="font-data-heavy text-data-heavy text-on-background glow-text">8,045</p>
+</div>
+<div class="glass-panel p-stack-md rounded-lg relative z-10 flex flex-col items-center justify-center text-center">
+<div class="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center mb-2 shadow-[0_0_15px_rgba(188,198,231,0.2)]">
+<span class="material-symbols-outlined text-primary text-sm">rocket_launch</span>
+</div>
+<p class="font-label-caps text-label-caps text-charcoal-gray mb-1">APPLICATIONS</p>
+<p class="font-data-heavy text-data-heavy text-on-background glow-text">34</p>
+</div>
+</div>
+<!-- Main Column -->
+<div class="col-span-1 md:col-span-8 space-y-gutter">
+<!-- Tabs Navigation -->
+<div class="border-b border-nebula-stroke flex gap-8">
+<button class="pb-3 border-b-2 border-primary text-primary font-headline-sm text-headline-sm">About</button>
+<button class="pb-3 border-b-2 border-transparent text-on-surface-variant hover:text-on-surface font-headline-sm text-headline-sm transition-colors">Experience</button>
+<button class="pb-3 border-b-2 border-transparent text-on-surface-variant hover:text-on-surface font-headline-sm text-headline-sm transition-colors">Skills</button>
+</div>
+<!-- About Content -->
+<div class="glass-panel p-stack-lg rounded-lg">
+<h3 class="font-headline-md text-headline-md text-on-surface mb-4">Mission Statement</h3>
+<p class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed mb-6">
+                            Dedicated to charting the uncharted. Specializing in long-range astrodynamic modeling and deep-space telemetry analysis. My research focuses on optimizing orbital trajectories for multi-generational stellar expeditions, ensuring sustainable data pathways across vast cosmic distances.
+                        </p>
+<div class="border-t border-nebula-stroke pt-6">
+<h4 class="font-label-caps text-label-caps text-charcoal-gray mb-4">CURRENT COORDINATES</h4>
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">location_on</span>
+<span class="font-body-md text-on-surface">Sector 4, Outpost Epsilon (Sol System)</span>
+</div>
+</div>
+</div>
+<!-- Experience Overview (Bento Style) -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+<div class="glass-panel p-stack-md rounded-lg">
+<div class="flex items-start justify-between mb-4">
+<div>
+<h4 class="font-headline-sm text-headline-sm text-on-surface">Stellar Cartography</h4>
+<p class="font-body-sm text-body-sm text-primary">Project Lead</p>
+</div>
+<span class="font-label-caps text-label-caps text-charcoal-gray">2154 - JMP</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Mapped anomalous gravity wells in the Perseus Arm using advanced LiDAR arrays.</p>
+</div>
+<div class="glass-panel p-stack-md rounded-lg">
+<div class="flex items-start justify-between mb-4">
+<div>
+<h4 class="font-headline-sm text-headline-sm text-on-surface">Orbital Dynamics</h4>
+<p class="font-body-sm text-body-sm text-primary">Senior Analyst</p>
+</div>
+<span class="font-label-caps text-label-caps text-charcoal-gray">2150 - 2154</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Developed correction algorithms for deep-space probe trajectory drift.</p>
+</div>
+</div>
+</div>
+<!-- Sidebar Column -->
+<div class="col-span-1 md:col-span-4 space-y-gutter">
+<!-- Skills / Celestial Bodies -->
+<div class="glass-panel p-stack-md rounded-lg">
+<h3 class="font-headline-md text-headline-md text-on-surface mb-6 border-b border-nebula-stroke pb-2">Core Proficiencies</h3>
+<div class="space-y-6">
+<!-- Skill 1 -->
+<div>
+<div class="flex justify-between items-center mb-2">
+<span class="font-body-md text-on-surface">Telemetry Analysis</span>
+</div>
+<div class="flex gap-1">
+<span class="material-symbols-outlined text-primary text-sm shadow-[0_0_8px_rgba(188,198,231,0.6)]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-primary text-sm shadow-[0_0_8px_rgba(188,198,231,0.6)]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-primary text-sm shadow-[0_0_8px_rgba(188,198,231,0.6)]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-primary text-sm shadow-[0_0_8px_rgba(188,198,231,0.6)]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-primary text-sm shadow-[0_0_8px_rgba(188,198,231,0.6)]" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+</div>
+<!-- Skill 2 -->
+<div>
+<div class="flex justify-between items-center mb-2">
+<span class="font-body-md text-on-surface">Quantum Comm</span>
+</div>
+<div class="flex gap-1">
+<span class="material-symbols-outlined text-primary text-sm shadow-[0_0_8px_rgba(188,198,231,0.6)]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-primary text-sm shadow-[0_0_8px_rgba(188,198,231,0.6)]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-primary text-sm shadow-[0_0_8px_rgba(188,198,231,0.6)]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-primary text-sm shadow-[0_0_8px_rgba(188,198,231,0.6)]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-charcoal-gray text-sm">star</span>
+</div>
+</div>
+<!-- Skill 3 -->
+<div>
+<div class="flex justify-between items-center mb-2">
+<span class="font-body-md text-on-surface">Astro-Navigation</span>
+</div>
+<div class="flex gap-1">
+<span class="material-symbols-outlined text-primary text-sm shadow-[0_0_8px_rgba(188,198,231,0.6)]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-primary text-sm shadow-[0_0_8px_rgba(188,198,231,0.6)]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-primary text-sm shadow-[0_0_8px_rgba(188,198,231,0.6)]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-charcoal-gray text-sm">star</span>
+<span class="material-symbols-outlined text-charcoal-gray text-sm">star</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Recent Transmissions -->
+<div class="glass-panel p-stack-md rounded-lg">
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-4">Recent Logs</h3>
+<ul class="space-y-4">
+<li class="flex gap-3">
+<span class="material-symbols-outlined text-charcoal-gray text-sm mt-1">description</span>
+<div>
+<p class="font-body-sm text-body-sm text-on-surface">Trajectory Analysis Report v2.4</p>
+<p class="font-label-caps text-label-caps text-primary mt-1">2 DAYS AGO</p>
+</div>
+</li>
+<li class="flex gap-3">
+<span class="material-symbols-outlined text-charcoal-gray text-sm mt-1">satellite</span>
+<div>
+<p class="font-body-sm text-body-sm text-on-surface">Probe Delta-9 Telemetry Sync</p>
+<p class="font-label-caps text-label-caps text-primary mt-1">5 DAYS AGO</p>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

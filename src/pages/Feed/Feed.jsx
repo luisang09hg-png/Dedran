@@ -1,21 +1,14 @@
 import { useState, useEffect, useRef } from 'react';
 import { supabase } from '../../lib/supabase';
-import { 
-  Plus, Heart, MessageSquare, Share2, MoreHorizontal, 
+import {
+  Plus, Heart, MessageSquare, Share2, MoreHorizontal,
   Image, FileText, Code2, Trophy, Briefcase, BookOpen,
   Loader2, Send, X, ChevronDown, Flag, Edit, Trash2,
-  User, Clock, Globe, Link2
+  User, Clock, Globe, Link2, Star, Rocket, Users as UsersIcon
 } from 'lucide-react';
 import CreatePost from '../../components/feed/CreatePost';
 import PostCard from '../../components/feed/PostCard';
-
-const POST_TYPES = [
-  { value: 'post', label: 'Publicación', icon: FileText },
-  { value: 'article', label: 'Artículo', icon: BookOpen },
-  { value: 'project', label: 'Proyecto', icon: Code2 },
-  { value: 'achievement', label: 'Logro', icon: Trophy },
-  { value: 'job', label: 'Oferta de empleo', icon: Briefcase },
-];
+import GlassCard from '../../components/ui/GlassCard';
 
 const Feed = () => {
   const [posts, setPosts] = useState([]);
@@ -23,7 +16,6 @@ const Feed = () => {
   const [loadingMore, setLoadingMore] = useState(false);
   const [creating, setCreating] = useState(false);
   const [showCreatePost, setShowCreatePost] = useState(false);
-  const [selectedType, setSelectedType] = useState('post');
   const [error, setError] = useState(null);
   const [profile, setProfile] = useState(null);
   const pageRef = useRef(0);
@@ -70,7 +62,7 @@ const Feed = () => {
       }
 
       const { data: { user } } = await supabase.auth.getUser();
-      
+
       let query = supabase
         .from('posts')
         .select(`
@@ -107,7 +99,7 @@ const Feed = () => {
       } else {
         setPosts(postsWithLikes);
       }
-      
+
       hasMoreRef.current = (data?.length || 0) === 10;
     } catch (err) {
       setError(err.message);
@@ -124,14 +116,14 @@ const Feed = () => {
       .select('id, full_name, username, avatar_url, headline')
       .eq('id', user.id)
       .single();
-    
-    setPosts(prev => [{ 
-      ...newPost, 
-      author, 
+
+    setPosts(prev => [{
+      ...newPost,
+      author,
       has_liked: false,
       likes_count: 0,
       comments_count: 0,
-      shares_count: 0 
+      shares_count: 0
     }, ...prev]);
     setShowCreatePost(false);
   };
@@ -151,8 +143,8 @@ const Feed = () => {
     const post = posts.find(p => p.id === postId);
     if (!post) return;
 
-    const optimisticPost = { 
-      ...post, 
+    const optimisticPost = {
+      ...post,
       has_liked: !post.has_liked,
       likes_count: post.has_liked ? post.likes_count - 1 : post.likes_count + 1
     };
@@ -178,38 +170,38 @@ const Feed = () => {
     const diffMins = Math.floor(diffMs / 60000);
     const diffHours = Math.floor(diffMs / 3600000);
     const diffDays = Math.floor(diffMs / 86400000);
-    
-    if (diffMins < 1) return 'Ahora mismo';
-    if (diffMins < 60) return `Hace ${diffMins}m`;
-    if (diffHours < 24) return `Hace ${diffHours}h`;
-    if (diffDays < 7) return `Hace ${diffDays}d`;
-    return date.toLocaleDateString('es-ES', { day: 'numeric', month: 'short' });
+
+    if (diffMins < 1) return 'Just now';
+    if (diffMins < 60) return `${diffMins}m ago`;
+    if (diffHours < 24) return `${diffHours}h ago`;
+    if (diffDays < 7) return `${diffDays}d ago`;
+    return date.toLocaleDateString('en-US', { day: 'numeric', month: 'short' });
   };
 
   if (loading) {
     return (
-      <div className="max-w-2xl mx-auto px-margin-mobile md:px-margin-desktop py-8">
+      <div className="max-w-3xl mx-auto">
         <div className="space-y-6" aria-busy="true">
           {[1, 2, 3].map(i => (
-            <div key={i} className="glass-card rounded-2xl p-6 animate-pulse">
+            <div key={i} className="bg-surface-container p-6 rounded-xl animate-pulse border border-nebula-stroke">
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 rounded-full bg-surface-variant" />
+                <div className="w-12 h-12 rounded-full bg-surface-container-highest" />
                 <div className="flex-1">
-                  <div className="h-4 w-3/12 rounded bg-surface-variant" />
-                  <div className="h-3 w-2/12 rounded bg-surface-variant mt-1" />
+                  <div className="h-4 w-3/12 rounded bg-surface-container-highest" />
+                  <div className="h-3 w-2/12 rounded bg-surface-container-highest mt-1" />
                 </div>
               </div>
               <div className="space-y-3">
-                <div className="h-6 w-full rounded bg-surface-variant" />
-                <div className="h-6 w-5/6 rounded bg-surface-variant" />
-                <div className="h-6 w-4/6 rounded bg-surface-variant" />
+                <div className="h-6 w-full rounded bg-surface-container-highest" />
+                <div className="h-6 w-5/6 rounded bg-surface-container-highest" />
+                <div className="h-6 w-4/6 rounded bg-surface-container-highest" />
               </div>
-              <div className="h-32 w-full rounded-xl bg-surface-variant mt-4" />
+              <div className="h-32 w-full rounded-xl bg-surface-container-highest mt-4" />
               <div className="flex items-center justify-between mt-4">
                 <div className="flex gap-6">
-                  <div className="h-5 w-20 rounded bg-surface-variant" />
-                  <div className="h-5 w-24 rounded bg-surface-variant" />
-                  <div className="h-5 w-20 rounded bg-surface-variant" />
+                  <div className="h-5 w-20 rounded bg-surface-container-highest" />
+                  <div className="h-5 w-24 rounded bg-surface-container-highest" />
+                  <div className="h-5 w-20 rounded bg-surface-container-highest" />
                 </div>
               </div>
             </div>
@@ -220,81 +212,88 @@ const Feed = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background text-on-background starry-bg">
-      <div className="max-w-2xl mx-auto px-margin-mobile md:px-margin-desktop py-6 md:py-8">
-        {/* Create Post */}
+    <div className="flex flex-col lg:flex-row gap-stack-lg">
+      {/* Feed Column */}
+      <div className="flex-1 max-w-3xl space-y-gutter">
+        {/* Inline Composer Card */}
         {showCreatePost ? (
           <CreatePost
             onClose={() => setShowCreatePost(false)}
-            onSubmit={handlePostCreated}
-            initialType={selectedType}
+            onPostCreated={handlePostCreated}
             profile={profile}
           />
         ) : (
-          <button
-            onClick={() => setShowCreatePost(true)}
-            className="w-full glass-card rounded-2xl p-4 mb-6 flex items-center gap-3 hover:bg-surface-container-highest/50 transition-colors border border-outline-variant/30"
-          >
-            <div className="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center flex-shrink-0">
-              {profile?.avatar_url ? (
-                <img src={profile.avatar_url} alt="" className="w-full h-full rounded-full object-cover" />
-              ) : (
-                <User size={20} className="text-primary" />
-              )}
+          <GlassCard className="p-stack-md" hover={false}>
+            <div className="flex gap-4">
+              <div className="w-10 h-10 rounded-full overflow-hidden border border-nebula-stroke shrink-0 bg-surface-container">
+                {profile?.avatar_url ? (
+                  <img src={profile.avatar_url} alt="" className="w-full h-full object-cover" />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center">
+                    <User size={18} className="text-primary" />
+                  </div>
+                )}
+              </div>
+              <div className="flex-1">
+                <textarea
+                  readOnly
+                  onClick={() => setShowCreatePost(true)}
+                  placeholder="Transmit your coordinates..."
+                  className="w-full bg-[#07090E] border border-charcoal-gray rounded-lg p-3 min-h-[80px] resize-none font-body-md text-body-md text-on-surface cursor-text focus:border-[#D9D9D6] focus:shadow-[0_0_0_2px_rgba(255,255,255,0.1)] outline-none transition-all placeholder:text-on-surface-variant"
+                  rows={2}
+                />
+              </div>
             </div>
-            <div className="flex-1 text-left">
-              <p className="text-body-md text-on-surface-variant font-body-md">¿Qué quieres compartir?</p>
-              <p className="text-label-sm text-on-surface-variant/70">Escribe una publicación, comparte un proyecto o celebra un logro</p>
-            </div>
-            <Plus size={24} className="text-primary" />
-          </button>
-        )}
-
-        {/* Post Type Selector (when creating) */}
-        {showCreatePost && (
-          <div className="mb-6 flex gap-2 overflow-x-auto pb-2" role="tablist">
-            {POST_TYPES.map((type) => (
+            <div className="flex justify-between items-center mt-4 pt-4 border-t border-nebula-stroke">
+              <div className="flex gap-2 text-on-surface-variant">
+                <button
+                  onClick={() => { setShowCreatePost(true); }}
+                  className="p-2 rounded-full hover:bg-primary-container/40 hover:text-primary transition-colors flex items-center gap-2"
+                >
+                  <Image size={16} />
+                  <span className="font-body-sm text-body-sm hidden sm:inline">Media</span>
+                </button>
+                <button
+                  onClick={() => { setShowCreatePost(true); }}
+                  className="p-2 rounded-full hover:bg-primary-container/40 hover:text-primary transition-colors flex items-center gap-2"
+                >
+                  <Rocket size={16} />
+                  <span className="font-body-sm text-body-sm hidden sm:inline">Log</span>
+                </button>
+              </div>
               <button
-                key={type.value}
-                onClick={() => setSelectedType(type.value)}
-                className={`flex items-center gap-1.5 px-4 py-2 rounded-full font-label-sm text-label-sm whitespace-nowrap transition-all ${
-                  selectedType === type.value
-                    ? 'bg-primary-container text-on-primary-container'
-                    : 'bg-surface-container text-on-surface-variant hover:bg-surface-variant'
-                }`}
-                role="tab"
-                aria-selected={selectedType === type.value}
+                onClick={() => setShowCreatePost(true)}
+                className="bg-[#D9D9D6] text-[#07090E] px-6 py-2 rounded-lg font-bold font-body-sm text-body-sm hover:opacity-90 transition-opacity"
               >
-                <type.icon size={16} />
-                {type.label}
+                Transmit
               </button>
-            ))}
-          </div>
+            </div>
+          </GlassCard>
         )}
 
         {/* Error Banner */}
         {error && (
-          <div className="glass-card rounded-xl p-4 mb-6 border border-error/30 bg-error-container/20 flex items-center justify-between animate-slide-in">
-            <span className="text-on-error-container text-label-md">{error}</span>
+          <GlassCard className="p-4 border border-error/30 bg-error-container/20 flex items-center justify-between">
+            <span className="font-body-sm text-body-sm text-on-error-container">{error}</span>
             <button onClick={() => setError(null)} className="p-1 hover:bg-error/20 rounded">✕</button>
-          </div>
+          </GlassCard>
         )}
 
         {/* Posts Feed */}
-        <div className="space-y-6" role="feed" aria-label="Publicaciones">
+        <div className="space-y-gutter" role="feed">
           {posts.length === 0 ? (
-            <div className="glass-card rounded-2xl p-12 text-center">
+            <GlassCard className="p-12 text-center">
               <FileText className="text-on-surface-variant/50 mx-auto mb-4" size={64} />
-              <h3 className="text-headline-md font-headline-md text-on-surface mb-2">No hay publicaciones aún</h3>
-              <p className="text-body-md text-on-surface-variant mb-6">Sé el primero en compartir algo con la comunidad</p>
+              <h3 className="font-headline-md text-headline-md text-on-surface mb-2">No transmissions yet</h3>
+              <p className="font-body-md text-body-md text-on-surface-variant mb-6">Be the first to share with the cosmos</p>
               <button
                 onClick={() => setShowCreatePost(true)}
-                className="bg-primary-container text-on-primary-container px-6 py-3 rounded-xl font-label-md flex items-center gap-2 mx-auto hover:scale-[0.98] transition-transform"
+                className="bg-primary-container text-on-primary-container px-6 py-3 rounded-lg font-label-caps text-label-caps flex items-center gap-2 mx-auto hover:opacity-90 transition-opacity"
               >
-                <Plus size={18} />
-                Crear primera publicación
+                <Plus size={16} />
+                Create First Post
               </button>
-            </div>
+            </GlassCard>
           ) : (
             posts.map((post) => (
               <PostCard
@@ -309,7 +308,6 @@ const Feed = () => {
             ))
           )}
 
-          {/* Load More Trigger */}
           <div ref={loadMoreRef} className="h-4" aria-hidden="true">
             {loadingMore && (
               <div className="flex justify-center py-4">
@@ -317,13 +315,58 @@ const Feed = () => {
               </div>
             )}
             {hasMoreRef.current === false && posts.length > 0 && (
-              <div className="text-center py-4 text-label-md text-on-surface-variant">
-                No hay más publicaciones
+              <div className="text-center py-4 font-label-caps text-label-caps text-on-surface-variant">
+                No more transmissions
               </div>
             )}
           </div>
         </div>
       </div>
+
+      {/* Right Sidebar — Desktop Only */}
+      <aside className="hidden lg:block w-80 shrink-0 space-y-stack-lg">
+        <GlassCard className="p-stack-md" hover={false}>
+          <h3 className="font-headline-sm text-headline-sm text-on-surface mb-4 pb-2 border-b border-nebula-stroke">Trending Anomalies</h3>
+          <ul className="space-y-3">
+            <li className="group cursor-pointer">
+              <p className="font-body-sm text-body-sm text-on-surface-variant group-hover:text-primary transition-colors">#OrionSpike</p>
+              <p className="font-label-caps text-label-caps text-charcoal-gray">45.2k Logs</p>
+            </li>
+            <li className="group cursor-pointer">
+              <p className="font-body-sm text-body-sm text-on-surface-variant group-hover:text-primary transition-colors">#DarkMatterClusters</p>
+              <p className="font-label-caps text-label-caps text-charcoal-gray">12.8k Logs</p>
+            </li>
+            <li className="group cursor-pointer">
+              <p className="font-body-sm text-body-sm text-on-surface-variant group-hover:text-primary transition-colors">#Sector7Clearance</p>
+              <p className="font-label-caps text-label-caps text-charcoal-gray">8.1k Logs</p>
+            </li>
+          </ul>
+        </GlassCard>
+        <GlassCard className="p-stack-md" hover={false}>
+          <h3 className="font-headline-sm text-headline-sm text-on-surface mb-4 pb-2 border-b border-nebula-stroke">Stellar Connections</h3>
+          <ul className="space-y-4">
+            {[
+              { name: 'Lyra', role: 'Xeno-Biologist' },
+              { name: 'Capt. Jax', role: 'Freighter Cmdr' },
+            ].map((conn) => (
+              <li key={conn.name} className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full overflow-hidden border border-nebula-stroke bg-primary-container/40 flex items-center justify-center">
+                    <UsersIcon size={16} className="text-primary" />
+                  </div>
+                  <div>
+                    <p className="font-body-sm text-body-sm text-on-surface font-semibold">{conn.name}</p>
+                    <p className="font-label-caps text-label-caps text-on-surface-variant">{conn.role}</p>
+                  </div>
+                </div>
+                <button className="text-primary hover:text-[#FFFFFF] transition-colors">
+                  <Plus size={18} />
+                </button>
+              </li>
+            ))}
+          </ul>
+        </GlassCard>
+      </aside>
     </div>
   );
 };

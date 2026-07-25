@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Dedran - Celestial Careers</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=Montserrat:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "nebula-stroke": "rgba(217, 217, 214, 0.15)",
+                        "charcoal-gray": "#53565A",
+                        "on-background": "#e2e2ea",
+                        "inverse-on-surface": "#2e3036",
+                        "on-surface": "#e2e2ea",
+                        "primary": "#bcc6e7",
+                        "tertiary-fixed": "#d8e4f3",
+                        "on-tertiary-fixed-variant": "#3d4854",
+                        "secondary-fixed": "#e3e3df",
+                        "surface-bright": "#37393f",
+                        "on-tertiary-container": "#8893a1",
+                        "outline-variant": "#45464d",
+                        "tertiary": "#bcc8d7",
+                        "error": "#ffb4ab",
+                        "on-secondary-container": "#b8b9b6",
+                        "primary-container": "#202a44",
+                        "on-primary-container": "#8791b0",
+                        "tertiary-fixed-dim": "#bcc8d7",
+                        "inverse-surface": "#e2e2ea",
+                        "outline": "#909098",
+                        "secondary": "#c6c7c4",
+                        "surface-tint": "#bcc6e7",
+                        "surface-container-low": "#191c21",
+                        "surface-container-highest": "#33353b",
+                        "surface-container-high": "#282a30",
+                        "on-tertiary": "#27313d",
+                        "on-secondary-fixed": "#1a1c1a",
+                        "on-tertiary-fixed": "#111d27",
+                        "on-primary": "#26304a",
+                        "on-primary-fixed": "#101b34",
+                        "star-glow": "#FFFFFF",
+                        "on-secondary-fixed-variant": "#464745",
+                        "on-error-container": "#ffdad6",
+                        "surface-dim": "#111319",
+                        "on-primary-fixed-variant": "#3c4662",
+                        "inverse-primary": "#545e7b",
+                        "on-secondary": "#2f312f",
+                        "surface": "#111319",
+                        "on-surface-variant": "#c6c6ce",
+                        "surface-container": "#1d2025",
+                        "surface-container-lowest": "#0c0e13",
+                        "on-error": "#690005",
+                        "background": "#111319",
+                        "primary-fixed": "#dae2ff",
+                        "secondary-container": "#484947",
+                        "error-container": "#93000a",
+                        "tertiary-container": "#212c37",
+                        "surface-variant": "#33353b",
+                        "primary-fixed-dim": "#bcc6e7",
+                        "secondary-fixed-dim": "#c6c7c4"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "stack-sm": "8px",
+                        "stack-lg": "32px",
+                        "margin-mobile": "16px",
+                        "gutter": "24px",
+                        "margin-desktop": "40px",
+                        "stack-md": "16px",
+                        "unit": "4px"
+                    },
+                    "fontFamily": {
+                        "headline-sm": ["Montserrat"],
+                        "body-sm": ["Inter"],
+                        "display-lg-mobile": ["Montserrat"],
+                        "headline-md": ["Montserrat"],
+                        "body-md": ["Inter"],
+                        "data-heavy": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "display-lg": ["Montserrat"]
+                    },
+                    "fontSize": {
+                        "headline-sm": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "display-lg-mobile": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "data-heavy": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "600" }],
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .glass-card {
+            background: rgba(32, 42, 68, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(217, 217, 214, 0.15);
+        }
+        .glowing-border {
+            position: relative;
+        }
+        .glowing-border::before {
+            content: '';
+            position: absolute;
+            inset: -1px;
+            border-radius: inherit;
+            padding: 1px;
+            background: linear-gradient(45deg, rgba(188, 198, 231, 0.3), transparent 60%);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+        .starfield {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+            pointer-events: none;
+        }
+        .star {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            opacity: 0.5;
+            animation: twinkle 3s infinite alternate;
+        }
+        @keyframes twinkle {
+            0% { opacity: 0.2; transform: scale(0.8); }
+            100% { opacity: 0.8; transform: scale(1.2); }
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md antialiased min-h-screen relative">
+<!-- Starfield Background -->
+<div class="starfield" id="starfield"></div>
+<div class="relative z-10">
+<!-- Hero Section -->
+<header class="pt-24 pb-stack-lg px-margin-mobile md:px-margin-desktop md:pt-32 max-w-7xl mx-auto flex flex-col items-center text-center">
+<h1 class="font-display-lg-mobile text-display-lg-mobile md:font-display-lg md:text-display-lg text-on-surface mb-stack-md leading-tight">
+                Launch your career <br class="hidden md:block"/> with <span class="text-primary">Dedran</span>
+</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mb-stack-lg">
+                Navigate the professional cosmos. Discover opportunities, build your trajectory, and connect with systems that propel your growth.
+            </p>
+<div class="flex flex-col sm:flex-row gap-stack-md w-full sm:w-auto">
+<button class="bg-[#D9D9D6] text-[#07090E] px-8 py-3 rounded font-headline-sm text-headline-sm hover:bg-white transition-colors duration-300">
+                    Get Started
+                </button>
+<button class="border border-[#D9D9D6] text-[#D9D9D6] px-8 py-3 rounded font-headline-sm text-headline-sm hover:bg-[#D9D9D6]/10 transition-colors duration-300">
+                    Explore Roles
+                </button>
+</div>
+</header>
+<!-- Stats Section (Bento style) -->
+<section class="py-stack-lg px-margin-mobile md:px-margin-desktop max-w-7xl mx-auto">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<div class="glass-card rounded-xl p-stack-md flex flex-col items-center justify-center min-h-[160px] glowing-border">
+<span class="font-data-heavy text-data-heavy text-[#D9D9D6] mb-unit">12k+</span>
+<span class="font-label-caps text-label-caps text-charcoal-gray uppercase tracking-wider">Open Opportunities</span>
+</div>
+<div class="glass-card rounded-xl p-stack-md flex flex-col items-center justify-center min-h-[160px] glowing-border">
+<span class="font-data-heavy text-data-heavy text-[#D9D9D6] mb-unit">92%</span>
+<span class="font-label-caps text-label-caps text-charcoal-gray uppercase tracking-wider">Land a Role</span>
+</div>
+<div class="glass-card rounded-xl p-stack-md flex flex-col items-center justify-center min-h-[160px] glowing-border">
+<span class="font-data-heavy text-data-heavy text-[#D9D9D6] mb-unit">500+</span>
+<span class="font-label-caps text-label-caps text-charcoal-gray uppercase tracking-wider">Partner Systems</span>
+</div>
+</div>
+</section>
+<!-- How It Works Section -->
+<section class="py-stack-lg px-margin-mobile md:px-margin-desktop max-w-7xl mx-auto mt-stack-lg">
+<h2 class="font-headline-md text-headline-md text-center mb-stack-lg text-on-surface">Trajectory Mapping</h2>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter relative">
+<!-- Connecting Line (Desktop) -->
+<div class="hidden md:block absolute top-1/2 left-[10%] right-[10%] h-[1px] bg-nebula-stroke -translate-y-1/2 z-0"></div>
+<!-- Step 1 -->
+<div class="glass-card rounded-xl p-stack-lg relative z-10 flex flex-col items-center text-center">
+<div class="w-16 h-16 rounded-full bg-surface border border-nebula-stroke flex items-center justify-center mb-stack-md shadow-[0_0_15px_rgba(188,198,231,0.1)]">
+<span class="material-symbols-outlined text-primary text-3xl">account_circle</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-stack-sm">Build Profile</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Calibrate your professional coordinates to attract the right systems.</p>
+</div>
+<!-- Step 2 -->
+<div class="glass-card rounded-xl p-stack-lg relative z-10 flex flex-col items-center text-center">
+<div class="w-16 h-16 rounded-full bg-surface border border-nebula-stroke flex items-center justify-center mb-stack-md shadow-[0_0_15px_rgba(188,198,231,0.1)]">
+<span class="material-symbols-outlined text-primary text-3xl">hub</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-stack-sm">Learn &amp; Connect</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Engage with networks and absorb knowledge from established constellations.</p>
+</div>
+<!-- Step 3 -->
+<div class="glass-card rounded-xl p-stack-lg relative z-10 flex flex-col items-center text-center">
+<div class="w-16 h-16 rounded-full bg-surface border border-nebula-stroke flex items-center justify-center mb-stack-md shadow-[0_0_15px_rgba(188,198,231,0.1)]">
+<span class="material-symbols-outlined text-primary text-3xl">rocket_launch</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-stack-sm">Land the Role</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Dock successfully into your new career trajectory with precision.</p>
+</div>
+</div>
+</section>
+<!-- Testimonials -->
+<section class="py-stack-lg px-margin-mobile md:px-margin-desktop max-w-7xl mx-auto mt-stack-lg mb-stack-lg">
+<h2 class="font-headline-md text-headline-md text-center mb-stack-lg text-on-surface">Signals Received</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+<div class="glass-card rounded-xl p-stack-md glowing-border">
+<div class="flex items-center gap-stack-sm mb-stack-md pb-stack-sm border-b border-nebula-stroke">
+<img alt="User Profile" class="w-12 h-12 rounded-full object-cover border border-nebula-stroke" data-alt="A portrait of a young professional in a modern, dimly lit office environment with subtle blue and white light highlights reflecting off a glass surface. The mood is focused and ambitious, matching a celestial dark mode aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCUR_jTU3DUrUP5oRaOGeBs4nTHwlrxAY9lmjt7Gl-6bLLLa1VcudvtjDpbNFseU5A05mD8zRZKY7gFf3OS-nvEoanjOIsTA9O6jJKjVfCM4Qn6kHsKhEjPLrtfHPI-9TQz5zkl78INh5wI3jgPCGL2RWeOmZ_pLoRN320XPRLed_Sw1dDiNqKmzYKMwX_ftsUz1PMZr_6AwODW7KE0SOYL1MXzTUFCqKxCZGMDAWBeppr_euzkWPXoQ8aSEttH-uixCM7u-z3f6vt2"/>
+<div>
+<p class="font-headline-sm text-headline-sm text-on-surface">Elena R.</p>
+<p class="font-label-caps text-label-caps text-on-surface-variant">Data Analyst</p>
+</div>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant">"Dedran provided the exact navigation I needed. The trajectory mapping tool helped me align my skills with open orbits perfectly."</p>
+</div>
+<div class="glass-card rounded-xl p-stack-md glowing-border">
+<div class="flex items-center gap-stack-sm mb-stack-md pb-stack-sm border-b border-nebula-stroke">
+<img alt="User Profile" class="w-12 h-12 rounded-full object-cover border border-nebula-stroke" data-alt="A portrait of a seasoned developer in a sleek, dark tech workspace. Monitors glow softly in the background with blue tones. The lighting is cinematic and moody, aligning with a high-end corporate modern style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDpY_90l1a6Wj03PIYzzVg0FDOkgpb1KilX8K95NJNMQ2aysCj4Ik5UB8k6JIwt2cAVNip0SQwkAGlExVYrruIIBa5mVH8Zc8tH6sslRZcz0_nuTj5Tmq8NdstEZ_a0Yv5v8dcMwaaOBIL0cQo1CVgywPqjyLO-h_-qjQCbHlUPrTUw5bTR7Gme5eVyf2FyEKLd3k6YAYZwppF4VJnMigL8EolOjdGd4vgsAqhGIrTYiZ7eBQQM-825CrwTePAkMn_bZBcrXgAIrwEA"/>
+<div>
+<p class="font-headline-sm text-headline-sm text-on-surface">Marcus T.</p>
+<p class="font-label-caps text-label-caps text-on-surface-variant">Systems Engineer</p>
+</div>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant">"The constellation metaphor isn't just aesthetic; it actually helped me visualize how my previous experiences connected to land this senior role."</p>
+</div>
+</div>
+</section>
+<footer class="border-t border-nebula-stroke py-stack-md px-margin-mobile text-center">
+<p class="font-label-caps text-label-caps text-charcoal-gray">© 2024 Dedran Systems. Navigating Careers.</p>
+</footer>
+</div>
+<script>
+        // Simple starfield generation
+        const starfield = document.getElementById('starfield');
+        const numStars = 100;
+
+        for (let i = 0; i < numStars; i++) {
+            const star = document.createElement('div');
+            star.classList.add('star');
+            
+            // Randomize position
+            const xy = [Math.random() * 100, Math.random() * 100];
+            star.style.left = xy[0] + '%';
+            star.style.top = xy[1] + '%';
+            
+            // Randomize size between 1px and 3px
+            const size = Math.random() * 2 + 1;
+            star.style.width = size + 'px';
+            star.style.height = size + 'px';
+            
+            // Randomize animation delay
+            star.style.animationDelay = (Math.random() * 3) + 's';
+            
+            starfield.appendChild(star);
+        }
+    </script>
+</body></html>

@@ -236,9 +236,9 @@ const Messages = () => {
     const date = new Date(dateStr);
     const now = new Date();
     const diffHours = (now - date) / (1000 * 60 * 60);
-    if (diffHours < 24) return date.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
-    if (diffHours < 168) return date.toLocaleDateString('es-ES', { weekday: 'short' });
-    return date.toLocaleDateString('es-ES', { day: 'numeric', month: 'short' });
+    if (diffHours < 24) return date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+    if (diffHours < 168) return date.toLocaleDateString('en-US', { weekday: 'short' });
+    return date.toLocaleDateString('en-US', { day: 'numeric', month: 'short' });
   };
 
   const getOtherUser = (conversation) => {
@@ -254,7 +254,7 @@ const Messages = () => {
     }
     return {
       id: conversation.id,
-      full_name: conversation.name || 'Grupo',
+      full_name: conversation.name || 'Group',
       username: '',
       avatar_url: conversation.avatar_url,
     };
@@ -270,7 +270,7 @@ const Messages = () => {
 
   if (loading) {
     return (
-      <div className="h-screen bg-background text-on-background flex starry-bg">
+      <div className="h-screen bg-background text-on-background flex overflow-hidden">
         <div className="flex-1 flex items-center justify-center">
           <Loader2 className="w-8 h-8 text-primary animate-spin" />
         </div>
@@ -284,14 +284,14 @@ const Messages = () => {
     chatContent = (
       <div className="flex-1 flex flex-col items-center justify-center p-8 text-center">
         <MessageSquare className="w-24 h-24 text-on-surface-variant/20 mb-6" />
-        <h2 className="text-headline-lg font-headline-lg text-on-surface mb-2">Selecciona una conversación</h2>
-        <p className="text-body-md text-on-surface-variant mb-6">O empieza una nueva</p>
+        <h2 className="font-headline-md text-headline-md text-on-surface mb-2">Select a conversation</h2>
+        <p className="font-body-md text-body-md text-on-surface-variant mb-6">Or start a new one</p>
         <button
           onClick={() => setShowNewChat(true)}
-          className="bg-primary-container text-on-primary-container px-6 py-3 rounded-xl font-label-md flex items-center gap-2 hover:scale-[0.98] transition-transform"
+          className="bg-primary-container text-on-primary-container px-6 py-3 rounded-lg font-label-caps text-label-caps flex items-center gap-2 hover:opacity-90 transition-opacity"
         >
-          <Plus size={18} />
-          Nuevo mensaje
+          <Plus size={16} />
+          New Message
         </button>
       </div>
     );
@@ -299,22 +299,22 @@ const Messages = () => {
     chatContent = (
       <div className="flex flex-col h-full max-w-4xl mx-auto w-full">
         {/* Chat Header */}
-        <div className="flex items-center justify-between p-4 border-b border-outline-variant/30 bg-surface">
+        <div className="flex items-center justify-between p-4 border-b border-nebula-stroke bg-surface-container">
           <button
             onClick={() => setActiveConversation(null)}
-            className="md:hidden p-2 rounded-xl hover:bg-surface-variant text-on-surface-variant"
-            aria-label="Volver"
+            className="md:hidden p-2 rounded hover:bg-primary-container/40 text-on-surface-variant"
+            aria-label="Back"
           >
             <ArrowLeft size={24} />
           </button>
           <div className="flex items-center gap-3 flex-1">
             <div className="relative">
-              <div className="w-10 h-10 rounded-full overflow-hidden bg-surface-container border border-outline-variant/30">
+              <div className="w-10 h-10 rounded-full overflow-hidden bg-primary-container/40 border border-nebula-stroke">
                 {getOtherUser(activeConversation).avatar_url ? (
                   <img src={getOtherUser(activeConversation).avatar_url} alt="" className="w-full h-full object-cover" />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center">
-                    <span className="text-headline-sm font-bold text-primary">
+                    <span className="font-headline-sm font-bold text-primary">
                       {getOtherUser(activeConversation).full_name?.[0]?.toUpperCase() || '?'}
                     </span>
                   </div>
@@ -322,17 +322,17 @@ const Messages = () => {
               </div>
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-body-md font-semibold text-on-surface truncate">
+              <p className="font-body-md font-semibold text-on-surface truncate">
                 {getOtherUser(activeConversation).full_name || getOtherUser(activeConversation).username}
               </p>
               {getOtherUser(activeConversation).headline && (
-                <p className="text-label-sm text-on-surface-variant truncate">
+                <p className="font-label-caps text-label-caps text-on-surface-variant truncate">
                   {getOtherUser(activeConversation).headline}
                 </p>
               )}
             </div>
           </div>
-          <button className="p-2 rounded-xl hover:bg-surface-variant text-on-surface-variant" aria-label="Más opciones">
+          <button className="p-2 rounded hover:bg-primary-container/40 text-on-surface-variant" aria-label="More options">
             <MoreVertical size={24} />
           </button>
         </div>
@@ -352,8 +352,8 @@ const Messages = () => {
           ) : messages.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full text-center p-8">
               <MessageSquare className="w-16 h-16 text-on-surface-variant/30 mb-4" />
-              <p className="text-body-md text-on-surface-variant">No hay mensajes aún</p>
-              <p className="text-label-sm text-on-surface-variant/70 mt-1">Envía el primer mensaje</p>
+              <p className="font-body-md text-body-md text-on-surface-variant">No messages yet</p>
+              <p className="font-label-caps text-label-caps text-on-surface-variant/70 mt-1">Send the first message</p>
             </div>
           ) : (
             <>
@@ -372,12 +372,12 @@ const Messages = () => {
                   >
                     {!isOwn && showAvatar && (
                       <div className="flex-shrink-0">
-                        <div className="w-8 h-8 rounded-full overflow-hidden bg-surface-container">
+                        <div className="w-8 h-8 rounded-full overflow-hidden bg-primary-container/40">
                           {msg.sender?.avatar_url ? (
                             <img src={msg.sender.avatar_url} alt="" className="w-full h-full object-cover" />
                           ) : (
                             <div className="w-full h-full flex items-center justify-center">
-                              <span className="text-label-md font-bold text-primary">
+                              <span className="font-label-caps font-bold text-primary">
                                 {msg.sender?.full_name?.[0]?.toUpperCase() || msg.sender?.username?.[0]?.toUpperCase() || '?'}
                               </span>
                             </div>
@@ -389,24 +389,24 @@ const Messages = () => {
                     
                     <div className={`flex-1 max-w-[70%] ${isOwn ? 'items-end' : 'items-start'} flex flex-col`}>
                       {!isOwn && idx === 0 && (
-                        <p className="text-label-sm text-on-surface-variant/70 mb-1 ml-1">
+                        <p className="font-label-caps text-label-caps text-on-surface-variant/70 mb-1 ml-1">
                           {msg.sender?.full_name || msg.sender?.username}
                         </p>
                       )}
                       <div className={`relative px-4 py-2 rounded-2xl ${
                         isOwn 
                           ? 'bg-primary-container text-on-primary-container rounded-tr-sm' 
-                          : 'bg-surface-container text-on-surface rounded-tl-sm'
+                          : 'bg-surface-container text-on-surface rounded-tl-sm border border-nebula-stroke'
                       }`}>
-                        <p className="text-body-md whitespace-pre-wrap">{msg.content}</p>
+                        <p className="font-body-md text-body-md whitespace-pre-wrap">{msg.content}</p>
                       </div>
                       <div className={`flex items-center gap-1 mt-1 ${isOwn ? 'justify-end' : 'justify-start'} ml-1 mr-1`}>
-                        <span className="text-[10px] text-on-surface-variant/50">
+                        <span className="font-label-caps text-label-caps text-on-surface-variant/50">
                           {formatTime(msg.created_at)}
                         </span>
                         {isOwn && (
-                          <span className="text-[10px] text-on-primary-container/70">
-                            {msg.deleted_at ? 'Eliminado' : '✓✓'}
+                          <span className="font-label-caps text-label-caps text-on-primary-container/70">
+                            {msg.deleted_at ? 'Deleted' : '✓✓'}
                           </span>
                         )}
                       </div>
@@ -422,12 +422,12 @@ const Messages = () => {
         </div>
 
         {/* Message Input */}
-        <div className="p-4 border-t border-outline-variant/30 bg-surface">
+        <div className="p-4 border-t border-nebula-stroke bg-surface-container">
           <form onSubmit={handleSendMessage} className="flex items-end gap-2">
             <button
               type="button"
-              className="p-2 rounded-xl hover:bg-surface-variant text-on-surface-variant flex-shrink-0"
-              aria-label="Adjuntar archivo"
+              className="p-2 rounded hover:bg-primary-container/40 text-on-surface-variant flex-shrink-0"
+              aria-label="Attach file"
             >
               <Paperclip size={22} />
             </button>
@@ -435,17 +435,17 @@ const Messages = () => {
               <textarea
                 value={newMessage}
                 onChange={(e) => setNewMessage(e.target.value)}
-                placeholder="Escribe un mensaje..."
+                placeholder="Type a message..."
                 rows={1}
-                className="w-full bg-surface-container border border-outline-variant rounded-2xl px-4 py-3 text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none resize-none max-h-32"
+                className="w-full bg-[#07090E] border border-charcoal-gray rounded-lg px-4 py-3 text-on-surface focus:border-[#D9D9D6] focus:shadow-[0_0_0_2px_rgba(255,255,255,0.1)] outline-none resize-none max-h-32 transition-all placeholder:text-on-surface-variant"
                 style={{ minHeight: '48px' }}
               />
             </div>
             <button
               type="submit"
               disabled={!newMessage.trim() || sending}
-              className="p-2.5 rounded-xl bg-primary-container text-on-primary-container hover:scale-[0.95] transition-transform disabled:opacity-50 disabled:cursor-not-allowed flex-shrink-0"
-              aria-label="Enviar mensaje"
+              className="p-2.5 rounded bg-primary-container text-on-primary-container hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed flex-shrink-0"
+              aria-label="Send message"
             >
               {sending ? (
                 <Loader2 size={20} className="animate-spin" />
@@ -460,15 +460,15 @@ const Messages = () => {
   }
 
   return (
-    <div className="h-screen bg-background text-on-background flex starry-bg overflow-hidden">
+    <div className="h-screen bg-background text-on-background flex overflow-hidden">
       {/* Conversations List - Mobile Drawer */}
-      <aside className="fixed inset-y-0 left-0 z-40 w-80 md:relative md:translate-x-0 transform -translate-x-full md:transform-none transition-transform duration-300 ease-in-out bg-surface border-r border-outline-variant flex flex-col">
-        <div className="flex items-center justify-between p-4 border-b border-outline-variant/30">
-          <h2 className="text-headline-md font-headline-md text-on-surface">Mensajes</h2>
+      <aside className="fixed inset-y-0 left-0 z-40 w-80 md:relative md:translate-x-0 transform -translate-x-full md:transform-none transition-transform duration-300 ease-in-out bg-surface-container border-r border-nebula-stroke flex flex-col">
+        <div className="flex items-center justify-between p-4 border-b border-nebula-stroke">
+          <h2 className="font-headline-md text-headline-md text-on-surface">Messages</h2>
           <button
             onClick={() => setShowNewChat(true)}
-            className="md:hidden p-2 rounded-xl hover:bg-surface-variant text-on-surface-variant"
-            aria-label="Nuevo chat"
+            className="md:hidden p-2 rounded hover:bg-primary-container/40 text-on-surface-variant"
+            aria-label="New chat"
           >
             <Plus size={24} />
           </button>
@@ -482,8 +482,8 @@ const Messages = () => {
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Buscar conversaciones..."
-              className="w-full bg-surface-container border border-outline-variant rounded-xl px-12 py-3 text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none"
+              placeholder="Search conversations..."
+              className="w-full bg-[#07090E] border border-charcoal-gray rounded-lg pl-12 pr-4 py-3 text-on-surface focus:border-[#D9D9D6] focus:shadow-[0_0_0_2px_rgba(255,255,255,0.1)] outline-none transition-all font-body-sm text-body-sm placeholder:text-on-surface-variant"
             />
           </div>
         </div>
@@ -493,18 +493,18 @@ const Messages = () => {
           {filteredConversations.length === 0 ? (
             <div className="p-8 text-center">
               <MessageSquare className="w-16 h-16 text-on-surface-variant/30 mx-auto mb-4" />
-              <p className="text-body-md text-on-surface-variant mb-2">No hay conversaciones</p>
-              <p className="text-label-sm text-on-surface-variant/70">Empieza a chatear con alguien</p>
+              <p className="font-body-md text-body-md text-on-surface-variant mb-2">No conversations yet</p>
+              <p className="font-label-caps text-label-caps text-on-surface-variant/70">Start chatting with someone</p>
               <button
                 onClick={() => setShowNewChat(true)}
-                className="mt-4 bg-primary-container text-on-primary-container px-6 py-3 rounded-xl font-label-md flex items-center gap-2 mx-auto hover:scale-[0.98] transition-transform"
+                className="mt-4 bg-primary-container text-on-primary-container px-6 py-3 rounded-lg font-label-caps text-label-caps flex items-center gap-2 mx-auto hover:opacity-90 transition-opacity"
               >
-                <Plus size={18} />
-                Nuevo chat
+                <Plus size={16} />
+                New Chat
               </button>
             </div>
           ) : (
-            <div className="divide-y divide-outline-variant/30">
+            <div className="divide-y divide-nebula-stroke">
               {filteredConversations.map(conv => {
                 const other = getOtherUser(conv);
                 const isActive = activeConversation?.id === conv.id;
@@ -515,16 +515,16 @@ const Messages = () => {
                     className={`w-full p-4 flex items-center gap-3 transition-colors ${
                       isActive 
                         ? 'bg-primary-container/30 ring-1 ring-primary/20' 
-                        : 'hover:bg-surface-variant/50'
+                        : 'hover:bg-primary-container/20'
                     }`}
                   >
                     <div className="relative flex-shrink-0">
-                      <div className="w-12 h-12 rounded-full overflow-hidden bg-surface-container border border-outline-variant/30">
+                      <div className="w-12 h-12 rounded-full overflow-hidden bg-primary-container/40 border border-nebula-stroke">
                         {other.avatar_url ? (
                           <img src={other.avatar_url} alt="" className="w-full h-full object-cover" />
                         ) : (
                           <div className="w-full h-full flex items-center justify-center">
-                            <span className="text-headline-sm font-bold text-primary">
+                            <span className="font-headline-sm font-bold text-primary">
                               {other.full_name?.[0]?.toUpperCase() || other.username?.[0]?.toUpperCase() || '?'}
                             </span>
                           </div>
@@ -538,16 +538,16 @@ const Messages = () => {
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center justify-between gap-2">
-                        <p className={`text-body-md font-semibold truncate ${isActive ? 'text-primary' : 'text-on-surface'}`}>
-                          {other.full_name || other.username || 'Usuario'}
+                        <p className={`font-body-md font-semibold truncate ${isActive ? 'text-primary' : 'text-on-surface'}`}>
+                          {other.full_name || other.username || 'User'}
                         </p>
-                        <p className="text-label-sm text-on-surface-variant/70 whitespace-nowrap">
+                        <p className="font-label-caps text-label-caps text-on-surface-variant/70 whitespace-nowrap">
                           {formatTime(conv.updated_at)}
                         </p>
                       </div>
                       <div className="flex items-center justify-between gap-2 mt-1">
-                        <p className={`text-body-sm truncate ${isActive ? 'text-on-surface' : 'text-on-surface-variant'}`}>
-                          {conv.last_message || 'Sin mensajes'}
+                        <p className={`font-body-sm text-body-sm truncate ${isActive ? 'text-on-surface' : 'text-on-surface-variant'}`}>
+                          {conv.last_message || 'No messages'}
                         </p>
                       </div>
                     </div>
@@ -559,13 +559,13 @@ const Messages = () => {
         </div>
 
         {/* New Chat Button (Desktop) */}
-        <div className="p-4 border-t border-outline-variant/30 hidden md:block">
+        <div className="p-4 border-t border-nebula-stroke hidden md:block">
           <button
             onClick={() => setShowNewChat(true)}
-            className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-primary-container text-on-primary-container font-label-md hover:scale-[0.98] transition-transform"
+            className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-primary-container text-on-primary-container font-label-caps text-label-caps hover:opacity-90 transition-opacity"
           >
-            <Plus size={18} />
-            Nuevo mensaje
+            <Plus size={16} />
+            New Message
           </button>
         </div>
       </aside>
@@ -574,7 +574,7 @@ const Messages = () => {
       <button
         onClick={() => setActiveConversation(null)}
         className="md:hidden fixed inset-0 z-30 bg-background/50"
-        aria-label="Cerrar lista"
+        aria-label="Close list"
       />
 
       {/* Chat Area */}
@@ -585,26 +585,26 @@ const Messages = () => {
 
       {/* New Chat Modal */}
       {showNewChat && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/80 backdrop-blur-sm starry-bg">
-          <div className="w-full max-w-md bg-surface-container rounded-3xl shadow-2xl border border-outline-variant/30 overflow-hidden animate-slide-up">
-            <div className="flex items-center justify-between p-4 border-b border-outline-variant/30">
-              <h3 className="text-headline-md font-headline-md text-on-surface">Nuevo mensaje</h3>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/80 backdrop-blur-sm">
+          <div className="w-full max-w-md bg-surface-container rounded-xl shadow-2xl border border-nebula-stroke overflow-hidden">
+            <div className="flex items-center justify-between p-4 border-b border-nebula-stroke">
+              <h3 className="font-headline-md text-headline-md text-on-surface">New Message</h3>
               <button
                 onClick={() => { setShowNewChat(false); setSearchQuery(''); setUsers([]); }}
-                className="p-2 rounded-xl hover:bg-surface-variant text-on-surface-variant"
+                className="p-2 rounded hover:bg-primary-container/40 text-on-surface-variant"
               >
                 <X size={24} />
               </button>
             </div>
-            <div className="p-4 border-b border-outline-variant/30">
+            <div className="p-4 border-b border-nebula-stroke">
               <div className="relative">
                 <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-on-surface-variant/50" />
                 <input
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Buscar usuarios..."
-                  className="w-full bg-surface-container border border-outline-variant rounded-xl px-12 py-3 text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none"
+                  placeholder="Search users..."
+                  className="w-full bg-[#07090E] border border-charcoal-gray rounded-lg pl-12 pr-4 py-3 text-on-surface focus:border-[#D9D9D6] focus:shadow-[0_0_0_2px_rgba(255,255,255,0.1)] outline-none transition-all font-body-sm text-body-sm placeholder:text-on-surface-variant"
                   autoFocus
                 />
               </div>
@@ -617,37 +617,37 @@ const Messages = () => {
               ) : users.length === 0 ? (
                 <div className="p-8 text-center">
                   <User className="w-16 h-16 text-on-surface-variant/30 mx-auto mb-4" />
-                  <p className="text-body-md text-on-surface-variant">No se encontraron usuarios</p>
-                  <p className="text-label-sm text-on-surface-variant/70 mt-1">Busca por nombre o usuario</p>
+                  <p className="font-body-md text-body-md text-on-surface-variant">No users found</p>
+                  <p className="font-label-caps text-label-caps text-on-surface-variant/70 mt-1">Search by name or username</p>
                 </div>
               ) : (
-                <div className="divide-y divide-outline-variant/30">
+                <div className="divide-y divide-nebula-stroke">
                   {users.map(user => (
                     <button
                       key={user.id}
                       onClick={() => handleStartNewChat(user.id)}
-                      className="w-full p-3 flex items-center gap-3 hover:bg-surface-variant transition-colors text-left"
+                      className="w-full p-3 flex items-center gap-3 hover:bg-primary-container/20 transition-colors text-left"
                     >
-                      <div className="w-10 h-10 rounded-full overflow-hidden bg-surface-container border border-outline-variant/30 flex-shrink-0">
+                      <div className="w-10 h-10 rounded-full overflow-hidden bg-primary-container/40 border border-nebula-stroke flex-shrink-0">
                         {user.avatar_url ? (
                           <img src={user.avatar_url} alt="" className="w-full h-full object-cover" />
                         ) : (
                           <div className="w-full h-full flex items-center justify-center">
-                            <span className="text-label-lg font-bold text-primary">
+                            <span className="font-label-caps font-bold text-primary">
                               {user.full_name?.[0]?.toUpperCase() || user.username?.[0]?.toUpperCase() || '?'}
                             </span>
                           </div>
                         )}
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="text-body-md font-semibold text-on-surface truncate">
+                        <p className="font-body-md font-semibold text-on-surface truncate">
                           {user.full_name || user.username}
                         </p>
-                        <p className="text-label-sm text-on-surface-variant truncate">
+                        <p className="font-label-caps text-label-caps text-on-surface-variant truncate">
                           @{user.username}
                         </p>
                         {user.headline && (
-                          <p className="text-[11px] text-on-surface-variant/70 truncate mt-0.5">
+                          <p className="font-label-caps text-label-caps text-on-surface-variant/70 truncate mt-0.5">
                             {user.headline}
                           </p>
                         )}
@@ -663,9 +663,9 @@ const Messages = () => {
       )}
 
       {error && (
-        <div className="fixed bottom-4 right-4 z-50 glass-card rounded-xl p-4 border border-error/30 bg-error-container/20 animate-slide-in">
+        <div className="fixed bottom-4 right-4 z-50 bg-surface-container border border-nebula-stroke rounded-lg p-4 shadow-lg">
           <div className="flex items-center gap-2">
-            <span className="text-on-error-container text-label-md">{error}</span>
+            <span className="font-body-sm text-body-sm text-on-error-container">{error}</span>
             <button onClick={() => setError(null)} className="p-1 hover:bg-error/20 rounded">✕</button>
           </div>
         </div>
