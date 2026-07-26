@@ -1,5 +1,5 @@
 import React from 'react'
-import { GlassCard } from '../../components/ui/GlassCard'
+import GlassCard from '../../components/ui/GlassCard' 
 import { CreatePost as CreatePostComponent } from '../../components/posts/CreatePost'
 import { usePosts } from '../../hooks/usePosts'
 

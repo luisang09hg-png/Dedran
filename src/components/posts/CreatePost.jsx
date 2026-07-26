@@ -2,9 +2,9 @@ import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { GlassCard } from '../components/ui/GlassCard'
-import { useUIStore } from '../hooks/useUIStore'
-import { useCreatePost } from '../hooks/usePosts'
+import GlassCard from '../ui/GlassCard';
+import { useUIStore } from '../../stores/useUIStore'
+import { useCreatePost } from "../../hooks/usePosts";
 
 const createPostSchema = z.object({
   content: z
@@ -13,22 +13,25 @@ const createPostSchema = z.object({
     .max(500, 'Post content cannot exceed 500 characters'),
 })
 
-
 export const CreatePost = () => {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const { addToast } = useUIStore()
   const createPostMutation = useCreatePost()
 
+  // Se remueve <CreatePostFormData>
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors, isValid },
-    setValue,
     watch,
-  } = useForm<CreatePostFormData>({ resolver: zodResolver(createPostSchema), mode: 'onChange', })
+  } = useForm({ 
+    resolver: zodResolver(createPostSchema), 
+    mode: 'onChange', 
+  })
 
-  const handleCreatePost = async (data: CreatePostFormData) => {
+  // Se remueve la anotación de tipo `: CreatePostFormData`
+  const handleCreatePost = async (data) => {
     setIsSubmitting(true)
 
     try {
@@ -60,7 +63,9 @@ export const CreatePost = () => {
           />
 
           <div className='mt-4 flex items-center justify-between'>
-            <div className='text-sm text-muted-foreground'>{500 - watchContent.length} characters remaining</div>
+            <div className='text-sm text-muted-foreground'>
+              {500 - watchContent.length} characters remaining
+            </div>
 
             <button
               type='submit'

@@ -62,9 +62,10 @@ export const useUIStore = create<UIState & {
   setError: (error: Error | null) => void;
   clearError: () => void;
 
-  // Theme
+// Theme
   setTheme: (theme: UIState['theme']) => void;
-  toggleTheme: () => void;\n}>(devtools((set) => ({
+  toggleTheme: () => void;
+}>(devtools((set, get) => ({
   ...initialState,
 
   // Toast methods
@@ -108,8 +109,8 @@ export const useUIStore = create<UIState & {
     }));
   },
 
-  isModalOpen: (modal) => {
-    return !!state.modals[modal];
+isModalOpen: (modal) => {
+    return !!get().modals[modal];
   },
 
   // Loading methods

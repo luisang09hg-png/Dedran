@@ -3,7 +3,7 @@ import Sidebar from './components/layout/Sidebar';
 import Login from './pages/Auth/Login';
 import Register from './pages/Auth/Register';
 import Landing from './pages/Landing/Landing';
-import Feed from './pages/Feed/Feed';
+import { Feed } from './pages/Feed/Feed';
 import Profile from './pages/Profile/Profile';
 import Applications from './pages/Applications/Applications';
 import Settings from './pages/Settings/Settings';
