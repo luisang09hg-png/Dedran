@@ -1,4 +1,4 @@
-import { LucideIcon } from 'lucide-react';
+import { FolderOpen } from 'lucide-react';
 
 const EmptyState = ({
   icon: Icon,
