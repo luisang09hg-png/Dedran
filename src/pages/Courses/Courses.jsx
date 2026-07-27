@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react';
+import { useAuth } from '../../hooks/useAuth';
+import { useUserCourses, useEnrollCourse, useUpdateCourseProgress } from '../../hooks/useCourses';
 import { Search, Star, Clock, Users } from 'lucide-react';
 import GlassCard from '../../components/ui/GlassCard';
 import Button from '../../components/ui/Button';
+import EventHorizon from '../../components/ui/EventHorizon';
 import { courses } from '../../data/courses';
-import { storage } from '../../lib/localStorage';
 
 const CATEGORIES = ['All', 'Design', 'Tech', 'Business', 'Communication'];
-const ENR_KEY = 'enrollments';
 
 const levelStyles = {
   Beginner: 'bg-tertiary/10 text-tertiary',
@@ -15,27 +16,31 @@ const levelStyles = {
 };
 
 const Courses = () => {
+  const { user } = useAuth();
+  const profileId = user?.id;
+  const { data: userCourses, isLoading: coursesLoading } = useUserCourses(profileId);
+  const enrollMutation = useEnrollCourse();
+  const progressMutation = useUpdateCourseProgress();
   const [activeCategory, setActiveCategory] = useState('All');
   const [search, setSearch] = useState('');
-  const [enrollments, setEnrollments] = useState({});
 
-  useEffect(() => {
-    setEnrollments(storage.get(ENR_KEY) || {});
-  }, []);
+  const enrollments = {};
+  if (userCourses) {
+    userCourses.forEach((uc) => {
+      enrollments[uc.course_id] = { enrolled: true, progress: uc.progress, status: uc.status };
+    });
+  }
 
-  const saveEnrollments = (updated) => {
-    setEnrollments(updated);
-    storage.set(ENR_KEY, updated);
-  };
-
-  const handleEnrol = (courseId) => {
-    saveEnrollments({ ...enrollments, [courseId]: { enrolled: true, progress: 0 } });
+  const handleEnroll = (courseId) => {
+    if (!profileId) return;
+    enrollMutation.mutate({ profileId, courseId });
   };
 
   const handleContinue = (courseId) => {
+    if (!profileId) return;
     const current = enrollments[courseId] || { enrolled: true, progress: 0 };
     const newProgress = Math.min((current.progress || 0) + 10, 100);
-    saveEnrollments({ ...enrollments, [courseId]: { enrolled: true, progress: newProgress } });
+    progressMutation.mutate({ profileId, courseId, progress: newProgress });
   };
 
   const filtered = courses.filter((c) => {
@@ -43,6 +48,14 @@ const Courses = () => {
     const matchSearch = !search || c.title.toLowerCase().includes(search.toLowerCase()) || c.author.toLowerCase().includes(search.toLowerCase());
     return matchCategory && matchSearch;
   });
+
+  if (coursesLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <EventHorizon variant="spinner" size={48} />
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -86,7 +99,7 @@ const Courses = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-gutter">
           {filtered.map((c) => {
             const enr = enrollments[c.id];
-            const progress = enr?.progress ?? c.progress;
+            const progress = enr?.progress ?? 0;
             const isEnrolled = enr?.enrolled ?? false;
 
             return (
@@ -144,7 +157,7 @@ const Courses = () => {
                         Continue
                       </Button>
                     ) : (
-                      <Button variant="secondary" size="sm" className="w-full justify-center" onClick={() => handleEnrol(c.id)}>
+                      <Button variant="secondary" size="sm" className="w-full justify-center" onClick={() => handleEnroll(c.id)}>
                         Enrol
                       </Button>
                     )}

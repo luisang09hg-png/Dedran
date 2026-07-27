@@ -170,9 +170,9 @@ const Settings = () => {
         <div className="space-y-4">
           <div>
             <label className="font-label-caps text-label-caps text-on-surface-variant block mb-2">Email</label>
-            <div className="w-full bg-[#07090E] border border-charcoal-gray rounded-lg px-4 py-3 text-on-surface font-body-md text-body-md">
-              {email}
-            </div>
+              <div className="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-4 py-3 text-on-surface font-body-md text-body-md">
+                {email}
+              </div>
             <p className="font-label-caps text-label-caps text-on-surface-variant mt-2">Contact support to change your email address.</p>
           </div>
         </div>
@@ -205,7 +205,7 @@ const Settings = () => {
                 type={showCurrentPassword ? 'text' : 'password'}
                 value={currentPassword}
                 onChange={(e) => setCurrentPassword(e.target.value)}
-                className="w-full bg-[#07090E] border border-charcoal-gray rounded-lg px-4 py-3 pr-10 text-on-surface focus:border-[#D9D9D6] focus:shadow-[0_0_0_2px_rgba(255,255,255,0.1)] outline-none transition-all font-body-md text-body-md placeholder:text-on-surface-variant"
+                className="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-4 py-3 pr-10 text-on-surface focus:border-primary focus:shadow-[0_0_0_2px_rgba(188,198,231,0.15)] outline-none transition-all font-body-md text-body-md placeholder:text-on-surface-variant"
                 placeholder="Enter current password"
                 required
               />
@@ -226,7 +226,7 @@ const Settings = () => {
                 type={showNewPassword ? 'text' : 'password'}
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
-                className="w-full bg-[#07090E] border border-charcoal-gray rounded-lg px-4 py-3 pr-10 text-on-surface focus:border-[#D9D9D6] focus:shadow-[0_0_0_2px_rgba(255,255,255,0.1)] outline-none transition-all font-body-md text-body-md placeholder:text-on-surface-variant"
+                className="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-4 py-3 pr-10 text-on-surface focus:border-primary focus:shadow-[0_0_0_2px_rgba(188,198,231,0.15)] outline-none transition-all font-body-md text-body-md placeholder:text-on-surface-variant"
                 placeholder="Enter new password"
                 required
               />
@@ -246,7 +246,7 @@ const Settings = () => {
               type="password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
-              className="w-full bg-[#07090E] border border-charcoal-gray rounded-lg px-4 py-3 text-on-surface focus:border-[#D9D9D6] focus:shadow-[0_0_0_2px_rgba(255,255,255,0.1)] outline-none transition-all font-body-md text-body-md placeholder:text-on-surface-variant"
+              className="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-4 py-3 text-on-surface focus:border-primary focus:shadow-[0_0_0_2px_rgba(188,198,231,0.15)] outline-none transition-all font-body-md text-body-md placeholder:text-on-surface-variant"
               placeholder="Confirm new password"
               required
             />
@@ -288,7 +288,7 @@ const Settings = () => {
             }`}
           >
             <span
-              className={`absolute top-0.5 left-0.5 w-5 h-5 bg-[#D9D9D6] rounded-full transition-transform ${
+              className={`absolute top-0.5 left-0.5 w-5 h-5 bg-on-surface rounded-full transition-transform ${
                 isProfilePublic ? 'translate-x-6' : ''
               }`}
             />
@@ -311,7 +311,7 @@ const Settings = () => {
             }`}
           >
             <span
-              className={`absolute top-0.5 left-0.5 w-5 h-5 bg-[#D9D9D6] rounded-full transition-transform ${
+              className={`absolute top-0.5 left-0.5 w-5 h-5 bg-on-surface rounded-full transition-transform ${
                 emailNotifications ? 'translate-x-6' : ''
               }`}
             />

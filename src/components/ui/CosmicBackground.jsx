@@ -19,16 +19,14 @@ export default function CosmicBackground() {
     window.addEventListener('resize', resize);
 
     const stars = [];
-    const starCount = Math.min(Math.floor(window.innerWidth * 0.15), 200);
+    const starCount = Math.min(Math.floor(window.innerWidth * 0.06), 80);
 
     for (let i = 0; i < starCount; i++) {
       stars.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
-        r: Math.random() * 1.8 + 0.3,
-        a: Math.random() * 0.8 + 0.2,
-        speed: Math.random() * 0.02 + 0.005,
-        phase: Math.random() * Math.PI * 2,
+        r: Math.random() * 1.2 + 0.3,
+        a: Math.random() * 0.4 + 0.1,
       });
     }
 
@@ -46,15 +44,14 @@ export default function CosmicBackground() {
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       stars.forEach((s) => {
-        const flicker = s.a * (0.6 + 0.4 * Math.sin(Date.now() * s.speed + s.phase));
         ctx.beginPath();
         ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(217,217,214,${flicker})`;
+        ctx.fillStyle = `rgba(217,217,214,${s.a})`;
         ctx.fill();
 
-        if (s.r > 1.2) {
-          ctx.shadowBlur = s.r * 4;
-          ctx.shadowColor = 'rgba(217,217,214,0.15)';
+        if (s.r > 1.0) {
+          ctx.shadowBlur = s.r * 3;
+          ctx.shadowColor = 'rgba(217,217,214,0.1)';
           ctx.fill();
           ctx.shadowBlur = 0;
         }

@@ -147,7 +147,7 @@ const Profile = () => {
 
   const {
     form, handleSubmit: onProfileSubmit, profile, isLoading, isError,
-    isUpdating, isUploadingAvatar, addSkill, removeSkill, uploadAvatar
+    isUpdating, isUploadingAvatar, isUploadingBanner, addSkill, removeSkill, uploadAvatar, uploadBanner
   } = useProfileForm(userId);
 
   const statsQuery = useProfileStats(userId);
@@ -178,6 +178,7 @@ const Profile = () => {
   const [activeTab, setActiveTab] = useState('about');
   const [newSkill, setNewSkill] = useState('');
   const [avatarPreview, setAvatarPreview] = useState(null);
+  const [bannerPreview, setBannerPreview] = useState(null);
   const [error, setError] = useState(null);
 
   // Inline form state for CRUD sections
@@ -197,10 +198,11 @@ const Profile = () => {
   const [editingPub, setEditingPub] = useState(null);
   const [pubForm, setPubForm] = useState({ ...emptyPublication });
 
-  // Set avatar preview from profile data
+  // Set avatar/banner preview from profile data
   useEffect(() => {
     if (profile?.avatar_url) setAvatarPreview(profile.avatar_url);
-  }, [profile?.avatar_url]);
+    if (profile?.banner_url) setBannerPreview(profile.banner_url);
+  }, [profile?.avatar_url, profile?.banner_url]);
 
   // Redirect if not authenticated
   useEffect(() => {
@@ -214,8 +216,32 @@ const Profile = () => {
   const handleAvatarChange = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
+    if (!file.type.startsWith('image/')) {
+      setError('Avatar must be an image file');
+      return;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      setError('Avatar must be less than 5MB');
+      return;
+    }
     const reader = new FileReader();
     reader.onloadend = () => setAvatarPreview(reader.result);
+    reader.readAsDataURL(file);
+  };
+
+  const handleBannerChange = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    if (!file.type.startsWith('image/')) {
+      setError('Banner must be an image file');
+      return;
+    }
+    if (file.size > 10 * 1024 * 1024) {
+      setError('Banner must be less than 10MB');
+      return;
+    }
+    const reader = new FileReader();
+    reader.onloadend = () => setBannerPreview(reader.result);
     reader.readAsDataURL(file);
   };
 
@@ -226,7 +252,15 @@ const Profile = () => {
       // Upload avatar if changed
       if (avatarPreview && avatarPreview.startsWith('data:') && userId) {
         const blob = await fetch(avatarPreview).then(r => r.blob());
-        await uploadAvatar(blob);
+        const avatarUrl = await uploadAvatar(blob);
+        form.setValue('avatar_url', avatarUrl);
+      }
+
+      // Upload banner if changed
+      if (bannerPreview && bannerPreview.startsWith('data:') && userId) {
+        const blob = await fetch(bannerPreview).then(r => r.blob());
+        const bannerUrl = await uploadBanner(blob);
+        form.setValue('banner_url', bannerUrl);
       }
 
       // Submit profile form via RHF
@@ -372,10 +406,25 @@ const Profile = () => {
     <div className="pb-stack-lg">
       {/* Hero Banner with Event Horizon */}
       <div className="relative h-48 md:h-56 w-full rounded-xl overflow-hidden mb-6 bg-gradient-to-br from-primary-container/40 via-surface-container to-surface">
-        <div className="absolute inset-0 flex items-center justify-center opacity-40 pointer-events-none">
-          <EventHorizon variant="hero" size={280} />
-        </div>
+        {bannerPreview ? (
+          <img src={bannerPreview} alt="" className="w-full h-full object-cover" />
+        ) : (
+          <div className="absolute inset-0 flex items-center justify-center opacity-40 pointer-events-none">
+            <EventHorizon variant="hero" size={280} />
+          </div>
+        )}
         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
+        {editing && (
+          <label className="absolute bottom-3 right-3 w-9 h-9 bg-primary rounded-full flex items-center justify-center cursor-pointer hover:scale-105 transition-transform z-10">
+            <Camera size={16} className="text-on-primary" />
+            <input type="file" accept="image/*" onChange={handleBannerChange} className="absolute inset-0 opacity-0 cursor-pointer" />
+          </label>
+        )}
+        {isUploadingBanner && (
+          <div className="absolute inset-0 bg-background/60 flex items-center justify-center z-20">
+            <EventHorizon variant="spinner" size={40} />
+          </div>
+        )}
       </div>
 
       {/* Profile Header */}

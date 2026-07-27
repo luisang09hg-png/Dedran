@@ -16,11 +16,11 @@ const POST_TYPES = [
 ];
 
 const typeStyles = {
-  post: { bg: 'bg-primary-container/40', text: 'text-[#D9D9D6]' },
-  article: { bg: 'bg-primary-container/40', text: 'text-[#D9D9D6]' },
-  project: { bg: 'bg-primary-container/40', text: 'text-[#D9D9D6]' },
-  achievement: { bg: 'bg-primary-container/40', text: 'text-[#D9D9D6]' },
-  job: { bg: 'bg-primary-container/40', text: 'text-[#D9D9D6]' },
+  post: { bg: 'bg-primary-container/40', text: 'text-on-surface' },
+  article: { bg: 'bg-primary-container/40', text: 'text-on-surface' },
+  project: { bg: 'bg-primary-container/40', text: 'text-on-surface' },
+  achievement: { bg: 'bg-primary-container/40', text: 'text-on-surface' },
+  job: { bg: 'bg-primary-container/40', text: 'text-on-surface' },
 };
 
 const typeLabels = {
@@ -221,8 +221,8 @@ const PostCard = ({ post, currentUser, onLike, onUpdate, onDelete, formatTime })
           </div>
         </div>
         <div className="flex items-center gap-1 bg-primary-container/40 px-2 py-1 rounded-sm border border-nebula-stroke">
-          <Star size={14} className="text-[#D9D9D6]" />
-          <span className="font-label-caps text-label-caps text-[#D9D9D6]">{typeLabels[post.type] || 'SIGNAL'}</span>
+          <Star size={14} className="text-on-surface" />
+          <span className="font-label-caps text-label-caps text-on-surface">{typeLabels[post.type] || 'SIGNAL'}</span>
         </div>
       </div>
 
@@ -368,13 +368,13 @@ const PostCard = ({ post, currentUser, onLike, onUpdate, onDelete, formatTime })
                     onChange={(e) => setNewComment(e.target.value)}
                     onKeyDown={(e) => e.key === 'Enter' && !e.shiftKey && (e.preventDefault(), handleAddComment())}
                     placeholder="Write a comment..."
-                    className="flex-1 bg-[#07090E] border border-charcoal-gray rounded-lg px-4 py-2 text-on-surface focus:border-[#D9D9D6] focus:shadow-[0_0_0_2px_rgba(255,255,255,0.1)] outline-none transition-all font-body-sm text-body-sm placeholder:text-on-surface-variant"
+                    className="flex-1 bg-surface-container-lowest border border-outline-variant rounded-lg px-4 py-2 text-on-surface focus:border-primary focus:shadow-[0_0_0_2px_rgba(188,198,231,0.15)] outline-none transition-all font-body-sm text-body-sm placeholder:text-on-surface-variant"
                     disabled={sendingComment}
                   />
                   <button
                     onClick={handleAddComment}
                     disabled={!newComment.trim() || sendingComment}
-                    className="px-4 py-2 rounded-lg bg-primary-container text-on-primary-container font-label-caps text-label-caps disabled:opacity-50 hover:opacity-90 transition-opacity"
+                    className="px-4 py-2 rounded-lg bg-primary text-on-primary font-label-caps text-label-caps disabled:opacity-50 hover:opacity-90 transition-opacity"
                   >
                     {sendingComment ? <Loader2 size={16} className="animate-spin" /> : 'Send'}
                   </button>

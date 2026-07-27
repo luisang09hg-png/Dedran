@@ -12,7 +12,9 @@ import Messages from './pages/Messages/Messages';
 import Courses from './pages/Courses/Courses';
 import Galaxy from './pages/Galaxy/Galaxy';
 import SearchResults from './pages/Search/SearchResults';
+import Network from './pages/Network/Network';
 import CosmicBackground from './components/ui/CosmicBackground';
+import EventHorizon from './components/ui/EventHorizon';
 import { GlobalErrorBoundary } from './components/error/GlobalErrorBoundary';
 import { SectionErrorBoundary } from './components/error/SectionErrorBoundary';
 
@@ -20,6 +22,10 @@ const ProtectedLayout = () => {
   return (
     <div className="min-h-screen antialiased relative">
       <CosmicBackground />
+      {/* Full-page Event Horizon backdrop */}
+      <div className="fixed inset-0 pointer-events-none z-0 flex items-center justify-center opacity-[0.03]">
+        <EventHorizon variant="hero" size={800} />
+      </div>
       <Sidebar />
       <main className="relative z-10 md:ml-72 pt-16 md:pt-0 min-h-screen">
         <div className="max-w-5xl mx-auto px-margin-mobile md:px-margin-desktop py-6 md:py-10">
@@ -49,6 +55,7 @@ const App = () => {
             <Route path="/applications" element={<SectionErrorBoundary section="Applications"><Applications /></SectionErrorBoundary>} />
             <Route path="/settings" element={<SectionErrorBoundary section="Settings"><Settings /></SectionErrorBoundary>} />
             <Route path="/search" element={<SectionErrorBoundary section="Search"><SearchResults /></SectionErrorBoundary>} />
+            <Route path="/network" element={<SectionErrorBoundary section="Network"><Network /></SectionErrorBoundary>} />
 
             {/* New celestial nav pages */}
             <Route path="/galaxy" element={<SectionErrorBoundary section="Galaxy"><Galaxy /></SectionErrorBoundary>} />

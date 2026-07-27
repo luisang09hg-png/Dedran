@@ -33,6 +33,7 @@ Supabase Auth uses **JWT bearer tokens** (not cookie-based sessions). The client
 | `education` | SELECT (authenticated), ALL (own `profile_id`) | None — migration `00003_profile_sections.sql` |
 | `certifications` | SELECT (authenticated), ALL (own `profile_id`) | None — migration `00003_profile_sections.sql` |
 | `publications` | SELECT (authenticated), ALL (own `profile_id`) | None — migration `00003_profile_sections.sql` |
+| `user_courses` | SELECT (authenticated), ALL (own `profile_id`) | None — migration `20260726_banner_url_user_courses.sql` |
 
 
 ### 2.2 Intentional RLS gaps
@@ -47,7 +48,7 @@ The `notifications` table is a **schema placeholder**. No trigger, database func
 
 ### 2.3 RLS audit status
 
-- RLs policies cover all CRUD operations on all 11 tables (with the two intentional gaps noted above).
+- RLS policies cover all CRUD operations on all 16 tables (with the two intentional gaps noted above).
 - Policies have been reviewed against a staging Supabase project (if applicable) or validated against migration SQL.
 - A staging Supabase project should be created before applying any RLS changes to production.
 
@@ -81,6 +82,7 @@ The `notifications` table is a **schema placeholder**. No trigger, database func
 | `education.profile_id` | `public.profiles(id)` | CASCADE |
 | `certifications.profile_id` | `public.profiles(id)` | CASCADE |
 | `publications.profile_id` | `public.profiles(id)` | CASCADE |
+| `user_courses.profile_id` | `public.profiles(id)` | CASCADE |
 
 ### 3.2 Account deletion design (Edge Function)
 
@@ -110,6 +112,27 @@ The remaining 5 FKs in the audit table reference other tables (`posts`, `comment
 - `SUPABASE_SERVICE_ROLE_KEY` and any other `sb_secret_*` values lack the `VITE_` prefix and are NOT bundled by Vite — they remain server-only.
 - No `.env` files are tracked by git.
 - A `.env.example` should be created with placeholder values (no real keys).
+
+## 4. API Module Inventory
+
+The following API modules are available under `src/api/`, following the same pattern (import `supabase`, export named functions + `api` namespace object):
+
+| Module | Exports | Used By |
+|---|---|---|
+| `profiles.js` | `getProfile`, `getProfileByUsername`, `updateProfile`, `getProfileStats`, `uploadAvatar`, `uploadBanner` | `useProfiles.ts` |
+| `posts.js` | `getFeed`, `createPost`, `deletePost`, `likePost`, `unlikePost`, `toggleLike`, `hasUserLiked`, `uploadPostMedia`, `subscribeToNewPosts`, `subscribeToPostLikes` | `usePosts.ts` |
+| `comments.js` | `getComments`, `createComment`, `deleteComment` | `useComments.ts` |
+| `experience.js` | `getExperience`, `createExperience`, `updateExperience`, `deleteExperience` | `useExperience.ts` |
+| `education.js` | `getEducation`, `createEducation`, `updateEducation`, `deleteEducation` | `useEducation.ts` |
+| `certifications.js` | `getCertifications`, `createCertification`, `updateCertification`, `deleteCertification` | `useCertifications.ts` |
+| `publications.js` | `getPublications`, `createPublication`, `updatePublication`, `deletePublication` | `usePublications.ts` |
+| `courses.js` | `getUserCourses`, `enrollCourse`, `updateCourseProgress`, `getEnrolledCourseIds` | `useCourses.ts` |
+| `auth.js` | (auth helpers) | direct |
+| `follows.js` | (follow/unfollow) | direct |
+| `jobs.js` | (job CRUD) | direct |
+| `messages.js` | (messaging) | direct |
+| `conversations.js` | (conversation CRUD) | direct |
+| `notifications.js` | (notification helpers) | direct |
 
 ## 5. CSP & Additional Hardening (Phase 0 items — not yet implemented)
 

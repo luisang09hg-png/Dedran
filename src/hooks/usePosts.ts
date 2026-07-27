@@ -1,14 +1,17 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { queryOptions } from '@tanstack/react-query'
-import { getFeed, createPost } from '../api/posts'
+import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { getFeed, createPost, toggleLike, hasUserLiked, uploadPostMedia } from '../api/posts'
 
-export const usePosts = () => {
-  return useQuery({
-    queryKey: ['posts'],
-    queryFn: async () => {
-      const data = await getFeed()
-      return data
+const PAGE_SIZE = 10
+
+export const usePosts = (userId) => {
+  return useInfiniteQuery({
+    queryKey: ['posts', userId],
+    queryFn: ({ pageParam = 0 }) => getFeed(userId, pageParam, PAGE_SIZE),
+    getNextPageParam: (lastPage, allPages) => {
+      return lastPage.length === PAGE_SIZE ? allPages.length : undefined
     },
+    initialPageParam: 0,
+    staleTime: 1 * 60 * 1000,
   })
 }
 
@@ -16,36 +19,40 @@ export const useCreatePost = () => {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: async (data: { content: string }) => {
-      const response = await createPost(data)
-      return response
+    mutationFn: async (data) => {
+      return createPost(data)
     },
     onMutate: async (newPost) => {
       await queryClient.cancelQueries({ queryKey: ['posts'] })
-      const previousPosts = queryClient.getQueryData(['posts'])
+      const previousData = queryClient.getQueryData(['posts'])
 
-      queryClient.setQueryData(['posts'], (old: any) => [
-        {
-          id: Date.now(),
-          content: newPost.content,
-          createdAt: new Date().toISOString(),
-          author: {
-            id: 'current-user',
-            name: 'Current User',
-            avatar: null,
-          },
-          ...newPost,
-        },
-        ...(old || []),
-      ])
-
-      return { previousPosts }
+      return { previousData }
     },
-    onError: (_err, _newPost, context: any) => {
-      queryClient.setQueryData(['posts'], context.previousPosts)
+    onError: (_err, _newPost, context) => {
+      if (context?.previousData) {
+        queryClient.setQueryData(['posts'], context.previousData)
+      }
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['posts'] })
     },
+  })
+}
+
+export const useToggleLike = () => {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: ({ postId, userId, currentlyLiked }) =>
+      toggleLike(postId, userId, currentlyLiked),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['posts'] })
+    },
+  })
+}
+
+export const useUploadPostMedia = () => {
+  return useMutation({
+    mutationFn: ({ userId, file }) => uploadPostMedia(userId, file),
   })
 }

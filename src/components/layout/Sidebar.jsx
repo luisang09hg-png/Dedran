@@ -2,8 +2,8 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import { supabase } from '../../lib/supabase';
 import {
-  LogOut, User, Bell, Compass, Sun, MessageSquare, Briefcase,
-  Settings, HelpCircle, Star, Search
+  LogOut, User, Bell, Compass, Sun, Moon, MessageSquare, Briefcase,
+  Settings, HelpCircle, Star, Search, Users
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import NotificationDropdown from '../notifications/NotificationDropdown';
@@ -15,6 +15,7 @@ const navItems = [
   { name: 'Search', path: '/search', icon: Search },
   { name: 'Profile', path: '/profile', icon: User },
   { name: 'Applications', path: '/applications', icon: Briefcase },
+  { name: 'Network', path: '/network', icon: Users },
   { name: 'Messages', path: '/messages', icon: MessageSquare },
 ];
 
@@ -29,6 +30,14 @@ const Sidebar = () => {
   const [profile, setProfile] = useState(null);
   const [notificationsOpen, setNotificationsOpen] = useState(false);
   const [unreadNotifications, setUnreadNotifications] = useState(0);
+  const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'dark');
+
+  const toggleTheme = () => {
+    const next = theme === 'dark' ? 'light' : 'dark';
+    setTheme(next);
+    localStorage.setItem('theme', next);
+    document.documentElement.setAttribute('data-theme', next);
+  };
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -138,6 +147,14 @@ const Sidebar = () => {
 
         {/* Bottom Section */}
         <div className="mt-auto space-y-2 border-t border-nebula-stroke pt-6">
+          {/* Theme Toggle */}
+          <button
+            onClick={toggleTheme}
+            className="w-full flex items-center gap-3 px-4 py-2 rounded-lg text-on-surface-variant hover:bg-primary-container/20 hover:text-primary transition-all duration-300 ease-in-out"
+          >
+            {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
+            <span className="font-body-sm text-body-sm">{theme === 'dark' ? 'Light Mode' : 'Dark Mode'}</span>
+          </button>
           {bottomItems.map((item) => (
             item.path === '#' ? (
               <a

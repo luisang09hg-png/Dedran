@@ -40,5 +40,13 @@ export function uploadAvatar(userId, file) {
     })
 }
 
+export function uploadBanner(userId, file) {
+  return supabase.storage.from('avatars').upload(`${userId}/banner.jpg`, file, { upsert: true })
+    .then(({ data, error }) => {
+      if (error) throw error
+      return supabase.storage.from('avatars').getPublicUrl(data.path).then(({ data }) => data.publicUrl)
+    })
+}
+
 // Namespace export for hooks that import { api }
-export const api = { getProfile, getProfileByUsername, updateProfile, getProfileStats, uploadAvatar }
+export const api = { getProfile, getProfileByUsername, updateProfile, getProfileStats, uploadAvatar, uploadBanner }

@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
 import { Compass, Users, Briefcase, BookOpen, Activity, Bell, Star } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
-import { storage } from '../../lib/localStorage';
+import { useAuth } from '../../hooks/useAuth';
+import { useUserCourses } from '../../hooks/useCourses';
 import GlassCard from '../../components/ui/GlassCard';
 import MetricCard from '../../components/ui/MetricCard';
+import EventHorizon from '../../components/ui/EventHorizon';
 
 const LOGS = [
   { time: 'T-Minus 04:22', msg: 'Application submitted — Frontend Developer at Stellar Labs', highlight: true },
@@ -13,26 +15,25 @@ const LOGS = [
 ];
 
 const Galaxy = () => {
+  const { user } = useAuth();
+  const profileId = user?.id;
+  const { data: userCourses } = useUserCourses(profileId);
   const [connections, setConnections] = useState(0);
   const [applications, setApplications] = useState([]);
-  const [enrollments, setEnrollments] = useState({});
 
   useEffect(() => {
-    const apps = storage.get('applications') || [];
+    const apps = JSON.parse(localStorage.getItem('dedran_applications') || '[]');
     setApplications(apps);
-    setEnrollments(storage.get('enrollments') || {});
 
-    supabase.auth.getUser().then(({ data: { user } }) => {
-      if (user) {
-        supabase.from('follows')
-          .select('*', { count: 'exact', head: true })
-          .eq('following_id', user.id)
-          .then(({ count }) => setConnections(count || 0));
-      }
-    });
-  }, []);
+    if (user) {
+      supabase.from('follows')
+        .select('*', { count: 'exact', head: true })
+        .eq('following_id', user.id)
+        .then(({ count }) => setConnections(count || 0));
+    }
+  }, [user]);
 
-  const enrolledCount = Object.values(enrollments).filter((e) => e.enrolled).length;
+  const enrolledCount = userCourses?.length || 0;
   const appsByStage = {
     Applied: applications.filter((a) => a.stage === 'Applied').length,
     'Under Review': applications.filter((a) => a.stage === 'Under Review').length,
@@ -52,18 +53,18 @@ const Galaxy = () => {
               Sector Alpha Stability
             </h2>
             <div className="flex items-baseline gap-3">
-              <span className="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-[#D9D9D6]">98.4%</span>
+              <span className="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface">98.4%</span>
               <span className="font-label-caps text-label-caps text-charcoal-gray">OPTIMAL</span>
             </div>
           </div>
           <div className="flex-1 w-full h-32 relative">
             <svg className="w-full h-full" preserveAspectRatio="none" viewBox="0 0 100 30" style={{ filter: 'drop-shadow(0 0 4px rgba(255,255,255,0.3))' }}>
-              <path d="M0,25 Q10,15 20,20 T40,10 T60,15 T80,5 T100,10" fill="none" stroke="#D9D9D6" strokeWidth="0.5" />
-              <path d="M0,30 L0,25 Q10,15 20,20 T40,10 T60,15 T80,5 T100,10 L100,30 Z" fill="rgba(32, 42, 68, 0.2)" />
-              <circle cx="20" cy="20" fill="#FFFFFF" r="0.8" />
-              <circle cx="40" cy="10" fill="#FFFFFF" r="0.8" />
-              <circle cx="60" cy="15" fill="#FFFFFF" r="0.8" />
-              <circle cx="80" cy="5" fill="#D9D9D6" r="1.2" />
+              <path d="M0,25 Q10,15 20,20 T40,10 T60,15 T80,5 T100,10" fill="none" stroke="var(--color-primary)" strokeWidth="0.5" />
+              <path d="M0,30 L0,25 Q10,15 20,20 T40,10 T60,15 T80,5 T100,10 L100,30 Z" fill="var(--color-primary-container)" />
+              <circle cx="20" cy="20" fill="var(--color-on-surface)" r="0.8" />
+              <circle cx="40" cy="10" fill="var(--color-on-surface)" r="0.8" />
+              <circle cx="60" cy="15" fill="var(--color-on-surface)" r="0.8" />
+              <circle cx="80" cy="5" fill="var(--color-primary)" r="1.2" />
             </svg>
           </div>
         </div>
@@ -86,13 +87,13 @@ const Galaxy = () => {
               Constellation Mapping
             </h3>
             <div className="flex gap-2">
-              <span className="px-2 py-1 bg-primary-container/40 rounded-sm font-label-caps text-label-caps text-[#D9D9D6]">ORION</span>
+              <span className="px-2 py-1 bg-primary-container/40 rounded-sm font-label-caps text-label-caps text-on-surface">ORION</span>
               <span className="px-2 py-1 border border-charcoal-gray rounded-sm font-label-caps text-label-caps text-charcoal-gray">CYGNUS</span>
             </div>
           </div>
-          <div className="flex-1 relative bg-[#07090E] rounded-lg border border-nebula-stroke overflow-hidden flex items-center justify-center">
-            <span className="text-charcoal-gray font-body-sm italic">Interactive constellation map rendering...</span>
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,var(--tw-gradient-stops))] from-primary-container/20 via-transparent to-transparent opacity-50" />
+          <div className="flex-1 relative bg-surface-container-lowest rounded-lg border border-nebula-stroke overflow-hidden flex items-center justify-center">
+            <EventHorizon variant="hero" size={120} />
+            <span className="absolute bottom-4 text-charcoal-gray font-body-sm italic">Interactive constellation map rendering...</span>
           </div>
         </GlassCard>
 
@@ -113,7 +114,7 @@ const Galaxy = () => {
               </div>
             ))}
           </div>
-          <button className="w-full mt-4 py-2 border border-[#D9D9D6] text-[#D9D9D6] font-body-sm rounded-DEFAULT hover:bg-white/5 transition-colors">
+          <button className="w-full mt-4 py-2 border border-primary text-primary font-body-sm rounded hover:bg-primary/5 transition-colors">
             View All Logs
           </button>
         </GlassCard>

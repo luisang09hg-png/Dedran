@@ -100,7 +100,7 @@ const EventHorizon = ({ variant = 'avatar', children, className = '', size }) =>
           style={{
             width: currentSize * 0.45,
             height: currentSize * 0.45,
-            background: 'radial-gradient(circle, #07090E 60%, var(--color-surface) 100%)',
+            background: 'radial-gradient(circle, var(--color-event-horizon-void, #07090E) 60%, var(--color-surface) 100%)',
           }}
         />
         {children}

@@ -1,103 +1,138 @@
-import React from 'react'
-import GlassCard from '../../components/ui/GlassCard' 
+import { useEffect, useCallback } from 'react'
+import { useAuth } from '../../hooks/useAuth'
+import { usePosts, useToggleLike } from '../../hooks/usePosts'
+import { subscribeToNewPosts } from '../../api/posts'
+import PostCard from '../../components/feed/PostCard'
 import { CreatePost as CreatePostComponent } from '../../components/posts/CreatePost'
-import { usePosts } from '../../hooks/usePosts'
-
-const SkeletonPost = () => {
-  return (
-    <GlassCard className='p-6 animate-pulse'>
-      <div className='flex items-start gap-4'>
-        <div className='h-10 w-10 rounded-full bg-muted-foreground/20' />
-        <div className='flex-1 space-y-4'>
-          <div className='h-4 w-3/4 rounded bg-muted-foreground/20' />
-          <div className='h-3 w-full rounded bg-muted-foreground/20' />
-          <div className='h-3 w-5/6 rounded bg-muted-foreground/20' />
-        </div>
-      </div>
-      <div className='mt-4 flex gap-4 pl-14'>
-        <div className='h-4 w-16 rounded bg-muted-foreground/20' />
-        <div className='h-4 w-16 rounded bg-muted-foreground/20' />
-        <div className='h-4 w-16 rounded bg-muted-foreground/20' />
-      </div>
-    </GlassCard>
-  )
-}
+import EventHorizon from '../../components/ui/EventHorizon'
+import { Users } from 'lucide-react'
 
 export const Feed = () => {
-  const { data: posts, isLoading, isError } = usePosts()
+  const { user } = useAuth()
+  const userId = user?.id
+  const {
+    data,
+    isLoading,
+    isError,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    refetch,
+  } = usePosts(userId)
+
+  const toggleLikeMutation = useToggleLike()
+
+  useEffect(() => {
+    if (!userId) return
+    const unsubscribe = subscribeToNewPosts(() => {
+      refetch()
+    })
+    return unsubscribe
+  }, [userId, refetch])
+
+  const handleLike = useCallback(async (postId) => {
+    if (!userId) return
+    const allPages = data?.pages || []
+    let currentlyLiked = false
+    for (const page of allPages) {
+      const post = page.find(p => p.id === postId)
+      if (post) {
+        currentlyLiked = post.has_liked || false
+        break
+      }
+    }
+    toggleLikeMutation.mutate({ postId, userId, currentlyLiked })
+  }, [userId, data, toggleLikeMutation])
+
+  const handleUpdate = useCallback(() => {
+    refetch()
+  }, [refetch])
+
+  const handleDelete = useCallback(() => {
+    refetch()
+  }, [refetch])
+
+  const formatTime = (date) => {
+    if (!date) return ''
+    const d = new Date(date)
+    const now = new Date()
+    const diff = Math.floor((now - d) / 1000)
+    if (diff < 60) return 'Just now'
+    if (diff < 3600) return `${Math.floor(diff / 60)}m`
+    if (diff < 86400) return `${Math.floor(diff / 3600)}h`
+    if (diff < 604800) return `${Math.floor(diff / 86400)}d`
+    return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+  }
 
   if (isError) {
     return (
-      <div className='mx-auto max-w-2xl rounded-lg bg-red-900/20 p-6 text-red-400'>
-        <h2 className='mb-2 text-xl font-semibold'>Failed to load feed</h2>
-        <p>Please try again later.</p>
+      <div className="mx-auto max-w-2xl p-6 bg-error-container text-on-error-container rounded-lg">
+        <h2 className="font-headline-sm text-headline-sm mb-2">Failed to load feed</h2>
+        <p className="font-body-md text-body-md">Please try again later.</p>
       </div>
     )
   }
 
-  return (
-    <div className='mx-auto max-w-2xl space-y-6 p-4'>
-      <div className='mb-6'>
-        <CreatePostComponent />
-      </div>
+  const allPosts = data?.pages?.flat() || []
 
-      {isLoading
-        ? Array.from({ length: 5 }).map((_, index) => <SkeletonPost key={index} />)
-        : posts?.map((post) => (
-            <GlassCard key={post.id} className='p-6'>
-              <div className='flex items-start gap-4'>
-                <img
-                  src={post.author?.avatar || `https://api.dicebear.com/7.x/initials/svg?seed=${post.author?.name || 'User'}`}
-                  alt={post.author?.name || 'User'}
-                  className='h-10 w-10 rounded-full object-cover'
-                />
-                <div className='flex-1'>
-                  <div className='mb-1 flex items-center gap-2'>
-                    <span className='font-medium text-foreground'>{post.author?.name || 'Anonymous'}</span>
-                    <span className='text-sm text-muted-foreground'>
-                      {new Date(post.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
-                    </span>
-                  </div>
-                  <p className='whitespace-pre-wrap break-words text-foreground'>{post.content}</p>
+  return (
+    <div className="mx-auto max-w-2xl space-y-6">
+      <CreatePostComponent />
+
+      {isLoading ? (
+        <div className="space-y-6">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="bg-primary-container/60 backdrop-blur-[12px] border border-nebula-stroke rounded-xl p-6">
+              <div className="flex items-start gap-4">
+                <EventHorizon variant="spinner" size={40} />
+                <div className="flex-1 space-y-3">
+                  <div className="h-4 w-3/4 rounded bg-on-surface-variant/20" />
+                  <div className="h-3 w-full rounded bg-on-surface-variant/20" />
+                  <div className="h-3 w-5/6 rounded bg-on-surface-variant/20" />
                 </div>
               </div>
-              <div className='mt-4 flex gap-6 pl-14'>
-                <button className='flex items-center gap-2 text-muted-foreground transition-colors hover:text-primary'>
-                  <svg className='h-5 w-5' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                    <path
-                      strokeLinecap='round'
-                      strokeLinejoin='round'
-                      strokeWidth={2}
-                      d='M14 10l-2 1m0 0l-2-1m2 1l2-1m2 4l-2 1m2-4l2 1m-2-1v2m0-4V8m0 0l2 1m-2-1l-2 1'
-                    />
-                  </svg>
-                  <span>Like</span>
-                </button>
-                <button className='flex items-center gap-2 text-muted-foreground transition-colors hover:text-primary'>
-                  <svg className='h-5 w-5' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                    <path
-                      strokeLinecap='round'
-                      strokeLinejoin='round'
-                      strokeWidth={2}
-                      d='M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z'
-                    />
-                  </svg>
-                  <span>Comment</span>
-                </button>
-                <button className='flex items-center gap-2 text-muted-foreground transition-colors hover:text-primary'>
-                  <svg className='h-5 w-5' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                    <path
-                      strokeLinecap='round'
-                      strokeLinejoin='round'
-                      strokeWidth={2}
-                      d='M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-1.342m0 2.684l-5.132 2.732'
-                    />
-                  </svg>
-                  <span>Share</span>
-                </button>
-              </div>
-            </GlassCard>
+            </div>
           ))}
+        </div>
+      ) : allPosts.length === 0 ? (
+        <div className="text-center py-16">
+          <Users size={64} className="mx-auto text-on-surface-variant/30 mb-4" />
+          <h2 className="font-headline-md text-headline-md text-on-surface mb-2">No posts yet</h2>
+          <p className="font-body-md text-body-md text-on-surface-variant">Be the first to share something!</p>
+        </div>
+      ) : (
+        <>
+          {allPosts.map((post) => (
+            <PostCard
+              key={post.id}
+              post={post}
+              currentUser={user}
+              onLike={handleLike}
+              onUpdate={handleUpdate}
+              onDelete={handleDelete}
+              formatTime={formatTime}
+            />
+          ))}
+
+          {hasNextPage && (
+            <div className="flex justify-center pt-4">
+              <button
+                onClick={() => fetchNextPage()}
+                disabled={isFetchingNextPage}
+                className="px-6 py-3 bg-primary-container/40 border border-nebula-stroke text-on-surface font-label-caps text-label-caps rounded-lg hover:bg-primary-container/60 transition-all disabled:opacity-50"
+              >
+                {isFetchingNextPage ? (
+                  <span className="flex items-center gap-2">
+                    <EventHorizon variant="spinner" size={20} /> Loading...
+                  </span>
+                ) : (
+                  'Load More'
+                )}
+              </button>
+            </div>
+          )}
+        </>
+      )}
     </div>
   )
 }

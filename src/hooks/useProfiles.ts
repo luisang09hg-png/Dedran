@@ -45,7 +45,9 @@ const profileSchema = z.object({
     .optional()
     .or(z.literal('')),
   skills: z.array(z.string())
-    .max(20, 'You can add up to 20 skills')
+    .max(20, 'You can add up to 20 skills'),
+  avatar_url: z.string().optional().or(z.literal('')),
+  banner_url: z.string().optional().or(z.literal(''))
 })
 
 export { profileSchema }
@@ -92,6 +94,19 @@ export function useUploadAvatar() {
   })
 }
 
+export function useUploadBanner() {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: ({ userId, file }) =>
+      api.uploadBanner(userId, file),
+    onSuccess: (url, variables) => {
+      queryClient.invalidateQueries({ queryKey: ['profile', variables.userId] })
+      queryClient.invalidateQueries({ queryKey: ['profile', 'stats', variables.userId] })
+    },
+  })
+}
+
 export function useUpdateProfile() {
   const queryClient = useQueryClient()
 
@@ -113,6 +128,7 @@ export function useProfileForm(userId) {
   const profileQuery = useProfile(userId)
   const updateProfileMutation = useUpdateProfile()
   const uploadAvatarMutation = useUploadAvatar()
+  const uploadBannerMutation = useUploadBanner()
 
   const form = useForm({
     resolver: zodResolver(profileSchema),
@@ -127,6 +143,8 @@ export function useProfileForm(userId) {
       github_url: '',
       twitter_url: '',
       skills: [],
+      avatar_url: '',
+      banner_url: '',
     },
     mode: 'onChange',
   })
@@ -146,6 +164,8 @@ export function useProfileForm(userId) {
         github_url: profileData.github_url || '',
         twitter_url: profileData.twitter_url || '',
         skills: profileData.skills || [],
+        avatar_url: profileData.avatar_url || '',
+        banner_url: profileData.banner_url || '',
       })
     }
   }, [profileQuery.data, form.reset])
@@ -154,11 +174,12 @@ export function useProfileForm(userId) {
     if (!userId) return
 
     try {
-      // Prepare profile data — preserve existing avatar_url
+      // Prepare profile data
       const profileData = {
         id: userId,
         ...data,
-        avatar_url: profileQuery.data?.avatar_url || null,
+        avatar_url: data.avatar_url || profileQuery.data?.avatar_url || null,
+        banner_url: data.banner_url || profileQuery.data?.banner_url || null,
         updated_at: new Date().toISOString(),
       }
 
@@ -211,11 +232,22 @@ export function useProfileForm(userId) {
     // Mutation states
     isUpdating: updateProfileMutation.isPending,
     isUploadingAvatar: uploadAvatarMutation.isPending,
+    isUploadingBanner: uploadBannerMutation.isPending,
 
     // Actions
     addSkill,
     removeSkill,
     uploadAvatar,
+    uploadBanner: async (file) => {
+      if (!userId) return
+      try {
+        const bannerUrl = await uploadBannerMutation.mutateAsync({ userId, file })
+        return bannerUrl
+      } catch (error) {
+        console.error('Banner upload error:', error)
+        throw error
+      }
+    },
 
     // Reset form helper
     resetForm: form.reset,

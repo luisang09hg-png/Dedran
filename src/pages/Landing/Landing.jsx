@@ -2,30 +2,8 @@ import { Link } from 'react-router-dom';
 import CosmicBackground from '../../components/ui/CosmicBackground';
 import GlassCard from '../../components/ui/GlassCard';
 import Button from '../../components/ui/Button';
+import EventHorizon from '../../components/ui/EventHorizon';
 import { courses as allCourses } from '../../data/courses';
-
-const StarField = () => (
-  <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-    {Array.from({ length: 80 }).map((_, i) => {
-      const s = Math.random() * 2 + 1;
-      return (
-        <div
-          key={i}
-          className="absolute rounded-full bg-star-glow"
-          style={{
-            left: `${Math.random() * 100}%`,
-            top: `${Math.random() * 100}%`,
-            width: `${s}px`,
-            height: `${s}px`,
-            opacity: Math.random() * 0.6 + 0.2,
-            animation: `twinkle ${Math.random() * 3 + 2}s ease-in-out infinite alternate`,
-            animationDelay: `${Math.random() * 3}s`,
-          }}
-        />
-      );
-    })}
-  </div>
-);
 
 const features = [
   {
@@ -68,13 +46,8 @@ const testimonials = [
 
 const Landing = () => {
   return (
-    <div className="min-h-screen bg-[#07090E] text-on-surface antialiased relative overflow-x-hidden">
+    <div className="min-h-screen bg-background text-on-surface antialiased relative overflow-x-hidden">
       <CosmicBackground />
-      <StarField />
-
-      <style>{`
-        @keyframes twinkle { 0% { opacity: 0.2; transform: scale(0.8); } 100% { opacity: 0.8; transform: scale(1.2); } }
-      `}</style>
 
       <div className="relative z-10">
         {/* Public Nav */}
@@ -87,14 +60,18 @@ const Landing = () => {
           </nav>
           <div className="flex items-center gap-4">
             <Link to="/login" className="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors">Sign In</Link>
-            <Link to="/register" className="bg-[#D9D9D6] text-[#07090E] px-5 py-2 rounded font-label-caps font-semibold hover:bg-white transition-colors">
+            <Link to="/register" className="bg-star-glow text-on-primary px-5 py-2 rounded font-label-caps font-semibold hover:opacity-90 transition-all">
               Get Started
             </Link>
           </div>
         </header>
 
         {/* Hero */}
-        <section className="pt-20 md:pt-28 pb-20 md:pb-28 px-margin-mobile md:px-margin-desktop max-w-7xl mx-auto flex flex-col items-center text-center">
+        <section className="relative pt-20 md:pt-28 pb-20 md:pb-28 px-margin-mobile md:px-margin-desktop max-w-7xl mx-auto flex flex-col items-center text-center">
+          {/* Event Horizon backdrop */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-[0.04] pointer-events-none">
+            <EventHorizon variant="hero" size={600} />
+          </div>
           <span className="inline-block px-4 py-1.5 rounded-sm bg-primary-container/40 border border-primary/30 text-primary font-label-caps text-label-caps mb-6">
             NEXT-GEN CAREER NAVIGATION
           </span>
@@ -129,7 +106,7 @@ const Landing = () => {
             {features.map((f) => (
               <GlassCard key={f.title} className="p-stack-lg text-center">
                 <div className="w-14 h-14 rounded-full bg-primary-container/40 border border-nebula-stroke flex items-center justify-center mx-auto mb-5">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#bcc6e7" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                     <path d={f.icon} />
                   </svg>
                 </div>
@@ -208,7 +185,7 @@ const Landing = () => {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-gutter">
             {stats.map((s) => (
               <GlassCard key={s.label} className="p-stack-md flex flex-col items-center justify-center min-h-[120px]">
-                <p className="font-data-heavy text-data-heavy text-[#D9D9D6] mb-unit">{s.value}</p>
+                <p className="font-data-heavy text-data-heavy text-on-surface mb-unit">{s.value}</p>
                 <p className="font-label-caps text-label-caps text-charcoal-gray uppercase tracking-wider text-center">{s.label}</p>
               </GlassCard>
             ))}

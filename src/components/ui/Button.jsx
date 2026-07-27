@@ -1,10 +1,10 @@
 const variants = {
   primary:
-    'bg-star-glow text-background hover:opacity-90 hover:scale-[1.02] hover:shadow-[0_0_12px_rgba(188,198,231,0.3)] focus-visible:shadow-[0_0_12px_rgba(188,198,231,0.3)] active:scale-[0.98]',
+    'bg-star-glow text-[var(--color-on-primary)] hover:opacity-90 hover:scale-[1.03] hover:shadow-[0_0_16px_rgba(32,42,68,0.4)] focus-visible:shadow-[0_0_16px_rgba(32,42,68,0.4)] active:scale-[0.97]',
   secondary:
-    'border border-star-glow text-star-glow hover:bg-star-glow/10 hover:scale-[1.02] hover:shadow-[0_0_8px_rgba(255,255,255,0.1)] active:scale-[0.98]',
+    'border border-star-glow text-star-glow hover:bg-star-glow/10 hover:scale-[1.03] hover:shadow-[0_0_12px_rgba(32,42,68,0.2)] active:scale-[0.97]',
   ghost:
-    'text-on-surface-variant hover:text-star-glow border border-transparent hover:scale-[1.01]',
+    'text-on-surface-variant hover:text-star-glow border border-transparent hover:scale-[1.02]',
 };
 
 const sizes = {

@@ -66,7 +66,7 @@
 
   /* Accent / Glow */
   --color-star-glow: #FFFFFF;
-  --color-charcoal-gray: #53565A;
+  --color-charcoal-gray: #8A8B90;
   --color-nebula-stroke: rgba(217, 217, 214, 0.15);
 
   /* Border Radius */
@@ -140,6 +140,74 @@
 
   /* Event Horizon animation */
   --animate-accretion-spin: accretion-spin 8s linear infinite;
+}
+
+/* ─── Light Theme ─── */
+[data-theme="light"] {
+  --color-surface: #FEFBFF;
+  --color-surface-dim: #DED9E2;
+  --color-surface-bright: #FEFBFF;
+  --color-surface-container-lowest: #FFFFFF;
+  --color-surface-container-low: #F3EFF4;
+  --color-surface-container: #EDE9EE;
+  --color-surface-container-high: #E7E3E8;
+  --color-surface-container-highest: #E1DDE2;
+  --color-background: #FEFBFF;
+  --color-surface-variant: #E1DDE2;
+
+  --color-on-surface: #1C1B1F;
+  --color-on-surface-variant: #49454F;
+  --color-on-background: #1C1B1F;
+  --color-inverse-surface: #313033;
+  --color-inverse-on-surface: #F3EFF4;
+
+  --color-outline: #7A757F;
+  --color-outline-variant: #C4C0C8;
+  --color-surface-tint: #3C4662;
+
+  --color-primary: #202A44;
+  --color-on-primary: #FFFFFF;
+  --color-primary-container: #DAE2FF;
+  --color-on-primary-container: #101B34;
+  --color-inverse-primary: #BCC6E7;
+  --color-primary-fixed: #DAE2FF;
+  --color-primary-fixed-dim: #BCC6E7;
+  --color-on-primary-fixed: #101B34;
+  --color-on-primary-fixed-variant: #3C4662;
+
+  --color-secondary: #595B59;
+  --color-on-secondary: #FFFFFF;
+  --color-secondary-container: #DEDFDB;
+  --color-on-secondary-container: #171917;
+  --color-secondary-fixed: #E3E3DF;
+  --color-secondary-fixed-dim: #C6C7C4;
+  --color-on-secondary-fixed: #0E100E;
+  --color-on-secondary-fixed-variant: #464745;
+
+  --color-tertiary: #3D4854;
+  --color-on-tertiary: #FFFFFF;
+  --color-tertiary-container: #DAE4F3;
+  --color-on-tertiary-container: #111D27;
+  --color-tertiary-fixed: #D8E4F3;
+  --color-tertiary-fixed-dim: #BCC8D7;
+  --color-on-tertiary-fixed: #111D27;
+  --color-on-tertiary-fixed-variant: #3D4854;
+
+  --color-error: #BA1A1A;
+  --color-on-error: #FFFFFF;
+  --color-error-container: #FFDAD6;
+  --color-on-error-container: #410002;
+
+  --color-star-glow: #202A44;
+  --color-charcoal-gray: #6B6B76;
+  --color-nebula-stroke: rgba(0, 0, 0, 0.10);
+
+  /* Event Horizon inner void for light mode */
+  --color-event-horizon-void: #E1DDE2;
+}
+
+[data-theme="dark"] {
+  --color-event-horizon-void: #07090E;
 }
 
 html {
