@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { api } from '../api/profiles'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -17,33 +18,40 @@ const profileSchema = z.object({
     .regex(/^[a-z0-9_]+$/i, 'Username can only contain letters, numbers, and underscores'),
   headline: z.string()
     .max(100, 'Headline must be less than 100 characters')
-    .optional(),
+    .optional()
+    .or(z.literal('')),
   bio: z.string()
     .max(500, 'Bio must be less than 500 characters')
-    .optional(),
+    .optional()
+    .or(z.literal('')),
   location: z.string()
     .max(100, 'Location must be less than 100 characters')
-    .optional(),
+    .optional()
+    .or(z.literal('')),
   website_url: z.string()
     .url('Must be a valid URL')
-    .optional(),
+    .optional()
+    .or(z.literal('')),
   linkedin_url: z.string()
     .url('Must be a valid LinkedIn URL')
-    .optional(),
+    .optional()
+    .or(z.literal('')),
   github_url: z.string()
     .url('Must be a valid GitHub URL')
-    .optional(),
+    .optional()
+    .or(z.literal('')),
   twitter_url: z.string()
     .url('Must be a valid Twitter URL')
-    .optional(),
+    .optional()
+    .or(z.literal('')),
   skills: z.array(z.string())
     .max(20, 'You can add up to 20 skills')
 })
 
-export type ProfileFormData = z.infer<typeof profileSchema>
+export { profileSchema }
 
 // Original hooks remain unchanged
-export function useProfile(userId: string | null) {
+export function useProfile(userId) {
   return useQuery({
     queryKey: ['profile', userId],
     queryFn: () => userId ? api.getProfile(userId) : Promise.resolve(null),
@@ -52,10 +60,19 @@ export function useProfile(userId: string | null) {
   })
 }
 
-export function useProfileStats(userId: string | null) {
+export function useProfileByUsername(username) {
+  return useQuery({
+    queryKey: ['profile', 'username', username],
+    queryFn: () => username ? api.getProfileByUsername(username) : Promise.resolve(null),
+    enabled: !!username,
+    staleTime: 2 * 60 * 1000,
+  })
+}
+
+export function useProfileStats(userId) {
   return useQuery({
     queryKey: ['profile', 'stats', userId],
-    queryFn: () => userId ? api.getProfileStats(userUserId) : Promise.resolve(null),
+    queryFn: () => userId ? api.getProfileStats(userId) : Promise.resolve(null),
     enabled: !!userId,
     staleTime: 1 * 60 * 1000, // 1 minute
   })
@@ -65,7 +82,7 @@ export function useUploadAvatar() {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: ({ userId, file }: { userId: string; file: File }) =>
+    mutationFn: ({ userId, file }) =>
       api.uploadAvatar(userId, file),
     onSuccess: (url, variables) => {
       // Invalidate related queries
@@ -79,23 +96,25 @@ export function useUpdateProfile() {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: (profileData: any) => api.updateProfile(profileData),
+    mutationFn: (profileData) => api.updateProfile(profileData),
     onSuccess: (data) => {
       // Update cache optimistically
-      queryClient.setQueryData(['profile', data.id], data)
-      queryClient.invalidateQueries({ queryKey: ['profile', 'stats', data.id] })
+      if (data?.id) {
+        queryClient.setQueryData(['profile', data.id], data)
+        queryClient.invalidateQueries({ queryKey: ['profile', 'stats', data.id] })
+      }
     },
   })
 }
 
 // Hook for Profile Form Management
-export function useProfileForm(userId: string | null) {
+export function useProfileForm(userId) {
   const queryClient = useQueryClient()
   const profileQuery = useProfile(userId)
   const updateProfileMutation = useUpdateProfile()
   const uploadAvatarMutation = useUploadAvatar()
 
-  const form = useForm<ProfileFormData>({
+  const form = useForm({
     resolver: zodResolver(profileSchema),
     defaultValues: {
       full_name: '',
@@ -131,22 +150,21 @@ export function useProfileForm(userId: string | null) {
     }
   }, [profileQuery.data, form.reset])
 
-  const handleSubmit = async (data: ProfileFormData) => {
+  const handleSubmit = async (data) => {
     if (!userId) return
 
     try {
-      // Prepare profile data
+      // Prepare profile data — preserve existing avatar_url
       const profileData = {
         id: userId,
         ...data,
-        avatar_url: null, // Avatar handled separately
+        avatar_url: profileQuery.data?.avatar_url || null,
         updated_at: new Date().toISOString(),
       }
 
       // Update profile
       await updateProfileMutation.mutateAsync(profileData)
 
-      // Handle avatar upload if needed
       return { success: true, message: 'Profile updated successfully' }
     } catch (error) {
       console.error('Profile update error:', error)
@@ -154,7 +172,7 @@ export function useProfileForm(userId: string | null) {
     }
   }
 
-  const uploadAvatar = async (file: File) => {
+  const uploadAvatar = async (file) => {
     if (!userId) return
 
     try {
@@ -166,7 +184,7 @@ export function useProfileForm(userId: string | null) {
     }
   }
 
-  const addSkill = (skill: string) => {
+  const addSkill = (skill) => {
     const currentSkills = form.getValues('skills') || []
     if (!skill || currentSkills.includes(skill)) return
 
@@ -174,7 +192,7 @@ export function useProfileForm(userId: string | null) {
     form.setValue('skills', newSkills)
   }
 
-  const removeSkill = (skillToRemove: string) => {
+  const removeSkill = (skillToRemove) => {
     const currentSkills = form.getValues('skills') || []
     const newSkills = currentSkills.filter(skill => skill !== skillToRemove)
     form.setValue('skills', newSkills)

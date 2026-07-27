@@ -9,9 +9,9 @@ const CATEGORIES = ['All', 'Design', 'Tech', 'Business', 'Communication'];
 const ENR_KEY = 'enrollments';
 
 const levelStyles = {
-  Beginner: 'bg-green-500/10 text-green-400',
+  Beginner: 'bg-tertiary/10 text-tertiary',
   Intermediate: 'bg-primary/10 text-primary',
-  Advanced: 'bg-purple-400/10 text-purple-400',
+  Advanced: 'bg-secondary/10 text-secondary',
 };
 
 const Courses = () => {
@@ -58,7 +58,7 @@ const Courses = () => {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Search courses..."
-          className="w-full bg-[#07090E] border border-charcoal-gray rounded pl-9 pr-4 py-2 text-on-surface text-body-sm focus:border-[#D9D9D6] focus:shadow-[0_0_0_2px_rgba(255,255,255,0.1)] outline-none transition-all placeholder:text-on-surface-variant"
+          className="w-full bg-background border border-outline-variant rounded pl-9 pr-4 py-2 text-on-surface text-body-sm focus:border-primary focus:shadow-[0_0_0_2px_rgba(188,198,231,0.15)] outline-none transition-all placeholder:text-on-surface-variant"
         />
       </div>
 
@@ -70,7 +70,7 @@ const Courses = () => {
             className={`px-stack-md py-unit rounded-sm font-label-caps text-label-caps transition-colors ${
               activeCategory === cat
                 ? 'bg-primary-container/40 border border-primary text-primary'
-                : 'bg-surface-container border border-charcoal-gray text-on-surface-variant hover:border-[#D9D9D6] hover:text-on-surface'
+                : 'bg-surface-container border border-outline-variant text-on-surface-variant hover:border-primary hover:text-on-surface'
             }`}
           >
             {cat === 'All' ? 'ALL MISSIONS' : cat.toUpperCase()}
@@ -132,7 +132,7 @@ const Courses = () => {
                         style={{
                           width: `${progress}%`,
                           background: progress > 0
-                            ? 'linear-gradient(90deg, #bcc6e7 0%, rgba(188,198,231,0.2) 100%)'
+                            ? 'linear-gradient(90deg, var(--color-primary) 0%, rgba(188,198,231,0.2) 100%)'
                             : 'transparent',
                           boxShadow: progress > 0 ? '0 0 10px rgba(188, 198, 231, 0.8)' : 'none',
                         }}

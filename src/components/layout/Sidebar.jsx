@@ -3,7 +3,7 @@ import { useAuth } from '../../hooks/useAuth';
 import { supabase } from '../../lib/supabase';
 import {
   LogOut, User, Bell, Compass, Sun, MessageSquare, Briefcase,
-  Settings, HelpCircle, Star
+  Settings, HelpCircle, Star, Search
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import NotificationDropdown from '../notifications/NotificationDropdown';
@@ -12,6 +12,7 @@ const navItems = [
   { name: 'Galaxy View', path: '/galaxy', icon: Compass },
   { name: 'Star Systems', path: '/star-systems', icon: Sun },
   { name: 'Feed', path: '/feed', icon: MessageSquare },
+  { name: 'Search', path: '/search', icon: Search },
   { name: 'Profile', path: '/profile', icon: User },
   { name: 'Applications', path: '/applications', icon: Briefcase },
   { name: 'Messages', path: '/messages', icon: MessageSquare },

@@ -5,11 +5,13 @@ import Register from './pages/Auth/Register';
 import Landing from './pages/Landing/Landing';
 import { Feed } from './pages/Feed/Feed';
 import Profile from './pages/Profile/Profile';
+import PublicProfile from './pages/Profile/PublicProfile';
 import Applications from './pages/Applications/Applications';
 import Settings from './pages/Settings/Settings';
 import Messages from './pages/Messages/Messages';
 import Courses from './pages/Courses/Courses';
 import Galaxy from './pages/Galaxy/Galaxy';
+import SearchResults from './pages/Search/SearchResults';
 import CosmicBackground from './components/ui/CosmicBackground';
 import { GlobalErrorBoundary } from './components/error/GlobalErrorBoundary';
 import { SectionErrorBoundary } from './components/error/SectionErrorBoundary';
@@ -42,9 +44,11 @@ const App = () => {
           <Route element={<ProtectedLayout />}>
             <Route path="/feed" element={<SectionErrorBoundary section="Feed"><Feed /></SectionErrorBoundary>} />
             <Route path="/profile" element={<SectionErrorBoundary section="Profile"><Profile /></SectionErrorBoundary>} />
+            <Route path="/profile/:username" element={<SectionErrorBoundary section="PublicProfile"><PublicProfile /></SectionErrorBoundary>} />
             <Route path="/messages" element={<SectionErrorBoundary section="Messages"><Messages /></SectionErrorBoundary>} />
             <Route path="/applications" element={<SectionErrorBoundary section="Applications"><Applications /></SectionErrorBoundary>} />
             <Route path="/settings" element={<SectionErrorBoundary section="Settings"><Settings /></SectionErrorBoundary>} />
+            <Route path="/search" element={<SectionErrorBoundary section="Search"><SearchResults /></SectionErrorBoundary>} />
 
             {/* New celestial nav pages */}
             <Route path="/galaxy" element={<SectionErrorBoundary section="Galaxy"><Galaxy /></SectionErrorBoundary>} />

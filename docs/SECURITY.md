@@ -29,6 +29,11 @@ Supabase Auth uses **JWT bearer tokens** (not cookie-based sessions). The client
 | `conversations` | SELECT (participant), INSERT (creator) | **No UPDATE/DELETE** — see §2.3 |
 | `conversation_participants` | SELECT (own), INSERT (add participant) | **No UPDATE/DELETE** — see §2.3 |
 | `messages` | SELECT (participant), INSERT (sender), UPDATE (own edit, own soft-delete) | No hard DELETE (soft-delete via `deleted_at` UPDATE only) |
+| `experience` | SELECT (authenticated), ALL (own `profile_id`) | None — migration `00003_profile_sections.sql` |
+| `education` | SELECT (authenticated), ALL (own `profile_id`) | None — migration `00003_profile_sections.sql` |
+| `certifications` | SELECT (authenticated), ALL (own `profile_id`) | None — migration `00003_profile_sections.sql` |
+| `publications` | SELECT (authenticated), ALL (own `profile_id`) | None — migration `00003_profile_sections.sql` |
+
 
 ### 2.2 Intentional RLS gaps
 
@@ -72,6 +77,10 @@ The `notifications` table is a **schema placeholder**. No trigger, database func
 | `messages.conversation_id` | `public.conversations(id)` | CASCADE |
 | `messages.reply_to_id` | `public.messages(id)` | SET NULL |
 | `conversations.created_by` | `public.profiles(id)` | **SET NULL** ⚠️ |
+| `experience.profile_id` | `public.profiles(id)` | CASCADE |
+| `education.profile_id` | `public.profiles(id)` | CASCADE |
+| `certifications.profile_id` | `public.profiles(id)` | CASCADE |
+| `publications.profile_id` | `public.profiles(id)` | CASCADE |
 
 ### 3.2 Account deletion design (Edge Function)
 

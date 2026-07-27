@@ -41,3 +41,6 @@ export function subscribeToAuth(onChange) {
   })
   return () => subscription.unsubscribe()
 }
+
+// Namespace export for hooks that import { api }
+export const api = { getUser, signIn, signUp, signOut, updateUser, subscribeToAuth }

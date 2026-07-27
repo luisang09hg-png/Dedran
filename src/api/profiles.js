@@ -7,8 +7,15 @@ export function getProfile(userId) {
   })
 }
 
+export function getProfileByUsername(username) {
+  return supabase.from('profiles').select('*').eq('username', username).single().then(({ data, error }) => {
+    if (error) throw error
+    return data
+  })
+}
+
 export function updateProfile(profileData) {
-  return supabase.from('profiles').upsert(profileData).then(({ data, error }) => {
+  return supabase.from('profiles').upsert(profileData).select().single().then(({ data, error }) => {
     if (error) throw error
     return data
   })
@@ -32,3 +39,6 @@ export function uploadAvatar(userId, file) {
       return supabase.storage.from('avatars').getPublicUrl(data.path).then(({ data }) => data.publicUrl)
     })
 }
+
+// Namespace export for hooks that import { api }
+export const api = { getProfile, getProfileByUsername, updateProfile, getProfileStats, uploadAvatar }

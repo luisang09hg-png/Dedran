@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
 import { Search, X, Loader2, User, Briefcase, Hash, Filter, ChevronDown, MoreHorizontal } from 'lucide-react';
-import PostCard from '../feed/PostCard';
+import PostCard from '../../components/feed/PostCard';
 
 const SearchResults = () => {
   const [searchParams, setSearchParams] = useSearchParams();
