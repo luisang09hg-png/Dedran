@@ -8,12 +8,15 @@ import { useCertifications, useCreateCertification, useUpdateCertification, useD
 import { usePublications, useCreatePublication, useUpdatePublication, useDeletePublication } from '../../hooks/usePublications';
 import {
   Edit, Save, X, Camera, MapPin, Star, Loader2, Briefcase, Users, Eye,
-  Plus, Trash2, GraduationCap, Award, BookOpen, ExternalLink, Calendar
+  Plus, Trash2, GraduationCap, Award, BookOpen, ExternalLink, Calendar,
+  Globe, Link as LinkIcon, Sparkles, TrendingUp, CheckCircle, Lock
 } from 'lucide-react';
 import GlassCard from '../../components/ui/GlassCard';
 import Button from '../../components/ui/Button';
 import MetricCard from '../../components/ui/MetricCard';
 import EventHorizon from '../../components/ui/EventHorizon';
+import Badge from '../../components/ui/Badge';
+import Tabs from '../../components/ui/Tabs';
 
 const SKILL_SUGGESTIONS = [
   'React', 'TypeScript', 'Python', 'Node.js', 'Tailwind CSS',
@@ -405,44 +408,45 @@ const Profile = () => {
   return (
     <div className="pb-stack-lg">
       {/* Hero Banner with Event Horizon */}
-      <div className="relative h-48 md:h-56 w-full rounded-xl overflow-hidden mb-6 bg-gradient-to-br from-primary-container/40 via-surface-container to-surface">
+      <div className="relative h-56 md:h-64 w-full rounded-2xl overflow-hidden mb-6 cosmic-gradient">
         {bannerPreview ? (
           <img src={bannerPreview} alt="" className="w-full h-full object-cover" />
         ) : (
-          <div className="absolute inset-0 flex items-center justify-center opacity-40 pointer-events-none">
-            <EventHorizon variant="hero" size={280} />
+          <div className="absolute inset-0 flex items-center justify-center opacity-30 pointer-events-none">
+            <EventHorizon variant="hero" size={320} />
           </div>
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent" />
+        <div className="absolute inset-0 stardust-overlay opacity-20" />
         {editing && (
-          <label className="absolute bottom-3 right-3 w-9 h-9 bg-primary rounded-full flex items-center justify-center cursor-pointer hover:scale-105 transition-transform z-10">
-            <Camera size={16} className="text-on-primary" />
+          <label className="absolute bottom-4 right-4 w-10 h-10 bg-primary rounded-full flex items-center justify-center cursor-pointer hover:scale-105 transition-transform z-10 shadow-lg">
+            <Camera size={18} className="text-on-primary" />
             <input type="file" accept="image/*" onChange={handleBannerChange} className="absolute inset-0 opacity-0 cursor-pointer" />
           </label>
         )}
         {isUploadingBanner && (
-          <div className="absolute inset-0 bg-background/60 flex items-center justify-center z-20">
-            <EventHorizon variant="spinner" size={40} />
+          <div className="absolute inset-0 bg-background/70 flex items-center justify-center z-20">
+            <EventHorizon variant="spinner" size={48} />
           </div>
         )}
       </div>
 
       {/* Profile Header */}
-      <div className="relative z-10 -mt-16 md:-mt-20 flex flex-col md:flex-row items-center md:items-end gap-5 mb-stack-lg px-2">
+      <div className="relative z-10 -mt-20 md:-mt-24 flex flex-col md:flex-row items-center md:items-end gap-6 mb-stack-lg px-2">
         {/* Avatar with Event Horizon frame */}
         <div className="relative">
-          <EventHorizon variant="avatar" size={136}>
+          <EventHorizon variant="avatar" size={144}>
             {avatarPreview ? (
               <img src={avatarPreview} alt="" className="w-full h-full object-cover rounded-full" />
             ) : (
               <div className="w-full h-full bg-surface-variant flex items-center justify-center rounded-full">
-                <Users size={48} className="text-on-surface-variant/50" />
+                <Users size={52} className="text-on-surface-variant/50" />
               </div>
             )}
           </EventHorizon>
           {editing && (
-            <label className="absolute bottom-1 right-1 w-9 h-9 bg-primary rounded-full flex items-center justify-center cursor-pointer hover:scale-105 transition-transform z-10">
-              <Camera size={16} className="text-on-primary" />
+            <label className="absolute bottom-2 right-2 w-10 h-10 bg-primary rounded-full flex items-center justify-center cursor-pointer hover:scale-105 transition-transform z-10 shadow-lg">
+              <Camera size={18} className="text-on-primary" />
               <input type="file" accept="image/*" onChange={handleAvatarChange} className="absolute inset-0 opacity-0 cursor-pointer" />
             </label>
           )}
@@ -450,30 +454,36 @@ const Profile = () => {
 
         <div className="text-center md:text-left flex-1">
           {editing ? (
-            <div className="space-y-2">
+            <div className="space-y-3">
               <input name="full_name" {...form.register('full_name')} placeholder="Full Name"
-                className="w-full bg-background border border-outline-variant rounded px-3 py-2 text-on-surface text-headline-md focus:border-primary outline-none transition-all" />
+                className="w-full bg-background border border-outline-variant rounded-lg px-4 py-2.5 text-on-surface text-headline-md focus:border-primary focus:shadow-[0_0_0_2px_rgba(168,180,216,0.15)] outline-none transition-smooth" />
               {form.formState.errors.full_name && <p className="text-error text-body-sm">{form.formState.errors.full_name.message}</p>}
               <input name="username" {...form.register('username')} placeholder="@username"
-                className="w-full bg-background border border-outline-variant rounded px-3 py-2 text-on-surface text-body-sm focus:border-primary outline-none transition-all" />
+                className="w-full bg-background border border-outline-variant rounded-lg px-4 py-2 text-on-surface text-body-sm focus:border-primary focus:shadow-[0_0_0_2px_rgba(168,180,216,0.15)] outline-none transition-smooth" />
               {form.formState.errors.username && <p className="text-error text-body-sm">{form.formState.errors.username.message}</p>}
-              <input name="headline" {...form.register('headline')} placeholder="e.g. Lead Astrodynamics Researcher"
-                className="w-full bg-background border border-outline-variant rounded px-3 py-2 text-on-surface text-body-sm focus:border-primary outline-none transition-all" />
+              <input name="headline" {...form.register('headline')} placeholder="e.g. Full Stack Developer | Building the future"
+                className="w-full bg-background border border-outline-variant rounded-lg px-4 py-2 text-on-surface text-body-sm focus:border-primary focus:shadow-[0_0_0_2px_rgba(168,180,216,0.15)] outline-none transition-smooth" />
             </div>
           ) : (
             <>
-              <h1 className="font-display-lg-mobile md:font-display-lg text-on-surface">{formValues.full_name || profile?.full_name || 'User'}</h1>
-              <p className="font-headline-sm text-primary mt-1">{formValues.headline || profile?.headline}</p>
+              <div className="flex items-center justify-center md:justify-start gap-3 mb-2">
+                <h1 className="font-display-lg-mobile md:font-display-lg text-on-surface">{formValues.full_name || profile?.full_name || 'User'}</h1>
+                <Badge variant="outline" className="flex items-center gap-1">
+                  <CheckCircle size={12} />
+                  Verified
+                </Badge>
+              </div>
+              <p className="font-headline-sm text-primary mt-1 mb-2">{formValues.headline || profile?.headline}</p>
               {(formValues.location || profile?.location) && (
-                <p className="font-body-sm text-body-sm text-on-surface-variant mt-1 flex items-center justify-center md:justify-start gap-1">
+                <p className="font-body-sm text-body-sm text-on-surface-variant flex items-center justify-center md:justify-start gap-1.5">
                   <MapPin size={14} /> {formValues.location || profile?.location}
                 </p>
               )}
-              <div className="flex flex-wrap gap-2 justify-center md:justify-start mt-3">
-                {(formValues.skills?.length > 0 ? formValues.skills : profile?.skills || []).slice(0, 5).map((skill) => (
-                  <span key={skill} className="px-3 py-1 bg-primary-container/40 border border-nebula-stroke rounded-sm font-label-caps text-label-caps text-secondary-fixed">
-                    {skill.toUpperCase()}
-                  </span>
+              <div className="flex flex-wrap gap-2 justify-center md:justify-start mt-4">
+                {(formValues.skills?.length > 0 ? formValues.skills : profile?.skills || []).slice(0, 6).map((skill) => (
+                  <Badge key={skill} variant="secondary" className="font-label-caps text-label-caps">
+                    {skill}
+                  </Badge>
                 ))}
               </div>
             </>
@@ -486,12 +496,19 @@ const Profile = () => {
               <Button variant="ghost" onClick={() => { setEditing(false); setAvatarPreview(profile?.avatar_url || null); form.reset(); }}>
                 <X size={16} /> Cancel
               </Button>
-              <Button variant="primary" onClick={handleSave} disabled={isUpdating || isUploadingAvatar}>
-                {isUpdating || isUploadingAvatar ? <><Loader2 size={16} className="animate-spin" /> Saving</> : <><Save size={16} /> Save</>}
+              <Button variant="primary" onClick={handleSave} disabled={isUpdating || isUploadingAvatar} loading={isUpdating || isUploadingAvatar}>
+                <Save size={16} /> Save Changes
               </Button>
             </>
           ) : (
-            <Button variant="primary" onClick={() => setEditing(true)}><Edit size={16} /> Edit Profile</Button>
+            <>
+              <Button variant="secondary" size="sm">
+                <Eye size={16} /> View Public
+              </Button>
+              <Button variant="primary" onClick={() => setEditing(true)}>
+                <Edit size={16} /> Edit Profile
+              </Button>
+            </>
           )}
         </div>
       </div>
@@ -503,353 +520,441 @@ const Profile = () => {
         </div>
       )}
 
-      {/* Stats Row */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-gutter mb-stack-lg">
+      {/* Stats Row with CV Progress */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-gutter mb-stack-lg">
         <MetricCard value={(stats.connections || 0).toLocaleString()} label="Connections" icon={Users} />
         <MetricCard value={(certificationsQuery.data?.length || 0).toLocaleString()} label="Certifications" icon={Award} />
         <MetricCard value={(stats.applications || 0).toLocaleString()} label="Applications" icon={Briefcase} />
+        <GlassCard className="p-stack-md flex flex-col items-center justify-center min-h-[120px]">
+          <div className="flex items-center gap-2 mb-2">
+            <TrendingUp size={18} className="text-primary" />
+            <span className="font-label-caps text-label-caps text-on-surface-variant">Profile Strength</span>
+          </div>
+          <p className="font-data-heavy text-data-heavy text-primary mb-1">85%</p>
+          <div className="w-full h-2 bg-surface-container-highest rounded-full overflow-hidden">
+            <div className="h-full bg-gradient-to-r from-primary to-tertiary rounded-full" style={{ width: '85%' }} />
+          </div>
+        </GlassCard>
       </div>
 
       {/* Main Content */}
       <div className="grid grid-cols-1 md:grid-cols-12 gap-gutter">
         {/* Left Column — Tabs */}
         <div className="md:col-span-8 space-y-gutter">
-          {/* Tab Bar */}
-          <div className="border-b border-nebula-stroke flex gap-6 overflow-x-auto">
-            {['about', 'experience', 'publications', 'skills'].map((tab) => (
-              <button
-                key={tab}
-                onClick={() => setActiveTab(tab)}
-                className={`pb-3 border-b-2 font-headline-sm text-headline-sm transition-colors capitalize whitespace-nowrap ${
-                  activeTab === tab ? 'border-primary text-primary' : 'border-transparent text-on-surface-variant hover:text-on-surface'
-                }`}
-              >
-                {tab}
-              </button>
-            ))}
-          </div>
+          <Tabs defaultValue="about" className="w-full">
+            <Tabs.List>
+              <Tabs.Trigger value="about">About</Tabs.Trigger>
+              <Tabs.Trigger value="experience">Experience</Tabs.Trigger>
+              <Tabs.Trigger value="publications">Publications</Tabs.Trigger>
+              <Tabs.Trigger value="skills">Skills</Tabs.Trigger>
+            </Tabs.List>
 
-          {/* ═══ About Tab ═══ */}
-          {activeTab === 'about' && (
-            <GlassCard className="p-stack-lg">
-              <h3 className="font-headline-md text-headline-md text-on-surface mb-4">Mission Statement</h3>
-              {editing ? (
-                <>
-                  <textarea {...form.register('bio')} rows={4} placeholder="Tell us about yourself..."
-                    className="w-full bg-background border border-outline-variant rounded px-4 py-3 text-on-surface focus:border-primary outline-none resize-none font-body-md text-body-md mb-4 transition-all" />
-                  {form.formState.errors.bio && <p className="text-error text-body-sm mb-2">{form.formState.errors.bio.message}</p>}
-                </>
-              ) : (
-                <p className="font-body-lg text-body-lg text-on-surface-variant leading-relaxed mb-6">
-                  {formValues.bio || profile?.bio || 'No bio yet.'}
-                </p>
-              )}
-              <div className="border-t border-nebula-stroke pt-6">
-                <h4 className="font-label-caps text-label-caps text-on-surface-variant mb-3">Current Coordinates</h4>
-                {editing ? (
-                  <>
-                    <input {...form.register('location')} placeholder="City, Country"
-                      className="w-full bg-background border border-outline-variant rounded px-3 py-2 text-on-surface focus:border-primary outline-none transition-all" />
-                  </>
-                ) : (
-                  <div className="flex items-center gap-2">
-                    <MapPin size={16} className="text-primary" />
-                    <span className="font-body-md text-body-md text-on-surface">{formValues.location || profile?.location || 'Not set'}</span>
+            <Tabs.Content>
+              <Tabs.Panel value="about">
+                <GlassCard className="p-stack-lg">
+                  <div className="flex items-center justify-between mb-6">
+                    <h3 className="font-headline-md text-headline-md text-on-surface flex items-center gap-2">
+                      <Sparkles size={20} className="text-primary" />
+                      About
+                    </h3>
                   </div>
-                )}
-              </div>
-
-              {/* Links section */}
-              {editing && (
-                <div className="border-t border-nebula-stroke pt-6 mt-6 space-y-3">
-                  <h4 className="font-label-caps text-label-caps text-on-surface-variant mb-3">External Links</h4>
-                  <input {...form.register('website_url')} placeholder="Website URL"
-                    className="w-full bg-background border border-outline-variant rounded px-3 py-2 text-on-surface text-body-sm focus:border-primary outline-none transition-all" />
-                  <input {...form.register('linkedin_url')} placeholder="LinkedIn URL"
-                    className="w-full bg-background border border-outline-variant rounded px-3 py-2 text-on-surface text-body-sm focus:border-primary outline-none transition-all" />
-                  <input {...form.register('github_url')} placeholder="GitHub URL"
-                    className="w-full bg-background border border-outline-variant rounded px-3 py-2 text-on-surface text-body-sm focus:border-primary outline-none transition-all" />
-                  <input {...form.register('twitter_url')} placeholder="Twitter / X URL"
-                    className="w-full bg-background border border-outline-variant rounded px-3 py-2 text-on-surface text-body-sm focus:border-primary outline-none transition-all" />
-                </div>
-              )}
-            </GlassCard>
-          )}
-
-          {/* ═══ Experience Tab ═══ */}
-          {activeTab === 'experience' && (
-            <div className="space-y-gutter">
-              {/* Experience Section */}
-              <GlassCard className="p-stack-lg">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="font-headline-md text-headline-md text-on-surface flex items-center gap-2">
-                    <Briefcase size={20} className="text-primary" /> Experience
-                  </h3>
-                  {!addingExp && (
-                    <Button variant="ghost" size="sm" onClick={() => { setExpForm({ ...emptyExperience }); setEditingExp(null); setAddingExp(true); }}>
-                      <Plus size={14} /> Add
-                    </Button>
+                  {editing ? (
+                    <>
+                      <TextareaField
+                        label="Bio"
+                        name="bio"
+                        value={formValues.bio || ''}
+                        onChange={(e) => form.setValue('bio', e.target.value)}
+                        placeholder="Tell us about yourself and your professional journey..."
+                        rows={4}
+                      />
+                      {form.formState.errors.bio && <p className="text-error text-body-sm mb-2">{form.formState.errors.bio.message}</p>}
+                    </>
+                  ) : (
+                    <p className="font-body-lg text-body-lg text-on-surface-variant leading-relaxed mb-6">
+                      {formValues.bio || profile?.bio || 'No bio yet. Add your bio to let others know more about you.'}
+                    </p>
                   )}
-                </div>
+                  <div className="border-t border-nebula-stroke pt-6">
+                    <h4 className="font-label-caps text-label-caps text-on-surface-variant mb-3 flex items-center gap-2">
+                      <MapPin size={14} className="text-primary" />
+                      Location
+                    </h4>
+                    {editing ? (
+                      <InputField
+                        name="location"
+                        value={formValues.location || ''}
+                        onChange={( e) => form.setValue('location', e.target.value)}
+                        placeholder="City, Country"
+                      />
+                    ) : (
+                      <div className="flex items-center gap-2">
+                        <span className="font-body-md text-body-md text-on-surface">{formValues.location || profile?.location || 'Not set'}</span>
+                      </div>
+                    )}
+                  </div>
 
-                {addingExp && (
-                  <CrudForm
-                    fields={expFields}
-                    data={expForm}
-                    onChange={handleInputChange(setExpForm)}
-                    onSave={saveExperience}
-                    onCancel={() => { setAddingExp(false); setEditingExp(null); }}
-                    saving={createExp.isPending || updateExp.isPending}
-                  />
-                )}
-
-                {experienceQuery.isLoading ? (
-                  <div className="flex justify-center py-6"><EventHorizon variant="spinner" size={32} /></div>
-                ) : (experienceQuery.data || []).length === 0 ? (
-                  <p className="font-body-md text-body-md text-on-surface-variant py-4">No experience entries yet.</p>
-                ) : (
-                  (experienceQuery.data || []).map(item => (
-                    <CrudItem key={item.id} item={item} icon={Briefcase} fields={expFields}
-                      onEdit={() => startEditExp(item)}
-                      onDelete={() => deleteExp.mutate({ id: item.id, profileId: userId })}
-                      deleting={deleteExp.isPending}
-                    />
-                  ))
-                )}
-              </GlassCard>
-
-              {/* Education Section */}
-              <GlassCard className="p-stack-lg">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="font-headline-md text-headline-md text-on-surface flex items-center gap-2">
-                    <GraduationCap size={20} className="text-primary" /> Education
-                  </h3>
-                  {!addingEdu && (
-                    <Button variant="ghost" size="sm" onClick={() => { setEduForm({ ...emptyEducation }); setEditingEdu(null); setAddingEdu(true); }}>
-                      <Plus size={14} /> Add
-                    </Button>
-                  )}
-                </div>
-
-                {addingEdu && (
-                  <CrudForm
-                    fields={eduFields}
-                    data={eduForm}
-                    onChange={handleInputChange(setEduForm)}
-                    onSave={saveEducation}
-                    onCancel={() => { setAddingEdu(false); setEditingEdu(null); }}
-                    saving={createEdu.isPending || updateEdu.isPending}
-                  />
-                )}
-
-                {educationQuery.isLoading ? (
-                  <div className="flex justify-center py-6"><EventHorizon variant="spinner" size={32} /></div>
-                ) : (educationQuery.data || []).length === 0 ? (
-                  <p className="font-body-md text-body-md text-on-surface-variant py-4">No education entries yet.</p>
-                ) : (
-                  (educationQuery.data || []).map(item => (
-                    <CrudItem key={item.id} item={{ ...item, title: item.degree, company: item.institution }} icon={GraduationCap} fields={eduFields}
-                      onEdit={() => startEditEdu(item)}
-                      onDelete={() => deleteEdu.mutate({ id: item.id, profileId: userId })}
-                      deleting={deleteEdu.isPending}
-                    />
-                  ))
-                )}
-              </GlassCard>
-
-              {/* Certifications Section */}
-              <GlassCard className="p-stack-lg">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="font-headline-md text-headline-md text-on-surface flex items-center gap-2">
-                    <Award size={20} className="text-primary" /> Certifications
-                  </h3>
-                  {!addingCert && (
-                    <Button variant="ghost" size="sm" onClick={() => { setCertForm({ ...emptyCertification }); setEditingCert(null); setAddingCert(true); }}>
-                      <Plus size={14} /> Add
-                    </Button>
-                  )}
-                </div>
-
-                {addingCert && (
-                  <CrudForm
-                    fields={certFields}
-                    data={certForm}
-                    onChange={handleInputChange(setCertForm)}
-                    onSave={saveCertification}
-                    onCancel={() => { setAddingCert(false); setEditingCert(null); }}
-                    saving={createCert.isPending || updateCert.isPending}
-                  />
-                )}
-
-                {certificationsQuery.isLoading ? (
-                  <div className="flex justify-center py-6"><EventHorizon variant="spinner" size={32} /></div>
-                ) : (certificationsQuery.data || []).length === 0 ? (
-                  <p className="font-body-md text-body-md text-on-surface-variant py-4">No certifications yet.</p>
-                ) : (
-                  (certificationsQuery.data || []).map(item => (
-                    <CrudItem key={item.id} item={item} icon={Award} fields={certFields}
-                      onEdit={() => startEditCert(item)}
-                      onDelete={() => deleteCert.mutate({ id: item.id, profileId: userId })}
-                      deleting={deleteCert.isPending}
-                    />
-                  ))
-                )}
-              </GlassCard>
-            </div>
-          )}
-
-          {/* ═══ Publications Tab ═══ */}
-          {activeTab === 'publications' && (
-            <GlassCard className="p-stack-lg">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="font-headline-md text-headline-md text-on-surface flex items-center gap-2">
-                  <BookOpen size={20} className="text-primary" /> Publications
-                </h3>
-                {!addingPub && (
-                  <Button variant="ghost" size="sm" onClick={() => { setPubForm({ ...emptyPublication }); setEditingPub(null); setAddingPub(true); }}>
-                    <Plus size={14} /> Add
-                  </Button>
-                )}
-              </div>
-
-              {addingPub && (
-                <CrudForm
-                  fields={pubFields}
-                  data={pubForm}
-                  onChange={handleInputChange(setPubForm)}
-                  onSave={savePublication}
-                  onCancel={() => { setAddingPub(false); setEditingPub(null); }}
-                  saving={createPub.isPending || updatePub.isPending}
-                />
-              )}
-
-              {publicationsQuery.isLoading ? (
-                <div className="flex justify-center py-6"><EventHorizon variant="spinner" size={32} /></div>
-              ) : (publicationsQuery.data || []).length === 0 ? (
-                <p className="font-body-md text-body-md text-on-surface-variant py-4">No publications yet. Share your articles, projects, and research.</p>
-              ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
-                  {(publicationsQuery.data || []).map(pub => (
-                    <div key={pub.id} className="bg-surface-container/60 rounded-lg border border-nebula-stroke p-4 group hover:border-primary/30 transition-all">
-                      <h4 className="font-headline-sm text-headline-sm text-on-surface mb-1">{pub.title}</h4>
-                      {pub.summary && <p className="font-body-sm text-body-sm text-on-surface-variant mb-3 line-clamp-2">{pub.summary}</p>}
-                      {pub.tags?.length > 0 && (
-                        <div className="flex flex-wrap gap-1 mb-3">
-                          {pub.tags.map(tag => (
-                            <span key={tag} className="px-2 py-0.5 rounded-sm bg-primary-container/40 text-primary font-label-caps text-[10px]">{tag}</span>
-                          ))}
-                        </div>
-                      )}
-                      <div className="flex items-center justify-between">
-                        {pub.url && (
-                          <a href={pub.url} target="_blank" rel="noopener noreferrer"
-                            className="inline-flex items-center gap-1 font-label-caps text-label-caps text-primary hover:text-on-surface transition-colors">
-                            <ExternalLink size={12} /> View
-                          </a>
-                        )}
-                        <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity ml-auto">
-                          <button onClick={() => startEditPub(pub)} className="p-1.5 rounded hover:bg-primary-container/30 text-on-surface-variant hover:text-primary transition-colors">
-                            <Edit size={14} />
-                          </button>
-                          <button onClick={() => deletePub.mutate({ id: pub.id, profileId: userId })} className="p-1.5 rounded hover:bg-error-container/30 text-on-surface-variant hover:text-error transition-colors">
-                            <Trash2 size={14} />
-                          </button>
-                        </div>
+                  {/* Links section */}
+                  {editing && (
+                    <div className="border-t border-nebula-stroke pt-6 mt-6 space-y-4">
+                      <h4 className="font-label-caps text-label-caps text-on-surface-variant mb-4 flex items-center gap-2">
+                        <LinkIcon size={14} className="text-primary" />
+                        External Links
+                      </h4>
+                      <div className="space-y-3">
+                        <InputField
+                          name="website_url"
+                          value={formValues.website_url || ''}
+                          onChange={(e) => form.setValue('website_url', e.target.value)}
+                          placeholder="Website URL"
+                        />
+                        <InputField
+                          name="linkedin_url"
+                          value={formValues.linkedin_url || ''}
+                          onChange={(e) => form.setValue('linkedin_url', e.target.value)}
+                          placeholder="LinkedIn URL"
+                        />
+                        <InputField
+                          name="github_url"
+                          value={formValues.github_url || ''}
+                          onChange={(e) => form.setValue('github_url', e.target.value)}
+                          placeholder="GitHub URL"
+                        />
+                        <InputField
+                          name="twitter_url"
+                          value={formValues.twitter_url || ''}
+                          onChange={(e) => form.setValue('twitter_url', e.target.value)}
+                          placeholder="Twitter / X URL"
+                        />
                       </div>
                     </div>
-                  ))}
-                </div>
-              )}
-            </GlassCard>
-          )}
+                  )}
 
-          {/* ═══ Skills Tab ═══ */}
-          {activeTab === 'skills' && (
-            <GlassCard className="p-stack-lg">
-              <h3 className="font-headline-md text-headline-md text-on-surface mb-4">Skills</h3>
-              {editing && (
-                <div className="space-y-4 mb-4">
-                  <div className="flex flex-wrap gap-2">
-                    {(formValues.skills || []).map((skill) => (
-                      <span key={skill} className="inline-flex items-center gap-1 px-3 py-1 rounded-sm bg-primary-container/40 text-primary font-label-caps text-label-caps">
-                        {skill}
-                        <button onClick={() => removeSkill(skill)} className="hover:bg-primary/20 rounded-full p-0.5"><X size={12} /></button>
-                      </span>
-                    ))}
-                  </div>
-                  <div className="flex flex-wrap gap-2">
-                    {SKILL_SUGGESTIONS.filter(s => !(formValues.skills || []).includes(s)).slice(0, 10).map((skill) => (
-                      <button key={skill} onClick={() => addSkill(skill)}
-                        className="px-3 py-1 rounded-sm bg-surface-container border border-outline-variant text-on-surface-variant font-label-caps text-label-caps hover:border-primary hover:text-primary transition-colors">
-                        + {skill}
-                      </button>
-                    ))}
-                  </div>
-                  <div className="flex gap-2">
-                    <input value={newSkill} onChange={(e) => setNewSkill(e.target.value)}
-                      onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), handleSkillAdd())}
-                      placeholder="Add custom skill..."
-                      className="flex-1 bg-background border border-outline-variant rounded px-3 py-2 text-on-surface focus:border-primary outline-none text-body-sm transition-all" />
-                    <Button variant="primary" size="sm" onClick={handleSkillAdd} disabled={!newSkill.trim()}>Add</Button>
-                  </div>
+                  {!editing && (profile?.website_url || profile?.linkedin_url || profile?.github_url || profile?.twitter_url) && (
+                    <div className="border-t border-nebula-stroke pt-6 mt-6">
+                      <h4 className="font-label-caps text-label-caps text-on-surface-variant mb-4 flex items-center gap-2">
+                        <LinkIcon size={14} className="text-primary" />
+                        Links
+                      </h4>
+                      <div className="flex flex-wrap gap-3">
+                        {profile?.website_url && (
+                          <a href={profile.website_url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-primary hover:text-on-surface transition-smooth">
+                            <Globe size={16} /> Website
+                          </a>
+                        )}
+                        {profile?.linkedin_url && (
+                          <a href={profile.linkedin_url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-primary hover:text-on-surface transition-smooth">
+                            <Globe size={16} /> LinkedIn
+                          </a>
+                        )}
+                        {profile?.github_url && (
+                          <a href={profile.github_url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-primary hover:text-on-surface transition-smooth">
+                            <Globe size={16} /> GitHub
+                          </a>
+                        )}
+                        {profile?.twitter_url && (
+                          <a href={profile.twitter_url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-primary hover:text-on-surface transition-smooth">
+                            <Globe size={16} /> Twitter
+                          </a>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                </GlassCard>
+              </Tabs.Panel>
+
+              <Tabs.Panel value="experience">
+                <div className="space-y-gutter">
+                  {/* Experience Section */}
+                  <GlassCard className="p-stack-lg">
+                    <div className="flex items-center justify-between mb-6">
+                      <h3 className="font-headline-md text-headline-md text-on-surface flex items-center gap-2">
+                        <Briefcase size={20} className="text-primary" /> Experience
+                      </h3>
+                      {!addingExp && (
+                        <Button variant="ghost" size="sm" onClick={() => { setExpForm({ ...emptyExperience }); setEditingExp(null); setAddingExp(true); }}>
+                          <Plus size={14} /> Add
+                        </Button>
+                      )}
+                    </div>
+
+                    {addingExp && (
+                      <CrudForm
+                        fields={expFields}
+                        data={expForm}
+                        onChange={handleInputChange(setExpForm)}
+                        onSave={saveExperience}
+                        onCancel={() => { setAddingExp(false); setEditingExp(null); }}
+                        saving={createExp.isPending || updateExp.isPending}
+                      />
+                    )}
+
+                    {experienceQuery.isLoading ? (
+                      <div className="flex justify-center py-6"><EventHorizon variant="spinner" size={32} /></div>
+                    ) : (experienceQuery.data || []).length === 0 ? (
+                      <p className="font-body-md text-body-md text-on-surface-variant py-4">No experience entries yet. Add your work history.</p>
+                    ) : (
+                      (experienceQuery.data || []).map(item => (
+                        <CrudItem key={item.id} item={item} icon={Briefcase} fields={expFields}
+                          onEdit={() => startEditExp(item)}
+                          onDelete={() => deleteExp.mutate({ id: item.id, profileId: userId })}
+                          deleting={deleteExp.isPending}
+                        />
+                      ))
+                    )}
+                  </GlassCard>
+
+                  {/* Education Section */}
+                  <GlassCard className="p-stack-lg">
+                    <div className="flex items-center justify-between mb-6">
+                      <h3 className="font-headline-md text-headline-md text-on-surface flex items-center gap-2">
+                        <GraduationCap size={20} className="text-primary" /> Education
+                      </h3>
+                      {!addingEdu && (
+                        <Button variant="ghost" size="sm" onClick={() => { setEduForm({ ...emptyEducation }); setEditingEdu(null); setAddingEdu(true); }}>
+                          <Plus size={14} /> Add
+                        </Button>
+                      )}
+                    </div>
+
+                    {addingEdu && (
+                      <CrudForm
+                        fields={eduFields}
+                        data={eduForm}
+                        onChange={handleInputChange(setEduForm)}
+                        onSave={saveEducation}
+                        onCancel={() => { setAddingEdu(false); setEditingEdu(null); }}
+                        saving={createEdu.isPending || updateEdu.isPending}
+                      />
+                    )}
+
+                    {educationQuery.isLoading ? (
+                      <div className="flex justify-center py-6"><EventHorizon variant="spinner" size={32} /></div>
+                    ) : (educationQuery.data || []).length === 0 ? (
+                      <p className="font-body-md text-body-md text-on-surface-variant py-4">No education entries yet. Add your academic background.</p>
+                    ) : (
+                      (educationQuery.data || []).map(item => (
+                        <CrudItem key={item.id} item={{ ...item, title: item.degree, company: item.institution }} icon={GraduationCap} fields={eduFields}
+                          onEdit={() => startEditEdu(item)}
+                          onDelete={() => deleteEdu.mutate({ id: item.id, profileId: userId })}
+                          deleting={deleteEdu.isPending}
+                        />
+                      ))
+                    )}
+                  </GlassCard>
+
+                  {/* Certifications Section */}
+                  <GlassCard className="p-stack-lg">
+                    <div className="flex items-center justify-between mb-6">
+                      <h3 className="font-headline-md text-headline-md text-on-surface flex items-center gap-2">
+                        <Award size={20} className="text-primary" /> Certifications
+                      </h3>
+                      {!addingCert && (
+                        <Button variant="ghost" size="sm" onClick={() => { setCertForm({ ...emptyCertification }); setEditingCert(null); setAddingCert(true); }}>
+                          <Plus size={14} /> Add
+                        </Button>
+                      )}
+                    </div>
+
+                    {addingCert && (
+                      <CrudForm
+                        fields={certFields}
+                        data={certForm}
+                        onChange={handleInputChange(setCertForm)}
+                        onSave={saveCertification}
+                        onCancel={() => { setAddingCert(false); setEditingCert(null); }}
+                        saving={createCert.isPending || updateCert.isPending}
+                      />
+                    )}
+
+                    {certificationsQuery.isLoading ? (
+                      <div className="flex justify-center py-6"><EventHorizon variant="spinner" size={32} /></div>
+                    ) : (certificationsQuery.data || []).length === 0 ? (
+                      <p className="font-body-md text-body-md text-on-surface-variant py-4">No certifications yet. Add your professional certifications.</p>
+                    ) : (
+                      (certificationsQuery.data || []).map(item => (
+                        <CrudItem key={item.id} item={item} icon={Award} fields={certFields}
+                          onEdit={() => startEditCert(item)}
+                          onDelete={() => deleteCert.mutate({ id: item.id, profileId: userId })}
+                          deleting={deleteCert.isPending}
+                        />
+                      ))
+                    )}
+                  </GlassCard>
                 </div>
-              )}
-              <div className="flex flex-wrap gap-2">
-                {(formValues.skills?.length > 0 ? formValues.skills : profile?.skills || []).map((skill) => (
-                  <span key={skill} className="px-3 py-1 rounded-sm bg-primary-container/40 border border-nebula-stroke text-primary font-label-caps text-label-caps">
-                    {skill}
-                  </span>
-                ))}
-                {(!profile?.skills || profile.skills.length === 0) && !(formValues.skills?.length > 0) && !editing && (
-                  <p className="font-body-md text-body-md text-on-surface-variant">No skills added yet.</p>
-                )}
-              </div>
-            </GlassCard>
-          )}
+              </Tabs.Panel>
+
+              <Tabs.Panel value="publications">
+                <GlassCard className="p-stack-lg">
+                  <div className="flex items-center justify-between mb-6">
+                    <h3 className="font-headline-md text-headline-md text-on-surface flex items-center gap-2">
+                      <BookOpen size={20} className="text-primary" /> Publications
+                    </h3>
+                    {!addingPub && (
+                      <Button variant="ghost" size="sm" onClick={() => { setPubForm({ ...emptyPublication }); setEditingPub(null); setAddingPub(true); }}>
+                        <Plus size={14} /> Add
+                      </Button>
+                    )}
+                  </div>
+
+                  {addingPub && (
+                    <CrudForm
+                      fields={pubFields}
+                      data={pubForm}
+                      onChange={handleInputChange(setPubForm)}
+                      onSave={savePublication}
+                      onCancel={() => { setAddingPub(false); setEditingPub(null); }}
+                      saving={createPub.isPending || updatePub.isPending}
+                    />
+                  )}
+
+                  {publicationsQuery.isLoading ? (
+                    <div className="flex justify-center py-6"><EventHorizon variant="spinner" size={32} /></div>
+                  ) : (publicationsQuery.data || []).length === 0 ? (
+                    <p className="font-body-md text-body-md text-on-surface-variant py-4">No publications yet. Share your articles, projects, and research.</p>
+                  ) : (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
+                      {(publicationsQuery.data || []).map(pub => (
+                        <div key={pub.id} className="glass-panel p-4 group hover:border-primary/30 transition-smooth">
+                          <h4 className="font-headline-sm text-headline-sm text-on-surface mb-2">{pub.title}</h4>
+                          {pub.summary && <p className="font-body-sm text-body-sm text-on-surface-variant mb-3 line-clamp-2">{pub.summary}</p>}
+                          {pub.tags?.length > 0 && (
+                            <div className="flex flex-wrap gap-1 mb-3">
+                              {pub.tags.map(tag => (
+                                <Badge key={tag} variant="outline" className="text-xs">{tag}</Badge>
+                              ))}
+                            </div>
+                          )}
+                          <div className="flex items-center justify-between">
+                            {pub.url && (
+                              <a href={pub.url} target="_blank" rel="noopener noreferrer"
+                                className="inline-flex items-center gap-1 font-label-caps text-label-caps text-primary hover:text-on-surface transition-colors">
+                                <ExternalLink size={12} /> View
+                              </a>
+                            )}
+                            <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity ml-auto">
+                              <button onClick={() => startEditPub(pub)} className="p-1.5 rounded hover:bg-primary-container/30 text-on-surface-variant hover:text-primary transition-colors">
+                                <Edit size={14} />
+                              </button>
+                              <button onClick={() => deletePub.mutate({ id: pub.id, profileId: userId })} className="p-1.5 rounded hover:bg-error-container/30 text-on-surface-variant hover:text-error transition-colors">
+                                <Trash2 size={14} />
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </GlassCard>
+              </Tabs.Panel>
+
+              <Tabs.Panel value="skills">
+                <GlassCard className="p-stack-lg">
+                  <div className="flex items-center justify-between mb-6">
+                    <h3 className="font-headline-md text-headline-md text-on-surface flex items-center gap-2">
+                      <Sparkles size={20} className="text-primary" /> Skills
+                    </h3>
+                  </div>
+                  {editing && (
+                    <div className="space-y-4 mb-6 p-4 bg-surface-container/50 rounded-lg">
+                      <div className="flex flex-wrap gap-2">
+                        {(formValues.skills || []).map((skill) => (
+                          <Badge key={skill} variant="secondary" className="flex items-center gap-1">
+                            {skill}
+                            <button onClick={() => removeSkill(skill)} className="hover:bg-primary/20 rounded-full p-0.5"><X size={12} /></button>
+                          </Badge>
+                        ))}
+                      </div>
+                      <div className="flex flex-wrap gap-2">
+                        {SKILL_SUGGESTIONS.filter(s => !(formValues.skills || []).includes(s)).slice(0, 10).map((skill) => (
+                          <button key={skill} onClick={() => addSkill(skill)}
+                            className="px-3 py-1 rounded-sm bg-surface-container border border-outline-variant text-on-surface-variant font-label-caps text-label-caps hover:border-primary hover:text-primary transition-smooth">
+                            + {skill}
+                          </button>
+                        ))}
+                      </div>
+                      <div className="flex gap-2">
+                        <input value={newSkill} onChange={(e) => setNewSkill(e.target.value)}
+                          onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), handleSkillAdd())}
+                          placeholder="Add custom skill..."
+                          className="flex-1 bg-background border border-outline-variant rounded-lg px-4 py-2 text-on-surface focus:border-primary focus:shadow-[0_0_0_2px_rgba(168,180,216,0.15)] outline-none text-body-sm transition-smooth" />
+                        <Button variant="primary" size="sm" onClick={handleSkillAdd} disabled={!newSkill.trim()}>Add</Button>
+                      </div>
+                    </div>
+                  )}
+                  <div className="flex flex-wrap gap-2">
+                    {(formValues.skills?.length > 0 ? formValues.skills : profile?.skills || []).map((skill) => (
+                      <Badge key={skill} variant="secondary" className="font-label-caps text-label-caps">
+                        {skill}
+                      </Badge>
+                    ))}
+                    {(!profile?.skills || profile.skills.length === 0) && !(formValues.skills?.length > 0) && !editing && (
+                      <p className="font-body-md text-body-md text-on-surface-variant">No skills added yet. Edit your profile to add skills.</p>
+                    )}
+                  </div>
+                </GlassCard>
+              </Tabs.Panel>
+            </Tabs.Content>
+          </Tabs>
         </div>
 
         {/* Right Column — Sidebar Panels */}
         <div className="md:col-span-4 space-y-gutter">
-          {/* Certifications Summary */}
+          {/* Profile Strength */}
           <GlassCard className="p-stack-md">
-            <h3 className="font-headline-md text-headline-md text-on-surface mb-6 pb-2 border-b border-nebula-stroke flex items-center gap-2">
-              <Award size={18} className="text-primary" /> Certifications
-            </h3>
-            {certificationsQuery.isLoading ? (
-              <div className="flex justify-center py-4"><EventHorizon variant="spinner" size={24} /></div>
-            ) : (certificationsQuery.data || []).length === 0 ? (
-              <p className="font-body-sm text-body-sm text-on-surface-variant">No certifications yet.</p>
-            ) : (
-              <div className="space-y-3">
-                {(certificationsQuery.data || []).slice(0, 4).map(cert => (
-                  <div key={cert.id} className="flex items-start gap-2">
-                    <Award size={14} className="text-primary mt-0.5 shrink-0" />
-                    <div>
-                      <p className="font-body-sm text-body-sm text-on-surface">{cert.title}</p>
-                      <p className="font-label-caps text-label-caps text-on-surface-variant">{cert.issuer}</p>
-                    </div>
-                  </div>
-                ))}
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="font-headline-sm text-headline-sm text-on-surface flex items-center gap-2">
+                <TrendingUp size={18} className="text-primary" />
+                Profile Strength
+              </h3>
+              <Badge variant="success">85%</Badge>
+            </div>
+            <div className="space-y-3">
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-on-surface-variant">Basic Info</span>
+                <CheckCircle size={16} className="text-primary" />
               </div>
-            )}
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-on-surface-variant">Experience</span>
+                <CheckCircle size={16} className="text-primary" />
+              </div>
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-on-surface-variant">Education</span>
+                <CheckCircle size={16} className="text-primary" />
+              </div>
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-on-surface-variant">Skills</span>
+                <CheckCircle size={16} className="text-primary" />
+              </div>
+            </div>
+            <Button variant="secondary" size="sm" className="w-full mt-4">
+              Improve Profile
+            </Button>
           </GlassCard>
 
           {/* Recent Activity */}
           <GlassCard className="p-stack-md">
-            <h3 className="font-headline-sm text-headline-sm text-on-surface mb-4">Recent Activity</h3>
+            <h3 className="font-headline-sm text-headline-sm text-on-surface mb-4 flex items-center gap-2">
+              <Sparkles size={18} className="text-primary" />
+              Recent Activity
+            </h3>
             <ul className="space-y-4">
               <li className="flex gap-3">
-                <Briefcase size={16} className="text-on-surface-variant shrink-0 mt-0.5" />
+                <div className="w-8 h-8 rounded-full bg-primary-container/40 flex items-center justify-center shrink-0">
+                  <Briefcase size={14} className="text-primary" />
+                </div>
                 <div>
                   <p className="font-body-sm text-body-sm text-on-surface">Profile updated</p>
-                  <p className="font-label-caps text-label-caps text-primary mt-0.5">Today</p>
+                  <p className="font-label-caps text-label-caps text-on-surface-variant mt-0.5">Today</p>
                 </div>
               </li>
               <li className="flex gap-3">
-                <Users size={16} className="text-on-surface-variant shrink-0 mt-0.5" />
+                <div className="w-8 h-8 rounded-full bg-primary-container/40 flex items-center justify-center shrink-0">
+                  <Users size={14} className="text-primary" />
+                </div>
                 <div>
                   <p className="font-body-sm text-body-sm text-on-surface">Application submitted</p>
-                  <p className="font-label-caps text-label-caps text-primary mt-0.5">3 days ago</p>
+                  <p className="font-label-caps text-label-caps text-on-surface-variant mt-0.5">3 days ago</p>
                 </div>
               </li>
             </ul>

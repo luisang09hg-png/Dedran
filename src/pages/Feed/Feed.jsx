@@ -1,15 +1,19 @@
-import { useEffect, useCallback } from 'react'
+import { useEffect, useCallback, useState } from 'react'
 import { useAuth } from '../../hooks/useAuth'
 import { usePosts, useToggleLike } from '../../hooks/usePosts'
 import { subscribeToNewPosts } from '../../api/posts'
 import PostCard from '../../components/feed/PostCard'
 import { CreatePost as CreatePostComponent } from '../../components/posts/CreatePost'
 import EventHorizon from '../../components/ui/EventHorizon'
-import { Users } from 'lucide-react'
+import EmptyState from '../../components/ui/EmptyState'
+import Skeleton from '../../components/ui/Skeleton'
+import Badge from '../../components/ui/Badge'
+import { Users, Sparkles, TrendingUp, Clock, Filter } from 'lucide-react'
 
 export const Feed = () => {
   const { user } = useAuth()
   const userId = user?.id
+  const [sortBy, setSortBy] = useState('recent')
   const {
     data,
     isLoading,
@@ -77,56 +81,121 @@ export const Feed = () => {
 
   return (
     <div className="mx-auto max-w-2xl space-y-6">
+      {/* Feed Header */}
+      <div className="flex items-center justify-between mb-6">
+        <div>
+          <h1 className="font-headline-md text-headline-md text-on-surface flex items-center gap-2">
+            <Sparkles size={24} className="text-primary" />
+            Cosmic Feed
+          </h1>
+          <p className="font-body-sm text-body-sm text-on-surface-variant mt-1">
+            Discover what's happening in your professional galaxy
+          </p>
+        </div>
+        <div className="flex items-center gap-2">
+          <Filter size={18} className="text-on-surface-variant" />
+          <select
+            value={sortBy}
+            onChange={(e) => setSortBy(e.target.value)}
+            className="bg-surface-container border border-outline-variant rounded-lg px-3 py-1.5 text-on-surface text-sm focus:border-primary focus:outline-none transition-smooth"
+          >
+            <option value="recent">Recent</option>
+            <option value="relevant">Relevant</option>
+            <option value="activity">Activity</option>
+          </select>
+        </div>
+      </div>
+
+      {/* Sort Pills */}
+      <div className="flex gap-2 overflow-x-auto pb-2">
+        <Badge
+          variant={sortBy === 'recent' ? 'default' : 'outline'}
+          className="cursor-pointer hover:border-primary/50 transition-smooth flex items-center gap-1.5"
+          onClick={() => setSortBy('recent')}
+        >
+          <Clock size={14} />
+          Recent
+        </Badge>
+        <Badge
+          variant={sortBy === 'relevant' ? 'default' : 'outline'}
+          className="cursor-pointer hover:border-primary/50 transition-smooth flex items-center gap-1.5"
+          onClick={() => setSortBy('relevant')}
+        >
+          <TrendingUp size={14} />
+          Relevant
+        </Badge>
+        <Badge
+          variant={sortBy === 'activity' ? 'default' : 'outline'}
+          className="cursor-pointer hover:border-primary/50 transition-smooth flex items-center gap-1.5"
+          onClick={() => setSortBy('activity')}
+        >
+          <Sparkles size={14} />
+          Activity
+        </Badge>
+      </div>
+
       <CreatePostComponent />
 
       {isLoading ? (
         <div className="space-y-6">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="bg-primary-container/60 backdrop-blur-[12px] border border-nebula-stroke rounded-xl p-6">
+            <div key={i} className="glass-panel p-6 animate-fade-in">
               <div className="flex items-start gap-4">
-                <EventHorizon variant="spinner" size={40} />
+                <Skeleton variant="avatar" />
                 <div className="flex-1 space-y-3">
-                  <div className="h-4 w-3/4 rounded bg-on-surface-variant/20" />
-                  <div className="h-3 w-full rounded bg-on-surface-variant/20" />
-                  <div className="h-3 w-5/6 rounded bg-on-surface-variant/20" />
+                  <Skeleton variant="title" />
+                  <Skeleton className="h-20" />
+                  <div className="flex gap-3">
+                    <Skeleton variant="button" />
+                    <Skeleton variant="button" />
+                  </div>
                 </div>
               </div>
             </div>
           ))}
         </div>
       ) : allPosts.length === 0 ? (
-        <div className="text-center py-16">
-          <Users size={64} className="mx-auto text-on-surface-variant/30 mb-4" />
-          <h2 className="font-headline-md text-headline-md text-on-surface mb-2">No posts yet</h2>
-          <p className="font-body-md text-body-md text-on-surface-variant">Be the first to share something!</p>
-        </div>
+        <EmptyState
+          icon={Users}
+          title="No signals yet"
+          description="Be the first to share your journey with the community. Post about your achievements, projects, or insights."
+          action={
+            <button className="text-primary hover:underline font-body-sm text-body-sm">
+              Create your first post
+            </button>
+          }
+        />
       ) : (
         <>
-          {allPosts.map((post) => (
-            <PostCard
-              key={post.id}
-              post={post}
-              currentUser={user}
-              onLike={handleLike}
-              onUpdate={handleUpdate}
-              onDelete={handleDelete}
-              formatTime={formatTime}
-            />
-          ))}
+          <div className="space-y-6">
+            {allPosts.map((post, index) => (
+              <div key={post.id} className="animate-fade-in" style={{ animationDelay: `${index * 50}ms` }}>
+                <PostCard
+                  post={post}
+                  currentUser={user}
+                  onLike={handleLike}
+                  onUpdate={handleUpdate}
+                  onDelete={handleDelete}
+                  formatTime={formatTime}
+                />
+              </div>
+            ))}
+          </div>
 
           {hasNextPage && (
-            <div className="flex justify-center pt-4">
+            <div className="flex justify-center pt-8">
               <button
                 onClick={() => fetchNextPage()}
                 disabled={isFetchingNextPage}
-                className="px-6 py-3 bg-primary-container/40 border border-nebula-stroke text-on-surface font-label-caps text-label-caps rounded-lg hover:bg-primary-container/60 transition-all disabled:opacity-50"
+                className="px-8 py-3 bg-primary-container/40 border border-nebula-stroke text-on-surface font-label-caps text-label-caps rounded-lg hover:bg-primary-container/60 hover:border-primary/30 transition-smooth disabled:opacity-50 flex items-center gap-2"
               >
                 {isFetchingNextPage ? (
-                  <span className="flex items-center gap-2">
-                    <EventHorizon variant="spinner" size={20} /> Loading...
-                  </span>
+                  <>
+                    <EventHorizon variant="spinner" size={20} />
+                    Loading...
+                  </>
                 ) : (
-                  'Load More'
+                  'Load More Signals'
                 )}
               </button>
             </div>
