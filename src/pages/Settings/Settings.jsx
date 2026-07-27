@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
-import { Mail, Lock, Eye, EyeOff, Bell, LogOut, Loader2, Check, Shield } from 'lucide-react';
+import { Mail, Lock, Eye, EyeOff, Bell, LogOut, Loader2, Check, Shield, User, Globe, Sparkles } from 'lucide-react';
 import GlassCard from '../../components/ui/GlassCard';
 import Button from '../../components/ui/Button';
+import Tabs from '../../components/ui/Tabs';
+import Badge from '../../components/ui/Badge';
+import Input from '../../components/ui/Input';
 
 const Settings = () => {
   const navigate = useNavigate();
@@ -82,7 +85,6 @@ const Settings = () => {
     try {
       setPasswordSaving(true);
 
-      // Re-authenticate with current password
       const { error: signInError } = await supabase.auth.signInWithPassword({
         email,
         password: currentPassword,
@@ -93,7 +95,6 @@ const Settings = () => {
         return;
       }
 
-      // Update to new password
       const { error } = await supabase.auth.updateUser({ password: newPassword });
       if (error) throw error;
 
@@ -146,11 +147,30 @@ const Settings = () => {
     );
   }
 
+  const ToggleSwitch = ({ enabled, onToggle, disabled }) => (
+    <button
+      onClick={onToggle}
+      disabled={disabled}
+      className={`relative w-12 h-6 rounded-full transition-smooth ${
+        enabled ? 'bg-primary' : 'bg-charcoal-gray'
+      } ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
+    >
+      <span
+        className={`absolute top-0.5 left-0.5 w-5 h-5 bg-on-surface rounded-full transition-transform ${
+          enabled ? 'translate-x-6' : ''
+        }`}
+      />
+    </button>
+  );
+
   return (
-    <div className="max-w-2xl mx-auto space-y-stack-lg pb-stack-lg">
-      <div>
-        <h1 className="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface mb-stack-sm">Settings</h1>
-        <p className="font-body-lg text-body-lg text-on-surface-variant">Manage your account and preferences.</p>
+    <div className="max-w-3xl mx-auto space-y-6 pb-12">
+      <div className="mb-8">
+        <h1 className="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface mb-2 flex items-center gap-3">
+          <Sparkles size={28} className="text-primary" />
+          Settings
+        </h1>
+        <p className="font-body-lg text-body-lg text-on-surface-variant">Manage your account and preferences</p>
       </div>
 
       {error && (
@@ -160,175 +180,251 @@ const Settings = () => {
         </GlassCard>
       )}
 
-      {/* Account Section */}
-      <GlassCard className="p-stack-lg" hover={false}>
-        <div className="flex items-center gap-3 mb-4 pb-4 border-b border-nebula-stroke">
-          <Mail size={20} className="text-primary" />
-          <h2 className="font-headline-md text-headline-md text-on-surface">Account</h2>
-        </div>
+      <Tabs defaultValue="account" className="w-full">
+        <Tabs.List>
+          <Tabs.Trigger value="account">Account</Tabs.Trigger>
+          <Tabs.Trigger value="privacy">Privacy</Tabs.Trigger>
+          <Tabs.Trigger value="notifications">Notifications</Tabs.Trigger>
+        </Tabs.List>
 
-        <div className="space-y-4">
-          <div>
-            <label className="font-label-caps text-label-caps text-on-surface-variant block mb-2">Email</label>
-              <div className="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-4 py-3 text-on-surface font-body-md text-body-md">
-                {email}
+        <Tabs.Content>
+          <Tabs.Panel value="account">
+            <div className="space-y-6">
+              {/* Account Info */}
+              <GlassCard className="p-stack-lg">
+                <div className="flex items-center gap-3 mb-6 pb-4 border-b border-nebula-stroke">
+                  <User size={20} className="text-primary" />
+                  <h2 className="font-headline-md text-headline-md text-on-surface">Account Information</h2>
+                </div>
+
+                <div className="space-y-4">
+                  <div>
+                    <label className="font-label-caps text-label-caps text-on-surface-variant block mb-2">Email Address</label>
+                    <div className="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-4 py-3 text-on-surface font-body-md text-body-md">
+                      {email}
+                    </div>
+                    <p className="font-body-sm text-body-sm text-on-surface-variant mt-2">
+                      Contact support to change your email address
+                    </p>
+                  </div>
+                </div>
+              </GlassCard>
+
+              {/* Password */}
+              <GlassCard className="p-stack-lg">
+                <div className="flex items-center gap-3 mb-6 pb-4 border-b border-nebula-stroke">
+                  <Lock size={20} className="text-primary" />
+                  <h2 className="font-headline-md text-headline-md text-on-surface">Change Password</h2>
+                </div>
+
+                <form onSubmit={handlePasswordChange} className="space-y-4">
+                  {passwordError && (
+                    <div className="bg-error-container/20 border border-error/30 rounded-lg p-3 font-body-sm text-body-sm text-on-error-container">
+                      {passwordError}
+                    </div>
+                  )}
+
+                  {passwordSuccess && (
+                    <div className="bg-green-500/10 border border-green-500/30 rounded-lg p-3 font-body-sm text-body-sm text-green-400 flex items-center gap-2">
+                      <Check size={16} /> Password updated successfully
+                    </div>
+                  )}
+
+                  <div>
+                    <label className="font-label-caps text-label-caps text-on-surface-variant block mb-2">Current Password</label>
+                    <div className="relative">
+                      <Input
+                        type={showCurrentPassword ? 'text' : 'password'}
+                        value={currentPassword}
+                        onChange={(e) => setCurrentPassword(e.target.value)}
+                        placeholder="Enter current password"
+                        required
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowCurrentPassword(!showCurrentPassword)}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-primary transition-colors"
+                      >
+                        {showCurrentPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                      </button>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="font-label-caps text-label-caps text-on-surface-variant block mb-2">New Password</label>
+                    <div className="relative">
+                      <Input
+                        type={showNewPassword ? 'text' : 'password'}
+                        value={newPassword}
+                        onChange={(e) => setNewPassword(e.target.value)}
+                        placeholder="Enter new password (min 6 characters)"
+                        required
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowNewPassword(!showNewPassword)}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-primary transition-colors"
+                      >
+                        {showNewPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                      </button>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="font-label-caps text-label-caps text-on-surface-variant block mb-2">Confirm New Password</label>
+                    <Input
+                      type="password"
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      placeholder="Confirm new password"
+                      required
+                    />
+                  </div>
+
+                  <div className="flex justify-end pt-2">
+                    <Button
+                      type="submit"
+                      variant="primary"
+                      disabled={passwordSaving || !currentPassword || !newPassword || !confirmPassword}
+                      loading={passwordSaving}
+                    >
+                      Update Password
+                    </Button>
+                  </div>
+                </form>
+              </GlassCard>
+
+              {/* Sign Out */}
+              <GlassCard className="p-stack-md">
+                <Button variant="danger" className="w-full justify-center gap-2" onClick={handleSignOut}>
+                  <LogOut size={16} />
+                  Sign Out
+                </Button>
+              </GlassCard>
+            </div>
+          </Tabs.Panel>
+
+          <Tabs.Panel value="privacy">
+            <GlassCard className="p-stack-lg">
+              <div className="flex items-center gap-3 mb-6 pb-4 border-b border-nebula-stroke">
+                <Shield size={20} className="text-primary" />
+                <h2 className="font-headline-md text-headline-md text-on-surface">Privacy Settings</h2>
               </div>
-            <p className="font-label-caps text-label-caps text-on-surface-variant mt-2">Contact support to change your email address.</p>
-          </div>
-        </div>
-      </GlassCard>
 
-      {/* Password Section */}
-      <GlassCard className="p-stack-lg" hover={false}>
-        <div className="flex items-center gap-3 mb-4 pb-4 border-b border-nebula-stroke">
-          <Lock size={20} className="text-primary" />
-          <h2 className="font-headline-md text-headline-md text-on-surface">Change Password</h2>
-        </div>
+              <div className="space-y-6">
+                <div className="flex items-center justify-between py-3">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-1">
+                      <p className="font-body-md text-body-md text-on-surface font-medium">Public Profile</p>
+                      {isProfilePublic && <Badge variant="success" className="text-xs">Public</Badge>}
+                    </div>
+                    <p className="font-body-sm text-body-sm text-on-surface-variant">
+                      Allow others to view your profile and career information
+                    </p>
+                  </div>
+                  <ToggleSwitch
+                    enabled={isProfilePublic}
+                    onToggle={() => handleToggle('is_profile_public', !isProfilePublic)}
+                    disabled={toggleSaving}
+                  />
+                </div>
 
-        <form onSubmit={handlePasswordChange} className="space-y-4">
-          {passwordError && (
-            <div className="bg-error-container/20 border border-error/30 rounded-lg p-3 font-body-sm text-body-sm text-on-error-container">
-              {passwordError}
-            </div>
-          )}
+                {toggleSuccess === 'is_profile_public' && (
+                  <p className="font-body-sm text-body-sm text-green-400 flex items-center gap-1">
+                    <Check size={14} /> Settings saved
+                  </p>
+                )}
 
-          {passwordSuccess && (
-            <div className="bg-green-500/10 border border-green-500/30 rounded-lg p-3 font-body-sm text-body-sm text-green-400 flex items-center gap-2">
-              <Check size={16} /> Password updated successfully
-            </div>
-          )}
+                <div className="flex items-center justify-between py-3 border-t border-nebula-stroke">
+                  <div className="flex-1">
+                    <p className="font-body-md text-body-md text-on-surface font-medium mb-1">Search Visibility</p>
+                    <p className="font-body-sm text-body-sm text-on-surface-variant">
+                      Allow your profile to appear in search results
+                    </p>
+                  </div>
+                  <ToggleSwitch
+                    enabled={isProfilePublic}
+                    onToggle={() => handleToggle('is_profile_public', !isProfilePublic)}
+                    disabled={toggleSaving}
+                  />
+                </div>
+              </div>
+            </GlassCard>
+          </Tabs.Panel>
 
-          <div>
-            <label className="font-label-caps text-label-caps text-on-surface-variant block mb-2">Current Password</label>
-            <div className="relative">
-              <input
-                type={showCurrentPassword ? 'text' : 'password'}
-                value={currentPassword}
-                onChange={(e) => setCurrentPassword(e.target.value)}
-                className="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-4 py-3 pr-10 text-on-surface focus:border-primary focus:shadow-[0_0_0_2px_rgba(188,198,231,0.15)] outline-none transition-all font-body-md text-body-md placeholder:text-on-surface-variant"
-                placeholder="Enter current password"
-                required
-              />
-              <button
-                type="button"
-                onClick={() => setShowCurrentPassword(!showCurrentPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-primary transition-colors"
-              >
-                {showCurrentPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-              </button>
-            </div>
-          </div>
+          <Tabs.Panel value="notifications">
+            <GlassCard className="p-stack-lg">
+              <div className="flex items-center gap-3 mb-6 pb-4 border-b border-nebula-stroke">
+                <Bell size={20} className="text-primary" />
+                <h2 className="font-headline-md text-headline-md text-on-surface">Notification Preferences</h2>
+              </div>
 
-          <div>
-            <label className="font-label-caps text-label-caps text-on-surface-variant block mb-2">New Password</label>
-            <div className="relative">
-              <input
-                type={showNewPassword ? 'text' : 'password'}
-                value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
-                className="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-4 py-3 pr-10 text-on-surface focus:border-primary focus:shadow-[0_0_0_2px_rgba(188,198,231,0.15)] outline-none transition-all font-body-md text-body-md placeholder:text-on-surface-variant"
-                placeholder="Enter new password"
-                required
-              />
-              <button
-                type="button"
-                onClick={() => setShowNewPassword(!showNewPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-primary transition-colors"
-              >
-                {showNewPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-              </button>
-            </div>
-          </div>
+              <div className="space-y-6">
+                <div className="flex items-center justify-between py-3">
+                  <div className="flex-1">
+                    <p className="font-body-md text-body-md text-on-surface font-medium mb-1">Email Notifications</p>
+                    <p className="font-body-sm text-body-sm text-on-surface-variant">
+                      Receive email updates about your activity and opportunities
+                    </p>
+                  </div>
+                  <ToggleSwitch
+                    enabled={emailNotifications}
+                    onToggle={() => handleToggle('email_notifications', !emailNotifications)}
+                    disabled={toggleSaving}
+                  />
+                </div>
 
-          <div>
-            <label className="font-label-caps text-label-caps text-on-surface-variant block mb-2">Confirm New Password</label>
-            <input
-              type="password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              className="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-4 py-3 text-on-surface focus:border-primary focus:shadow-[0_0_0_2px_rgba(188,198,231,0.15)] outline-none transition-all font-body-md text-body-md placeholder:text-on-surface-variant"
-              placeholder="Confirm new password"
-              required
-            />
-          </div>
+                {toggleSuccess === 'email_notifications' && (
+                  <p className="font-body-sm text-body-sm text-green-400 flex items-center gap-1">
+                    <Check size={14} /> Settings saved
+                  </p>
+                )}
 
-          <div className="flex justify-end pt-2">
-            <Button
-              type="submit"
-              variant="primary"
-              disabled={passwordSaving || !currentPassword || !newPassword || !confirmPassword}
-            >
-              {passwordSaving ? (
-                <><Loader2 size={16} className="animate-spin" /> Updating...</>
-              ) : (
-                'Update Password'
-              )}
-            </Button>
-          </div>
-        </form>
-      </GlassCard>
+                <div className="flex items-center justify-between py-3 border-t border-nebula-stroke">
+                  <div className="flex-1">
+                    <p className="font-body-md text-body-md text-on-surface font-medium mb-1">Job Alerts</p>
+                    <p className="font-body-sm text-body-sm text-on-surface-variant">
+                      Get notified when new jobs match your profile
+                    </p>
+                  </div>
+                  <ToggleSwitch
+                    enabled={true}
+                    onToggle={() => {}}
+                    disabled={true}
+                  />
+                </div>
 
-      {/* Privacy Section */}
-      <GlassCard className="p-stack-lg" hover={false}>
-        <div className="flex items-center gap-3 mb-4 pb-4 border-b border-nebula-stroke">
-          <Shield size={20} className="text-primary" />
-          <h2 className="font-headline-md text-headline-md text-on-surface">Privacy</h2>
-        </div>
+                <div className="flex items-center justify-between py-3 border-t border-nebula-stroke">
+                  <div className="flex-1">
+                    <p className="font-body-md text-body-md text-on-surface font-medium mb-1">Network Updates</p>
+                    <p className="font-body-sm text-body-sm text-on-surface-variant">
+                      Notifications when connections post or update
+                    </p>
+                  </div>
+                  <ToggleSwitch
+                    enabled={true}
+                    onToggle={() => {}}
+                    disabled={true}
+                  />
+                </div>
+              </div>
+            </GlassCard>
 
-        <div className="flex items-center justify-between py-3">
-          <div>
-            <p className="font-body-md text-body-md text-on-surface">Public Profile</p>
-            <p className="font-label-caps text-label-caps text-on-surface-variant mt-1">Allow others to view your profile</p>
-          </div>
-          <button
-            onClick={() => handleToggle('is_profile_public', !isProfilePublic)}
-            disabled={toggleSaving}
-            className={`relative w-12 h-6 rounded-full transition-colors ${
-              isProfilePublic ? 'bg-primary' : 'bg-charcoal-gray'
-            }`}
-          >
-            <span
-              className={`absolute top-0.5 left-0.5 w-5 h-5 bg-on-surface rounded-full transition-transform ${
-                isProfilePublic ? 'translate-x-6' : ''
-              }`}
-            />
-          </button>
-        </div>
-        {toggleSuccess === 'is_profile_public' && (
-          <p className="font-label-caps text-label-caps text-green-400 flex items-center gap-1"><Check size={12} /> Saved</p>
-        )}
-
-        <div className="flex items-center justify-between py-3 border-t border-nebula-stroke">
-          <div>
-            <p className="font-body-md text-body-md text-on-surface">Email Notifications</p>
-            <p className="font-label-caps text-label-caps text-on-surface-variant mt-1">Receive email updates about your activity</p>
-          </div>
-          <button
-            onClick={() => handleToggle('email_notifications', !emailNotifications)}
-            disabled={toggleSaving}
-            className={`relative w-12 h-6 rounded-full transition-colors ${
-              emailNotifications ? 'bg-primary' : 'bg-charcoal-gray'
-            }`}
-          >
-            <span
-              className={`absolute top-0.5 left-0.5 w-5 h-5 bg-on-surface rounded-full transition-transform ${
-                emailNotifications ? 'translate-x-6' : ''
-              }`}
-            />
-          </button>
-        </div>
-        {toggleSuccess === 'email_notifications' && (
-          <p className="font-label-caps text-label-caps text-green-400 flex items-center gap-1"><Check size={12} /> Saved</p>
-        )}
-      </GlassCard>
-
-      {/* Sign Out */}
-      <GlassCard className="p-stack-md" hover={false}>
-        <Button variant="secondary" className="w-full justify-center gap-2" onClick={handleSignOut}>
-          <LogOut size={16} />
-          Sign Out
-        </Button>
-      </GlassCard>
+            <GlassCard className="p-stack-md">
+              <div className="flex items-center gap-3 mb-4">
+                <Globe size={18} className="text-primary" />
+                <h3 className="font-headline-sm text-headline-sm text-on-surface">Communication Preferences</h3>
+              </div>
+              <p className="font-body-sm text-body-sm text-on-surface-variant mb-4">
+                Manage how we communicate with you across different channels
+              </p>
+              <Button variant="secondary" size="sm" disabled>
+                Manage All Preferences
+              </Button>
+            </GlassCard>
+          </Tabs.Panel>
+        </Tabs.Content>
+      </Tabs>
     </div>
   );
 };

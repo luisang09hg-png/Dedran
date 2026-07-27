@@ -1,8 +1,13 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
-import { Search, X, Loader2, User, Briefcase, Hash, Filter, ChevronDown, MoreHorizontal } from 'lucide-react';
+import { Search, X, Loader2, User, Briefcase, Hash, Filter, Sparkles, TrendingUp, MapPin, DollarSign } from 'lucide-react';
 import PostCard from '../../components/feed/PostCard';
+import GlassCard from '../../components/ui/GlassCard';
+import Input from '../../components/ui/Input';
+import Badge from '../../components/ui/Badge';
+import EmptyState from '../../components/ui/EmptyState';
+import Skeleton from '../../components/ui/Skeleton';
 
 const SearchResults = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -13,10 +18,10 @@ const SearchResults = () => {
   const [error, setError] = useState(null);
 
   const SEARCH_TYPES = [
-    { value: 'all', label: 'Todo', icon: Search },
-    { value: 'people', label: 'Personas', icon: User },
-    { value: 'jobs', label: 'Empleos', icon: Briefcase },
-    { value: 'posts', label: 'Publicaciones', icon: Hash },
+    { value: 'all', label: 'All', icon: Search },
+    { value: 'people', label: 'People', icon: User },
+    { value: 'jobs', label: 'Jobs', icon: Briefcase },
+    { value: 'posts', label: 'Posts', icon: Hash },
   ];
 
   const search = useCallback(async (q, t) => {
@@ -103,123 +108,199 @@ const SearchResults = () => {
   const totalResults = results.people.length + results.posts.length + results.jobs.length;
 
   return (
-    <div className="max-w-4xl mx-auto px-margin-mobile md:px-margin-desktop py-6 md:py-8">
+    <div className="max-w-5xl mx-auto space-y-8 pb-12">
       {/* Search Header */}
-      <div className="glass-card rounded-2xl p-4 mb-6">
-        <form onSubmit={handleSearch} className="space-y-4">
+      <div className="mb-8">
+        <h1 className="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface mb-2 flex items-center gap-3">
+          <Sparkles size={28} className="text-primary" />
+          Search
+        </h1>
+        <p className="font-body-lg text-body-lg text-on-surface-variant">
+          Discover people, jobs, and content across the platform
+        </p>
+      </div>
+
+      <GlassCard className="p-6">
+        <form onSubmit={handleSearch} className="space-y-6">
           <div className="relative">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-on-surface-variant/50" />
-            <input
+            <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant" />
+            <Input
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Buscar personas, empleos, publicaciones..."
-              className="w-full bg-surface-container border border-outline-variant rounded-xl px-12 py-3 pr-12 text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none text-body-md"
+              placeholder="Search people, jobs, posts..."
+              className="pl-12 pr-12"
             />
             {query && (
               <button
                 type="button"
                 onClick={clearSearch}
-                className="absolute right-4 top-1/2 -translate-y-1/2 p-1 rounded-lg hover:bg-surface-variant text-on-surface-variant transition-colors"
+                className="absolute right-4 top-1/2 -translate-y-1/2 p-1 rounded-lg hover:bg-surface-variant text-on-surface-variant transition-smooth"
               >
                 <X size={18} />
               </button>
             )}
           </div>
 
-          <div className="flex items-center gap-2 overflow-x-auto pb-2 no-scrollbar">
+          <div className="flex items-center gap-2 overflow-x-auto pb-2">
+            <Filter size={18} className="text-on-surface-variant shrink-0" />
             {SEARCH_TYPES.map(t => (
-              <button
+              <Badge
                 key={t.value}
-                type="button"
+                variant={type === t.value ? 'default' : 'outline'}
+                className="cursor-pointer hover:border-primary/50 transition-smooth shrink-0"
                 onClick={() => setType(t.value)}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-label-sm font-label-md whitespace-nowrap transition-all ${
-                  type === t.value
-                    ? 'bg-primary-container text-on-primary-container'
-                    : 'bg-surface-container text-on-surface-variant hover:bg-surface-variant'
-                }`}
               >
                 <t.icon size={14} />
                 {t.label}
-              </button>
+              </Badge>
             ))}
           </div>
 
           {query && (
-            <p className="text-label-sm text-on-surface-variant">
+            <p className="font-body-sm text-body-sm text-on-surface-variant">
               {totalResults > 0 
-                ? `Encontrados ${totalResults} resultado${totalResults !== 1 ? 's' : ''} para "${query}"`
-                : `No se encontraron resultados para "${query}"`
+                ? `Found ${totalResults} result${totalResults !== 1 ? 's' : ''} for "${query}"`
+                : `No results found for "${query}"`
               }
             </p>
           )}
         </form>
-      </div>
+      </GlassCard>
 
       {/* Results */}
       {loading ? (
-        <div className="space-y-6" aria-busy="true">
+        <div className="space-y-6">
           {[1, 2, 3].map(i => (
-            <div key={i} className="glass-card rounded-2xl p-6 animate-pulse">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 rounded-full bg-surface-variant" />
-                <div className="flex-1">
-                  <div className="h-4 w-3/12 rounded bg-surface-variant" />
-                  <div className="h-3 w-2/12 rounded bg-surface-variant mt-1" />
+            <GlassCard key={i} className="p-6">
+              <div className="flex items-center gap-4 mb-4">
+                <Skeleton variant="avatar" />
+                <div className="flex-1 space-y-2">
+                  <Skeleton variant="title" />
+                  <Skeleton className="h-3 w-1/2" />
                 </div>
               </div>
               <div className="space-y-3">
-                <div className="h-6 w-full rounded bg-surface-variant" />
-                <div className="h-6 w-5/6 rounded bg-surface-variant" />
+                <Skeleton className="h-4" />
+                <Skeleton className="h-4 w-5/6" />
               </div>
-            </div>
+            </GlassCard>
           ))}
         </div>
       ) : error ? (
-        <div className="glass-card rounded-2xl p-8 text-center">
-          <p className="text-error text-body-md">Error al buscar: {error}</p>
-        </div>
+        <GlassCard className="p-8 text-center">
+          <p className="text-error font-body-md text-body-md">Search error: {error}</p>
+        </GlassCard>
       ) : (
-        <div className="space-y-6">
+        <div className="space-y-8">
           {type === 'all' || type === 'people' ? (
             <section>
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-headline-md font-headline-md text-on-surface">Personas ({results.people.length})</h2>
+              <div className="flex items-center gap-2 mb-6">
+                <User size={20} className="text-primary" />
+                <h2 className="font-headline-md text-headline-md text-on-surface">
+                  People ({results.people.length})
+                </h2>
               </div>
               {results.people.length === 0 ? (
-                <div className="glass-card rounded-2xl p-8 text-center">
-                  <User className="text-on-surface-variant/50 mx-auto mb-4" size={48} />
-                  <p className="text-body-md text-on-surface-variant">No se encontraron personas</p>
-                </div>
+                <EmptyState
+                  icon={User}
+                  title="No people found"
+                  description="Try adjusting your search terms or filters"
+                />
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {results.people.map(person => (
-                    <div key={person.id} className="glass-card rounded-xl p-4 flex items-center gap-4 hover:bg-surface-container-highest/50 transition-colors">
-                      <div className="w-12 h-12 rounded-full overflow-hidden bg-surface-container border border-outline-variant/30 flex-shrink-0">
+                    <GlassCard key={person.id} className="p-4 flex items-center gap-4 hover:border-primary/30 transition-smooth group">
+                      <div className="w-14 h-14 rounded-full overflow-hidden bg-surface-container border border-outline-variant/30 flex-shrink-0">
                         {person.avatar_url ? (
                           <img src={person.avatar_url} alt="" className="w-full h-full object-cover" />
                         ) : (
-                          <div className="w-full h-full flex items-center justify-center">
-                            <span className="text-label-md font-bold text-primary">
+                          <div className="w-full h-full flex items-center justify-center bg-primary-container/20">
+                            <span className="font-label-md font-bold text-primary">
                               {person.full_name?.[0]?.toUpperCase() || person.username?.[0]?.toUpperCase() || '?'}
                             </span>
                           </div>
                         )}
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="text-body-md font-semibold text-on-surface truncate">
+                        <p className="font-body-md font-semibold text-on-surface truncate group-hover:text-primary transition-smooth">
                           {person.full_name || person.username}
                         </p>
-                        <p className="text-label-sm text-on-surface-variant truncate">
+                        <p className="font-label-sm text-label-sm text-on-surface-variant truncate">
                           @{person.username}
                         </p>
                         {person.headline && (
-                          <p className="text-label-sm text-on-surface-variant/70 truncate mt-0.5">
+                          <p className="font-label-sm text-label-sm text-on-surface-variant/70 truncate mt-1 line-clamp-1">
                             {person.headline}
                           </p>
                         )}
                       </div>
-                    </div>
+                    </GlassCard>
+                  ))}
+                </div>
+              )}
+            </section>
+          ) : null}
+
+          {type === 'all' || type === 'jobs' ? (
+            <section>
+              <div className="flex items-center gap-2 mb-6">
+                <Briefcase size={20} className="text-primary" />
+                <h2 className="font-headline-md text-headline-md text-on-surface">
+                  Jobs ({results.jobs.length})
+                </h2>
+              </div>
+              {results.jobs.length === 0 ? (
+                <EmptyState
+                  icon={Briefcase}
+                  title="No jobs found"
+                  description="Try different keywords or check back later for new opportunities"
+                />
+              ) : (
+                <div className="space-y-4">
+                  {results.jobs.map(job => (
+                    <GlassCard key={job.id} className="p-5 hover:border-primary/30 transition-smooth">
+                      <div className="flex items-start gap-4">
+                        <div className="w-12 h-12 rounded-xl bg-primary-container/30 flex items-center justify-center flex-shrink-0">
+                          <Briefcase size={20} className="text-primary" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 flex-wrap mb-2">
+                            <h3 className="font-body-lg font-bold text-on-surface">{job.title}</h3>
+                            <Badge variant="outline" className="text-xs">{job.experience_level}</Badge>
+                            <Badge variant="secondary" className="text-xs">{job.contract_type}</Badge>
+                            <Badge variant="tertiary" className="text-xs">{job.remote_type}</Badge>
+                          </div>
+                          <p className="font-body-sm text-body-sm text-on-surface-variant mb-3 line-clamp-2">{job.description}</p>
+                          <div className="flex items-center gap-4 font-label-sm text-label-sm text-on-surface-variant mb-3">
+                            <span className="flex items-center gap-1">
+                              {job.company?.full_name || 'Company'}
+                            </span>
+                            {job.location && (
+                              <span className="flex items-center gap-1">
+                                <MapPin size={14} />
+                                {job.location}
+                              </span>
+                            )}
+                            {job.salary_min && job.salary_max && (
+                              <span className="flex items-center gap-1 text-primary font-label-md">
+                                <DollarSign size={14} />
+                                {job.salary_min.toLocaleString()} - {job.salary_max.toLocaleString()}/{job.currency || 'USD'}
+                              </span>
+                            )}
+                          </div>
+                          {job.skills_required?.length && (
+                            <div className="flex flex-wrap gap-2">
+                              {job.skills_required.slice(0, 5).map(skill => (
+                                <Badge key={skill} variant="outline" className="text-xs">
+                                  {skill}
+                                </Badge>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </GlassCard>
                   ))}
                 </div>
               )}
@@ -228,14 +309,18 @@ const SearchResults = () => {
 
           {type === 'all' || type === 'posts' ? (
             <section>
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-headline-md font-headline-md text-on-surface">Publicaciones ({results.posts.length})</h2>
+              <div className="flex items-center gap-2 mb-6">
+                <Hash size={20} className="text-primary" />
+                <h2 className="font-headline-md text-headline-md text-on-surface">
+                  Posts ({results.posts.length})
+                </h2>
               </div>
               {results.posts.length === 0 ? (
-                <div className="glass-card rounded-2xl p-8 text-center">
-                  <Hash className="text-on-surface-variant/50 mx-auto mb-4" size={48} />
-                  <p className="text-body-md text-on-surface-variant">No se encontraron publicaciones</p>
-                </div>
+                <EmptyState
+                  icon={Hash}
+                  title="No posts found"
+                  description="Try searching for different keywords or browse the feed"
+                />
               ) : (
                 <div className="space-y-4">
                   {results.posts.map(post => (
@@ -251,11 +336,11 @@ const SearchResults = () => {
                         const d = new Date(date);
                         const now = new Date();
                         const diff = Math.floor((now - d) / 1000);
-                        if (diff < 60) return 'Ahora';
-                        if (diff < 3600) return `Hace ${Math.floor(diff/60)}m`;
-                        if (diff < 86400) return `Hace ${Math.floor(diff/3600)}h`;
-                        if (diff < 604800) return `Hace ${Math.floor(diff/86400)}d`;
-                        return d.toLocaleDateString('es-ES', { day: 'numeric', month: 'short' });
+                        if (diff < 60) return 'Just now';
+                        if (diff < 3600) return `${Math.floor(diff/60)}m ago`;
+                        if (diff < 86400) return `${Math.floor(diff/3600)}h ago`;
+                        if (diff < 604800) return `${Math.floor(diff/86400)}d ago`;
+                        return d.toLocaleDateString('en-US', { day: 'numeric', month: 'short' });
                       }}
                     />
                   ))}
@@ -264,68 +349,13 @@ const SearchResults = () => {
             </section>
           ) : null}
 
-          {type === 'all' || type === 'jobs' ? (
-            <section>
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-headline-md font-headline-md text-on-surface">Empleos ({results.jobs.length})</h2>
-              </div>
-              {results.jobs.length === 0 ? (
-                <div className="glass-card rounded-2xl p-8 text-center">
-                  <Briefcase className="text-on-surface-variant/50 mx-auto mb-4" size={48} />
-                  <p className="text-body-md text-on-surface-variant">No se encontraron ofertas</p>
-                </div>
-              ) : (
-                <div className="space-y-4">
-                  {results.jobs.map(job => (
-                    <div key={job.id} className="glass-card rounded-xl p-5 border border-outline-variant/30 hover:border-primary/30 transition-colors">
-                      <div className="flex items-start gap-4">
-                        <div className="w-12 h-12 rounded-xl bg-primary-container flex items-center justify-center flex-shrink-0">
-                          <Briefcase size={20} className="text-primary" />
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center gap-2 flex-wrap mb-1">
-                            <h3 className="text-body-lg font-bold text-on-surface truncate">{job.title}</h3>
-                            <span className="px-2 py-0.5 rounded-full bg-primary-container/30 text-primary text-[10px] font-label-sm">
-                              {job.experience_level}
-                            </span>
-                            <span className="px-2 py-0.5 rounded-full bg-secondary-container/30 text-secondary text-[10px] font-label-sm">
-                              {job.contract_type}
-                            </span>
-                            <span className="px-2 py-0.5 rounded-full bg-tertiary-container/30 text-tertiary text-[10px] font-label-sm">
-                              {job.remote_type}
-                            </span>
-                          </div>
-                          <p className="text-body-sm text-on-surface-variant truncate mb-2">{job.description.slice(0, 150)}...</p>
-                          <div className="flex items-center gap-4 text-label-sm text-on-surface-variant">
-                            <span className="flex items-center gap-1">
-                              {job.company?.full_name || 'Empresa'}
-                            </span>
-                            {job.location && (
-                              <span className="flex items-center gap-1">{job.location}</span>
-                            )}
-                            {job.salary_min && job.salary_max && (
-                              <span className="flex items-center gap-1 text-primary font-label-md">
-                                ${job.salary_min.toLocaleString()} - ${job.salary_max.toLocaleString()}/{job.currency || 'USD'}
-                              </span>
-                            )}
-                          </div>
-                          {job.skills_required?.length && (
-                            <div className="flex flex-wrap gap-1.5 mt-2">
-                              {job.skills_required.slice(0, 5).map(skill => (
-                                <span key={skill} className="px-2 py-0.5 rounded-full bg-surface-container border border-outline-variant/30 text-label-sm text-on-surface-variant">
-                                  {skill}
-                                </span>
-                              ))}
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </section>
-          ) : null}
+          {!loading && totalResults === 0 && query && (
+            <EmptyState
+              icon={Search}
+              title="No results found"
+              description={`We couldn't find anything matching "${query}". Try different keywords or browse our categories.`}
+            />
+          )}
         </div>
       )}
     </div>

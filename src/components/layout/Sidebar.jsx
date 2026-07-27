@@ -2,24 +2,34 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import { supabase } from '../../lib/supabase';
 import {
-  LogOut, User, Bell, Compass, Sun, Moon, MessageSquare, Briefcase,
-  Settings, HelpCircle, Star, Search, Users
+  LogOut, User, Bell, Sparkles, Sun, Moon, MessageSquare, Briefcase,
+  Settings, HelpCircle, Star, Search, Users, BookOpen, Home, TrendingUp
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import NotificationDropdown from '../notifications/NotificationDropdown';
+import Badge from '../ui/Badge';
 
-const navItems = [
-  { name: 'Galaxy View', path: '/galaxy', icon: Compass },
-  { name: 'Star Systems', path: '/star-systems', icon: Sun },
-  { name: 'Feed', path: '/feed', icon: MessageSquare },
-  { name: 'Search', path: '/search', icon: Search },
-  { name: 'Profile', path: '/profile', icon: User },
-  { name: 'Applications', path: '/applications', icon: Briefcase },
-  { name: 'Network', path: '/network', icon: Users },
-  { name: 'Messages', path: '/messages', icon: MessageSquare },
+const navSections = [
+  {
+    title: 'Main',
+    items: [
+      { name: 'Home', path: '/galaxy', icon: Home },
+      { name: 'Feed', path: '/feed', icon: MessageSquare },
+      { name: 'Search', path: '/search', icon: Search },
+    ],
+  },
+  {
+    title: 'Career',
+    items: [
+      { name: 'Courses', path: '/star-systems', icon: BookOpen },
+      { name: 'Jobs', path: '/applications', icon: Briefcase },
+      { name: 'Network', path: '/network', icon: Users },
+    ],
+  },
 ];
 
 const bottomItems = [
+  { name: 'Profile', path: '/profile', icon: User },
   { name: 'Settings', path: '/settings', icon: Settings },
   { name: 'Support', path: '#', icon: HelpCircle },
 ];
@@ -115,52 +125,88 @@ const Sidebar = () => {
       </nav>
 
       {/* Desktop Sidebar */}
-      <nav className="fixed left-0 top-0 h-full flex-col border-r border-nebula-stroke bg-surface-container w-72 px-gutter py-8 z-40 hidden md:flex">
+      <nav className="fixed left-0 top-0 h-full flex-col border-r border-nebula-stroke bg-surface-container w-64 px-4 py-6 z-40 hidden md:flex">
         {/* Brand */}
-        <div className="mb-stack-lg">
-          <h1 className="font-headline-md text-headline-md font-bold text-on-surface flex items-center gap-3">
-            <Star size={28} className="text-primary" />
-            Nova Analytics
-          </h1>
-          <p className="font-body-sm text-body-sm text-on-surface-variant mt-1">Deep Space Explorer</p>
+        <div className="mb-6 px-2">
+          <div className="flex items-center gap-2">
+            <div className="relative">
+              <Star size={24} className="text-primary animate-float" />
+              <Sparkles size={10} className="text-cosmic-accent absolute -top-1 -right-1" />
+            </div>
+            <h1 className="font-headline-md text-headline-md font-bold text-on-surface">Dedran</h1>
+          </div>
+          <p className="font-body-sm text-body-sm text-on-surface-variant mt-1 ml-8">Career Explorer</p>
         </div>
 
         {/* Primary Nav */}
-        <div className="flex-1 space-y-1">
-          {navItems.map((item) => (
-            <NavLink
-              key={item.path}
-              to={item.path}
-              className={({ isActive }) =>
-                `flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-300 ease-in-out ${
-                  isActive
-                    ? 'text-primary font-bold border-r-2 border-primary bg-primary-container/20'
-                    : 'text-on-surface-variant font-medium hover:bg-primary-container/20 hover:text-primary'
-                }`
-              }
-            >
-              <item.icon size={20} />
-              <span className="font-body-md text-body-md">{item.name}</span>
-            </NavLink>
+        <div className="flex-1 space-y-6 overflow-y-auto">
+          {navSections.map((section) => (
+            <div key={section.title}>
+              <h3 className="font-label-caps text-label-caps text-on-surface-variant px-2 mb-2 text-xs uppercase tracking-wider">
+                {section.title}
+              </h3>
+              <div className="space-y-1">
+                {section.items.map((item) => (
+                  <NavLink
+                    key={item.path}
+                    to={item.path}
+                    className={({ isActive }) =>
+                      `flex items-center gap-3 px-3 py-2.5 rounded-lg transition-smooth ${
+                        isActive
+                          ? 'text-primary bg-primary-container/30 border border-primary/20'
+                          : 'text-on-surface-variant hover:bg-primary-container/20 hover:text-primary'
+                      }`
+                    }
+                  >
+                    <item.icon size={18} />
+                    <span className="font-body-sm text-body-sm">{item.name}</span>
+                  </NavLink>
+                ))}
+              </div>
+            </div>
           ))}
         </div>
 
         {/* Bottom Section */}
-        <div className="mt-auto space-y-2 border-t border-nebula-stroke pt-6">
+        <div className="space-y-2 border-t border-nebula-stroke pt-4">
+          {/* Notifications */}
+          <div className="relative">
+            <button
+              onClick={() => setNotificationsOpen(!notificationsOpen)}
+              className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:bg-primary-container/20 hover:text-primary transition-smooth"
+            >
+              <div className="relative">
+                <Bell size={18} />
+                {unreadNotifications > 0 && (
+                  <span className="absolute -top-1 -right-1 w-4 h-4 bg-error text-on-error text-[10px] font-bold rounded-full flex items-center justify-center">
+                    {unreadNotifications > 9 ? '9+' : unreadNotifications}
+                  </span>
+                )}
+              </div>
+              <span className="font-body-sm text-body-sm">Notifications</span>
+            </button>
+            <NotificationDropdown
+              userId={user?.id}
+              isOpen={notificationsOpen}
+              onClose={() => setNotificationsOpen(false)}
+            />
+          </div>
+
           {/* Theme Toggle */}
           <button
             onClick={toggleTheme}
-            className="w-full flex items-center gap-3 px-4 py-2 rounded-lg text-on-surface-variant hover:bg-primary-container/20 hover:text-primary transition-all duration-300 ease-in-out"
+            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:bg-primary-container/20 hover:text-primary transition-smooth"
           >
             {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
             <span className="font-body-sm text-body-sm">{theme === 'dark' ? 'Light Mode' : 'Dark Mode'}</span>
           </button>
+
           {bottomItems.map((item) => (
             item.path === '#' ? (
               <a
                 key={item.name}
                 href="#"
-                className="flex items-center gap-3 px-4 py-2 rounded-lg text-on-surface-variant font-medium hover:bg-primary-container/20 hover:text-primary transition-all duration-300 ease-in-out"
+                className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:bg-primary-container/20 hover:text-primary transition-smooth"
               >
                 <item.icon size={18} />
                 <span className="font-body-sm text-body-sm">{item.name}</span>
@@ -170,10 +216,10 @@ const Sidebar = () => {
                 key={item.path}
                 to={item.path}
                 className={({ isActive }) =>
-                  `flex items-center gap-3 px-4 py-2 rounded-lg transition-all duration-300 ease-in-out ${
+                  `flex items-center gap-3 px-3 py-2.5 rounded-lg transition-smooth ${
                     isActive
-                      ? 'text-primary font-bold bg-primary-container/20'
-                      : 'text-on-surface-variant font-medium hover:bg-primary-container/20 hover:text-primary'
+                      ? 'text-primary bg-primary-container/30 border border-primary/20'
+                      : 'text-on-surface-variant hover:bg-primary-container/20 hover:text-primary'
                   }`
                 }
               >
@@ -184,16 +230,13 @@ const Sidebar = () => {
           ))}
 
           {/* User / Logout */}
-          <div className="pt-4 mt-4 border-t border-nebula-stroke">
+          <div className="pt-2 mt-2 border-t border-nebula-stroke">
             <button
               onClick={handleLogout}
-              className="w-full flex items-center gap-3 px-4 py-2 rounded-lg text-on-surface-variant hover:bg-primary-container/20 hover:text-primary transition-all duration-300 ease-in-out"
+              className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:bg-error-container/20 hover:text-error transition-smooth"
             >
-              <User size={18} />
-              <span className="font-body-sm text-body-sm flex-1 truncate text-left">
-                {profile?.full_name || profile?.email || 'User'}
-              </span>
-              <LogOut size={16} />
+              <LogOut size={18} />
+              <span className="font-body-sm text-body-sm">Sign Out</span>
             </button>
           </div>
         </div>
