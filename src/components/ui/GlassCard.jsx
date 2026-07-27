@@ -1,7 +1,7 @@
 const GlassCard = ({ children, className = '', hover = true, as: Tag = 'div', ...props }) => {
   return (
     <Tag
-      className={`bg-primary-container/60 backdrop-blur-[12px] border border-nebula-stroke rounded-xl ${hover ? 'hover:shadow-[inset_0_0_0_2px_rgba(255,255,255,0.1)] transition-all duration-300' : ''} ${className}`}
+      className={`glass-panel ${hover ? 'hover:shadow-[0_0_20px_rgba(168,180,216,0.1)] hover:border-primary/20 transition-smooth' : ''} ${className}`}
       {...props}
     >
       {children}
